@@ -173,7 +173,8 @@ static int pcterm_serial_main(int argc, char *argv[])
 
   g_term = NULL;
 
-  return 0;
+  pc_app_exit(0);  /* longjmp back to framework — skips framework event loop */
+  return 0;  /* Not reached */
 }
 
 /****************************************************************************

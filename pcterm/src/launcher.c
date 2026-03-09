@@ -399,10 +399,14 @@ void launcher_show(void)
     {
       lv_obj_clear_flag(g_launcher_cont, LV_OBJ_FLAG_HIDDEN);
 
+      /* Re-add to the input group so keyboard navigation works */
+
       lv_group_t *group = lv_group_get_default();
       if (group != NULL)
         {
+          lv_group_add_obj(group, g_launcher_cont);
           lv_group_focus_obj(g_launcher_cont);
+          lv_group_set_editing(group, true);
         }
 
       g_visible = true;
@@ -414,6 +418,17 @@ void launcher_hide(void)
   if (g_launcher_cont != NULL)
     {
       lv_obj_add_flag(g_launcher_cont, LV_OBJ_FLAG_HIDDEN);
+
+      /* Remove from input group so the launched app gets keyboard
+       * events instead of the hidden launcher.
+       */
+
+      lv_group_t *group = lv_group_get_default();
+      if (group != NULL)
+        {
+          lv_group_remove_obj(g_launcher_cont);
+        }
+
       g_visible = false;
     }
 }

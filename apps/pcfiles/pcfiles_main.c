@@ -1028,16 +1028,22 @@ static int pcfiles_main(int argc, char *argv[])
   pcfiles_scan_dir();
   pcfiles_refresh_ui();
 
-  /* Run event loop — the app framework handles this via the LVGL
-   * timer handler. We just need to stay alive. The app will return
-   * when the user presses Fn+Home (yield) or Ctrl+Q (exit).
-   *
-   * For NuttX cooperative model: sleep in a loop and let LVGL timers run.
+  /* Run event loop — pump LVGL timers and check for Fn+ESC exit.
+   * The user can also exit via Ctrl+Q which calls pc_app_exit().
    */
+
+  extern bool lv_port_indev_exit_requested(void);
 
   while (1)
     {
       lv_timer_handler();
+
+      if (lv_port_indev_exit_requested())
+        {
+          syslog(LOG_INFO, "PCFILES: Fn+ESC exit\n");
+          pc_app_exit(0);
+        }
+
       usleep(30000);  /* ~33fps */
     }
 

@@ -145,7 +145,8 @@ static int pcterm_local_main(int argc, char *argv[])
 
   g_term = NULL;  /* Destroyed by framework when app screen is deleted */
 
-  return 0;
+  pc_app_exit(0);  /* longjmp back to framework — skips framework event loop */
+  return 0;  /* Not reached */
 }
 
 /****************************************************************************

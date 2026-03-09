@@ -27,6 +27,14 @@
 #include "pcterm/package.h"
 
 /****************************************************************************
+ * External References
+ ****************************************************************************/
+
+/* Exit request detection (Fn+ESC) from LVGL indev */
+
+extern bool lv_port_indev_exit_requested(void);
+
+/****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
 
@@ -284,7 +292,7 @@ int app_framework_launch(const char *name)
       return PC_ERR_NOMEM;
     }
 
-  /* Hide launcher */
+  /* Hide launcher (also removes it from the LVGL input group) */
 
   launcher_hide();
 
@@ -311,6 +319,19 @@ int app_framework_launch(const char *name)
   lv_obj_set_style_bg_color(g_app_root, lv_color_black(), 0);
   lv_obj_set_style_bg_opa(g_app_root, LV_OPA_COVER, 0);
   lv_obj_clear_flag(g_app_root, LV_OBJ_FLAG_SCROLLABLE);
+
+  /* Add the app root container to the LVGL input group so that
+   * any app widgets created as children can receive keyboard events.
+   * Apps may override this by focusing their own sub-widget.
+   */
+
+  lv_group_t *launch_group = lv_group_get_default();
+  if (launch_group != NULL)
+    {
+      lv_group_add_obj(launch_group, g_app_root);
+      lv_group_focus_obj(g_app_root);
+      lv_group_set_editing(launch_group, true);
+    }
 
   g_current_app = app;
 
@@ -347,6 +368,35 @@ int app_framework_launch(const char *name)
 
       int ret = app->main(0, NULL);
       g_app_exit_code = ret;
+
+      /* If the app returned successfully (code 0), it set up an LVGL-based
+       * UI and expects the event loop to keep running.  Pump LVGL here
+       * until the user presses Fn+ESC to return to the launcher.
+       *
+       * Apps that manage their own event loops (e.g. pcterm_local) should
+       * call pc_app_exit(0) instead of returning, which longjmps past
+       * this loop directly to cleanup.
+       */
+
+      if (ret == 0)
+        {
+          syslog(LOG_INFO, "APP: \"%s\" returned 0 — entering framework "
+                 "event loop (Fn+ESC to exit)\n", app->info.name);
+
+          while (true)
+            {
+              lv_timer_handler();
+
+              if (lv_port_indev_exit_requested())
+                {
+                  syslog(LOG_INFO,
+                         "APP: Fn+ESC exit from framework event loop\n");
+                  break;
+                }
+
+              usleep(5000);  /* 5 ms = 200 Hz */
+            }
+        }
     }
   else
     {
@@ -362,6 +412,16 @@ int app_framework_launch(const char *name)
 
   syslog(LOG_INFO, "APP: \"%s\" finished with code %d\n",
          app->info.name, g_app_exit_code);
+
+  /* Remove all objects from the input group that the app may have added.
+   * This prevents stale references after we delete the app screen.
+   */
+
+  lv_group_t *cleanup_group = lv_group_get_default();
+  if (cleanup_group != NULL)
+    {
+      lv_group_remove_all_objs(cleanup_group);
+    }
 
   /* Destroy app screen */
 
