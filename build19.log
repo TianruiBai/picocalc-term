@@ -1,0 +1,10 @@
+=== Build 19 ===
+Date: Tue Mar 10 03:22:44 CST 2026
+Toolchain: arm-none-eabi-gcc (15:10.3-2021.07-4) 10.3.1 20210621 (release)
+
+==> Step 1: make clean (remove old objects)
+==> Step 2: Purge all Make.dep / .depend files
+    Done
+==> Step 3: configure picocalc-rp2350b:full
+Already configured!
+Please 'make distclean' and try again.

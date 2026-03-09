@@ -1,0 +1,72 @@
+#
+# boards/arm/rp23xx/picocalc-rp2350b/Kconfig
+#
+# Board-specific Kconfig options for PicoCalc RP2350B-Plus-W
+#
+
+if ARCH_BOARD_PICOCALC_RP2350B
+
+config PICOCALC_LCD_ST7365P
+	bool "ST7365P LCD display driver"
+	default y
+	depends on VIDEO_FB && RP23XX_SPI1
+	select FB_UPDATE
+	---help---
+		Enable the ST7365P (ILI9488-compatible) 320x320 LCD driver
+		on SPI1. Registers as /dev/fb0.
+
+config PICOCALC_LCD_SPI_FREQ
+	int "LCD SPI frequency (Hz)"
+	default 25000000
+	depends on PICOCALC_LCD_ST7365P
+	---help---
+		SPI clock frequency for the ST7365P display.
+		Maximum supported: 25 MHz.
+
+config PICOCALC_KEYBOARD
+	bool "PicoCalc I2C keyboard driver"
+	default y
+	depends on RP23XX_I2C1
+	---help---
+		Enable the PicoCalc 67-key QWERTY keyboard driver.
+		Communicates with STM32 south-bridge via I2C1 at 0x1F.
+
+config PICOCALC_PSRAM
+	bool "PSRAM support (8 MB)"
+	default y
+	---help---
+		Enable 8 MB PSRAM on the PicoCalc mainboard.
+		Creates a separate heap for large allocations
+		(framebuffer, editor buffers, audio buffers).
+
+config PICOCALC_AUDIO_PWM
+	bool "PWM audio output"
+	default y
+	---help---
+		Enable dual PWM audio output on GP26 (left) / GP27 (right).
+		Uses PWM slice 5 at ~44.1 kHz with 10-bit resolution.
+
+config PICOCALC_PIO_SDIO
+	bool "PIO-based 1-bit SDIO for SD card"
+	default n
+	---help---
+		Use PIO1-simulated 1-bit SDIO instead of SPI0 for SD card
+		access. Provides faster transfers (~3 MB/s vs ~2 MB/s).
+		Uses CLK=GP18, CMD=GP19, DAT0=GP16 on PIO1.
+
+config PICOCALC_WIFI
+	bool "Wi-Fi support (CYW43439)"
+	default n
+	depends on NET
+	---help---
+		Enable CYW43439 Wi-Fi driver. Requires network stack.
+
+config PICOCALC_HOSTNAME
+	string "Default hostname"
+	default "picocalc"
+	---help---
+		Default hostname for the device, used in terminal prompt
+		and network identity. Can be changed at runtime via
+		/mnt/sd/etc/hostname.
+
+endif # ARCH_BOARD_PICOCALC_RP2350B

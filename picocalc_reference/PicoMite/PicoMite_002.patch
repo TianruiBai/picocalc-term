@@ -1,0 +1,79 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index cb09311..ef288c7 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -72,7 +72,8 @@ target_compile_options(PicoMite PRIVATE 	-DPICOMITE
+ 	                                        -DPICO_CORE1_STACK_SIZE=0x00 
+ 	                                        -DPICO_HEAP_SIZE=0x500 
+                                         	-O2 
+-                                            -Wall)
++                                            -Wall
++                                            -DPICOCALC)
+ target_link_libraries(PicoMite
+     pico_stdlib
+     hardware_flash
+diff --git a/Editor.h b/Editor.h
+index b0cb113..8d055a4 100644
+--- a/Editor.h
++++ b/Editor.h
+@@ -60,14 +60,22 @@ extern int editactive;
+ #define LEFT      0x82
+ #define RIGHT     0x83
+ #define INSERT    0x84
++#ifdef PICOCALC
++#define DEL       0xd4
++#else
+ #define DEL       0x7f
++#endif
+ #define HOME      0x86
+ #define END       0x87
+ #define PUP       0x88
+ #define PDOWN     0x89
+ #define NUM_ENT   ENTER
+ #define SLOCK     0x8c
++#ifdef PICOCALC
++#define ALT       0xa1
++#else
+ #define ALT       0x8b
++#endif
+ 
+ 
+ // definitions related to setting the tab spacing
+diff --git a/Hardware_Includes.h b/Hardware_Includes.h
+index cafaf87..06f34b3 100644
+--- a/Hardware_Includes.h
++++ b/Hardware_Includes.h
+@@ -261,19 +261,33 @@ extern struct tagMTRand *g_myrand;
+ #define DOWN		0x81
+ #define LEFT		0x82
+ #define RIGHT		0x83
++#ifdef PICOCALC
++#define DOWNSEL     0x89
++#else
+ #define DOWNSEL     0xA1
++#endif
+ #define RIGHTSEL    0xA3
+ #define INSERT		0x84
++#ifdef PICOCALC
++#define DEL			0xd4
++#else
+ #define DEL			0x7f
++#endif
+ #define HOME		0x86
+ #define END			0x87
+ #define PUP			0x88
+ #define PDOWN		0x89
+ #define NUM_ENT		ENTER
+ #define SLOCK		0x8c
++#ifdef PICOCALC
++#define ALT			0xa1
++#define SHIFT_TAB	0x86
++#define SHIFT_DEL	0x87
++#else
+ #define ALT			0x8b
+ #define	SHIFT_TAB 	0x9F
+ #define SHIFT_DEL   0xa0
++#endif
+ #define CTRLKEY(a) (a & 0x1f)
+ #define DISPLAY_CLS             1
+ #define REVERSE_VIDEO           3

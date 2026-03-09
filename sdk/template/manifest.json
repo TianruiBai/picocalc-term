@@ -1,0 +1,9 @@
+{
+    "name": "myapp",
+    "version": "1.0.0",
+    "author": "Your Name",
+    "description": "A sample PicoCalc app",
+    "category": "tools",
+    "min_ram": 32768,
+    "requires_network": false
+}

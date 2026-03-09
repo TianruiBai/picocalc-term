@@ -1,0 +1,35 @@
+# Build artifacts
+build/
+*.o
+*.a
+*.so
+*.exe
+*.out
+
+# Generated files
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+
+# NuttX specific
+nuttx/build/
+nuttx/.config
+
+# IDE/editor temp files
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Misc
+debug_out.txt
+dbg1.txt
+
+# SD card workspace
+sdcard/
