@@ -27,6 +27,7 @@ config PICOCALC_KEYBOARD
 	bool "PicoCalc I2C keyboard driver"
 	default y
 	depends on RP23XX_I2C1
+	select INPUT_KEYBOARD
 	---help---
 		Enable the PicoCalc 67-key QWERTY keyboard driver.
 		Communicates with STM32 south-bridge via I2C1 at 0x1F.

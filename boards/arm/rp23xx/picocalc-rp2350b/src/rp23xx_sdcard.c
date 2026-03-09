@@ -24,6 +24,37 @@
  ****************************************************************************/
 
 /****************************************************************************
+ * Name: rp23xx_spi0register / rp23xx_spi1register
+ *
+ * Description:
+ *   SPI media-change callback stubs.  Required by CONFIG_SPI_CALLBACK
+ *   but not needed on PicoCalc (the SD card is always present).
+ *
+ ****************************************************************************/
+
+#ifdef CONFIG_SPI_CALLBACK
+#ifdef CONFIG_RP23XX_SPI0
+int rp23xx_spi0register(struct spi_dev_s *dev,
+                        spi_mediachange_t callback, void *arg)
+{
+  /* SD card is non-removable — nothing to register */
+
+  return OK;
+}
+#endif
+
+#ifdef CONFIG_RP23XX_SPI1
+int rp23xx_spi1register(struct spi_dev_s *dev,
+                        spi_mediachange_t callback, void *arg)
+{
+  /* LCD + no removable media on SPI1 */
+
+  return OK;
+}
+#endif
+#endif /* CONFIG_SPI_CALLBACK */
+
+/****************************************************************************
  * Name: rp23xx_sdcard_mount
  *
  * Description:

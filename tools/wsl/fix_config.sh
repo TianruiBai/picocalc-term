@@ -22,4 +22,4 @@ echo "Config expanded successfully!"
 echo "Total .config lines: $(wc -l < .config)"
 echo ""
 echo "Key settings:"
-grep -E "HO
+grep -E "HOST_|TOOLCHAIN|CORTEXM33|ARM_THUMB" .config | head -20
