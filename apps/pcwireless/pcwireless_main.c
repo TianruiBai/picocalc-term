@@ -231,6 +231,7 @@ const pc_app_t g_pcwireless_app = {
     .display_name = "Wireless Manager",
     .version      = "1.0.0",
     .category     = "system",
+    .icon         = LV_SYMBOL_WIFI,
     .min_ram      = 16384,
     .flags        = PC_APP_FLAG_BUILTIN | PC_APP_FLAG_NETWORK,
   },

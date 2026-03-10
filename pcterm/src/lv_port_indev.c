@@ -21,6 +21,8 @@
 
 #include <arch/board/board.h>
 
+#include "pcterm/vconsole.h"
+
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
@@ -91,6 +93,7 @@ extern uint8_t rp23xx_keyboard_read(uint8_t *modifiers);
 static lv_indev_t  *g_indev_keypad = NULL;
 static lv_group_t  *g_default_group = NULL;
 static volatile bool g_app_exit_request = false;
+static volatile bool g_keyboard_suspended = false;
 
 /****************************************************************************
  * Private Functions
@@ -167,6 +170,15 @@ static void keypad_read_cb(lv_indev_t *indev, lv_indev_data_t *data)
   static uint32_t last_key = 0;
   static bool     pending_release = false;
 
+  /* Skip keyboard polling during boot splash to avoid I2C stalls */
+
+  if (g_keyboard_suspended)
+    {
+      data->state = LV_INDEV_STATE_RELEASED;
+      data->key   = 0;
+      return;
+    }
+
   /* If we sent a PRESSED last time, send RELEASED now */
 
   if (pending_release)
@@ -182,22 +194,66 @@ static void keypad_read_cb(lv_indev_t *indev, lv_indev_data_t *data)
   uint8_t mods = 0;
   uint8_t raw  = rp23xx_keyboard_read(&mods);
 
-  /* Fn + ESC = request app exit (back to launcher) */
-
-  if (raw == KBD_KEY_ESC && (mods & 0x08))
-    {
-      g_app_exit_request = true;
-      data->state = LV_INDEV_STATE_RELEASED;
-      data->key   = 0;
-      return;
-    }
-
   if (raw == KBD_KEY_NONE)
     {
       data->state = LV_INDEV_STATE_RELEASED;
       data->key   = 0;
       return;
     }
+
+  /* Signal user activity to reset backlight timeout */
+
+  rp23xx_backlight_activity();
+
+  /* --- Virtual console switching: Ctrl+Alt+F1-F4 --- */
+
+  if ((mods & 0x06) == 0x06)  /* Ctrl (0x02) + Alt (0x04) */
+    {
+      int target = -1;
+
+      if (raw == KBD_KEY_F1)      target = 0;
+      else if (raw == KBD_KEY_F2) target = 1;
+      else if (raw == KBD_KEY_F3) target = 2;
+      else if (raw == KBD_KEY_F4) target = 3;
+
+      if (target >= 0)
+        {
+          vconsole_switch(target);
+          data->state = LV_INDEV_STATE_RELEASED;
+          data->key   = 0;
+          return;
+        }
+    }
+
+  /* --- Fn+ESC: exit app (GUI mode) or switch to tty0 (text mode) --- */
+
+  if (raw == KBD_KEY_ESC && (mods & 0x08))
+    {
+      if (vconsole_is_text_active())
+        {
+          vconsole_switch(VCONSOLE_GUI);
+        }
+      else
+        {
+          g_app_exit_request = true;
+        }
+
+      data->state = LV_INDEV_STATE_RELEASED;
+      data->key   = 0;
+      return;
+    }
+
+  /* --- Text console active: route keys to PTY, not LVGL widgets --- */
+
+  if (vconsole_is_text_active())
+    {
+      vconsole_key_input(raw, mods);
+      data->state = LV_INDEV_STATE_RELEASED;
+      data->key   = 0;
+      return;
+    }
+
+  /* --- Normal LVGL key routing for GUI console (tty0) --- */
 
   uint32_t lv_key = map_key_to_lvgl(raw);
   if (lv_key == 0)
@@ -211,10 +267,6 @@ static void keypad_read_cb(lv_indev_t *indev, lv_indev_data_t *data)
   data->key   = lv_key;
   last_key    = lv_key;
   pending_release = true;
-
-  /* Signal user activity to reset backlight timeout */
-
-  rp23xx_backlight_activity();
 }
 
 /****************************************************************************
@@ -265,4 +317,18 @@ bool lv_port_indev_exit_requested(void)
     }
 
   return false;
+}
+
+/****************************************************************************
+ * Name: lv_port_indev_keyboard_suspend
+ *
+ * Description:
+ *   Suspend or resume keyboard I2C polling.  Call with true during boot
+ *   splash to prevent southbridge I2C reads from stalling lv_timer_handler.
+ *
+ ****************************************************************************/
+
+void lv_port_indev_keyboard_suspend(bool suspend)
+{
+  g_keyboard_suspended = suspend;
 }

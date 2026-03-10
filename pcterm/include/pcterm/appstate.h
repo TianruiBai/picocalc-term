@@ -4,7 +4,7 @@
  * App state save/restore API for suspend/resume functionality.
  *
  * State lifecycle:
- *   Fn+Home  → pc_appstate_save()  → PSRAM + /mnt/sd/etc/appstate/<name>
+ *   Fn+Home  → pc_appstate_save()  → PSRAM + /flash/etc/appstate/<name>
  *   Relaunch → pc_appstate_restore() → app's restore callback
  *   Ctrl+Q   → pc_appstate_discard() → state removed
  *
@@ -21,7 +21,7 @@
  * Pre-processor Definitions
  ****************************************************************************/
 
-#define APPSTATE_DIR          "/mnt/sd/etc/appstate"
+#define APPSTATE_DIR          "/flash/etc/appstate"
 #define APPSTATE_MAX_SIZE     (256 * 1024)  /* 256 KB max state per app */
 
 /****************************************************************************

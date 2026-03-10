@@ -15,7 +15,7 @@ picocalc-term/
 │   └── PCV Format Spec.md
 │
 ├── nuttx/                          # NuttX source (git submodule)
-├── apps/                           # NuttX apps (git submodule)
+├── nuttx-apps/                     # NuttX apps (git submodule)
 │
 ├── boards/                         # Custom board definition
 │   └── arm/rp23xx/picocalc-rp2350b/

@@ -2,7 +2,8 @@
  * apps/pcssh/pcssh_connections.c
  *
  * Saved SSH connections manager.
- * Stores connection profiles in /mnt/sd/ssh/connections.json.
+ * Stores connection profiles in /flash/etc/ssh/connections.json.
+ * This lives on internal flash so connections survive SD card removal.
  *
  ****************************************************************************/
 
@@ -20,7 +21,7 @@
  * Pre-processor Definitions
  ****************************************************************************/
 
-#define CONNECTIONS_FILE  "/mnt/sd/ssh/connections.json"
+#define CONNECTIONS_FILE  "/flash/etc/ssh/connections.json"
 #define MAX_CONNECTIONS   16
 
 /****************************************************************************

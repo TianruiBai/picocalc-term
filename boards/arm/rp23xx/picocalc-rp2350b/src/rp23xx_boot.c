@@ -12,10 +12,6 @@
 #include <arch/board/board.h>
 #include "rp23xx_gpio.h"
 
-#ifdef CONFIG_RP23XX_PSRAM
-#include "rp23xx_psram.h"
-#endif
-
 /****************************************************************************
  * Name: rp23xx_boardearlyinitialize
  *
@@ -97,9 +93,9 @@ void rp23xx_boardearlyinitialize(void)
 
 void rp23xx_boardinitialize(void)
 {
-#ifdef CONFIG_RP23XX_PSRAM
-  rp23xx_psramconfig();
-#endif
+  /* PSRAM initialization is deferred to rp23xx_bringup() (board_late_initialize)
+   * because it needs OS primitives (mutex, syslog) that are not available here.
+   */
 }
 
 /****************************************************************************

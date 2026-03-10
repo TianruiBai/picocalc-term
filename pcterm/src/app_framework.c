@@ -298,6 +298,12 @@ int app_framework_launch(const char *name)
   launcher_hide();
   launcher_set_selected_name(name);
 
+  /* Force a display redraw so the launcher disappears before the app
+   * draws its own UI (prevents a flash of launcher content under app). */
+
+  lv_obj_invalidate(lv_scr_act());
+  lv_timer_handler();
+
   /* Create app screen container */
 
   lv_obj_t *app_area = statusbar_get_app_area();
@@ -362,6 +368,10 @@ int app_framework_launch(const char *name)
   g_app_exit_code = 0;
   g_app_yielded   = false;
 
+  /* Clear any stale exit request accumulated during app setup */
+
+  lv_port_indev_exit_requested();
+
   int jmp_ret = setjmp(g_app_jmpbuf);
 
   if (jmp_ret == 0)
@@ -371,19 +381,28 @@ int app_framework_launch(const char *name)
       int ret = app->main(0, NULL);
       g_app_exit_code = ret;
 
-      /* If the app returned successfully (code 0), it set up an LVGL-based
-       * UI and expects the event loop to keep running.  Pump LVGL here
-       * until the user presses Fn+ESC to return to the launcher.
-       *
-       * Apps that manage their own event loops (e.g. pcterm_local) should
-       * call pc_app_exit(0) instead of returning, which longjmps past
-       * this loop directly to cleanup.
-       */
-
-      if (ret == 0)
+      if (ret != 0)
         {
-          syslog(LOG_INFO, "app: \"%s\" returned 0 — entering framework "
-                 "event loop (Fn+ESC to exit)\n", app->info.name);
+          /* App initialisation failed — log and return to launcher. */
+
+          syslog(LOG_ERR, "app: \"%s\" init failed (code %d)\n",
+                 app->info.name, ret);
+        }
+      else
+        {
+          /* App returned 0: it set up an LVGL UI and expects the event
+           * loop to keep running.  Force an immediate render so the UI
+           * appears on screen before the first 5ms sleep.
+           *
+           * Apps that manage their own event loop (e.g. pcterm_local)
+           * call pc_app_exit(0) which longjmps past this block.
+           */
+
+          lv_obj_invalidate(lv_scr_act());
+          lv_timer_handler();
+
+          syslog(LOG_INFO, "app: \"%s\" UI ready — event loop running\n",
+                 app->info.name);
 
           while (true)
             {
@@ -392,11 +411,12 @@ int app_framework_launch(const char *name)
               if (lv_port_indev_exit_requested())
                 {
                   syslog(LOG_INFO,
-                         "app: Fn+ESC exit from framework event loop\n");
+                         "app: Fn+ESC — exiting \"%s\"\n",
+                         app->info.name);
                   break;
                 }
 
-              usleep(5000);  /* 5 ms = 200 Hz */
+              usleep(5000);
             }
         }
     }
@@ -444,9 +464,12 @@ int app_framework_launch(const char *name)
 
   g_current_app = NULL;
 
-  /* Show launcher */
+  /* Show launcher and force an immediate redraw so the launcher
+   * reappears on screen without waiting for the next timer tick. */
 
   launcher_show();
+  lv_obj_invalidate(lv_scr_act());
+  lv_timer_handler();
 
   /* Refresh third-party cache (e.g. if the app installed/removed packages) */
 

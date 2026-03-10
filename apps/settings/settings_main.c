@@ -27,6 +27,7 @@ typedef enum
   SETTINGS_TAB_STORAGE,
   SETTINGS_TAB_SYSTEM,
   SETTINGS_TAB_PACKAGES,
+  SETTINGS_TAB_USERS,
   SETTINGS_TAB_COUNT,
 } settings_tab_t;
 
@@ -36,7 +37,7 @@ typedef enum
 
 static const char *g_tab_names[] = {
   "Wi-Fi", "Display", "Battery", "Keyboard", "Audio",
-  "Storage", "System", "Packages"
+  "Storage", "System", "Packages", "Users"
 };
 
 /****************************************************************************
@@ -52,6 +53,7 @@ extern void settings_audio_create(lv_obj_t *parent);
 extern void settings_storage_create(lv_obj_t *parent);
 extern void settings_system_create(lv_obj_t *parent);
 extern void settings_packages_create(lv_obj_t *parent);
+extern void settings_users_create(lv_obj_t *parent);
 
 static int settings_main(int argc, char *argv[])
 {
@@ -81,6 +83,7 @@ static int settings_main(int argc, char *argv[])
   settings_storage_create(tabs[SETTINGS_TAB_STORAGE]);
   settings_system_create(tabs[SETTINGS_TAB_SYSTEM]);
   settings_packages_create(tabs[SETTINGS_TAB_PACKAGES]);
+  settings_users_create(tabs[SETTINGS_TAB_USERS]);
 
   /* Event loop — LVGL handles it via the main loop */
 
@@ -100,6 +103,7 @@ const pc_app_t g_settings_app = {
     .display_name = "Settings",
     .version      = "1.0.0",
     .category     = "system",
+    .icon         = LV_SYMBOL_SETTINGS,
     .min_ram      = 16384,
     .flags        = PC_APP_FLAG_BUILTIN,
   },

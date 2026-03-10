@@ -2,7 +2,9 @@
  * pcterm/include/pcterm/config.h
  *
  * System settings persistence API.
- * Settings are stored as JSON on /mnt/sd/etc/settings.json.
+ * Settings are stored as JSON on the internal flash filesystem.
+ * Path: /flash/etc/settings.json
+ * The flash is always mounted at /flash regardless of SD card presence.
  *
  ****************************************************************************/
 
@@ -16,7 +18,14 @@
  * Pre-processor Definitions
  ****************************************************************************/
 
-#define CONFIG_PATH         "/mnt/sd/etc/settings.json"
+/* Root of the internal SPI flash LittleFS filesystem */
+
+#define FLASH_ROOT          "/flash"
+#define FLASH_ETC           FLASH_ROOT "/etc"
+#define FLASH_HOME          FLASH_ROOT "/home"
+#define FLASH_HOME_USER     FLASH_HOME "/picocalc"
+
+#define CONFIG_PATH         FLASH_ETC "/settings.json"
 #define CONFIG_MAX_SIZE     (4 * 1024)  /* 4 KB max settings file */
 
 /****************************************************************************
@@ -59,6 +68,18 @@ typedef struct pc_config_s
   /* Terminal */
   uint8_t  term_font_size;   /* 0=small(6px), 1=medium(8px) */
   uint8_t  term_color_scheme;/* 0=dark, 1=light, 2=solarized */
+
+  /* User / Login */
+  bool     login_enabled;    /* Show login screen on boot */
+  char     login_user[32];   /* Active username */
+  char     login_hash[65];   /* Hex-encoded password hash (empty = no password) */
+
+  /* Virtual Consoles */
+  uint8_t  startup_mode;     /* 0=GUI (tty0), 1=Console (tty1) */
+  uint8_t  vconsole_count;   /* Number of text consoles (1-3, default 3) */
+
+  /* Clock / Power (extended) */
+  uint8_t  clock_profile;    /* Index into extended clock profile table (0-8) */
 } pc_config_t;
 
 /****************************************************************************

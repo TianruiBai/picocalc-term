@@ -66,6 +66,7 @@ typedef struct pc_app_info_s
   const char *display_name;   /* Human-readable: "Text Editor" */
   const char *version;        /* Semantic version: "1.0.0" */
   const char *category;       /* "system", "office", "entertainment", etc. */
+  const char *icon;           /* LVGL symbol string, e.g. LV_SYMBOL_EDIT */
   uint32_t    min_ram;        /* Minimum PSRAM bytes required */
   uint32_t    flags;          /* PC_APP_FLAG_* bitfield */
 } pc_app_info_t;
@@ -186,7 +187,7 @@ size_t pc_app_psram_available(void);
 /* --- System Queries --- */
 
 /**
- * Get the device hostname (from /mnt/sd/etc/hostname).
+ * Get the device hostname (from /flash/etc/hostname).
  */
 const char *pc_app_get_hostname(void);
 

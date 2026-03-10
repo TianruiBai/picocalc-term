@@ -21,6 +21,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 NUTTX_DIR="${ROOT_DIR}/nuttx"
 APPS_DIR="${ROOT_DIR}/nuttx-apps"
+BOARD_SRC_DIR="${ROOT_DIR}/boards/arm/rp23xx/picocalc-rp2350b"
+BOARD_DST_DIR="${NUTTX_DIR}/boards/arm/rp23xx/picocalc-rp2350b"
 BOARD_CONFIG="${BOARD_CONFIG:-picocalc-rp2350b:full}"
 JOBS="${JOBS:-$(nproc)}"
 CLEAN="${CLEAN:-0}"
@@ -31,6 +33,16 @@ SKIP_CONFIGURE="${SKIP_CONFIGURE:-0}"
 # -----------------------------------------------------------------------
 if [[ ! -d "${NUTTX_DIR}" ]]; then
   echo "ERROR: NuttX directory not found: ${NUTTX_DIR}" >&2
+  exit 1
+fi
+
+if [[ ! -d "${APPS_DIR}" ]]; then
+  echo "ERROR: NuttX apps directory not found: ${APPS_DIR}" >&2
+  exit 1
+fi
+
+if [[ ! -d "${BOARD_SRC_DIR}" ]]; then
+  echo "ERROR: Board source directory not found: ${BOARD_SRC_DIR}" >&2
   exit 1
 fi
 
@@ -45,6 +57,10 @@ echo "    Board:     ${BOARD_CONFIG}"
 echo "    Jobs:      ${JOBS}"
 echo "    Toolchain: $(arm-none-eabi-gcc --version | head -1)"
 echo ""
+
+echo "==> Syncing board files into NuttX tree"
+mkdir -p "${BOARD_DST_DIR}"
+rsync -a --delete "${BOARD_SRC_DIR}/" "${BOARD_DST_DIR}/"
 
 cd "${NUTTX_DIR}"
 

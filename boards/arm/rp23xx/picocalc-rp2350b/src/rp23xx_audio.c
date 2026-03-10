@@ -37,12 +37,12 @@
  * PWM freq = 150 MHz / (2^10) = ~146 kHz wrap rate
  * Actual audio sample rate controlled by PWM wrap interrupt
  *
- * GP26 → PWM slice 5 channel A (left)
- * GP27 → PWM slice 5 channel B (right)
+ * GP40 → PWM slice 4 channel A (left)
+ * GP41 → PWM slice 4 channel B (right)
  *
  * PWM slice = (gpio_pin / 2) % 8
- *   GP26: (26/2) % 8 = 13 % 8 = 5, channel A
- *   GP27: (27/2) % 8 = 13 % 8 = 5, channel B
+ *   GP40: (40/2) % 8 = 20 % 8 = 4, channel A
+ *   GP41: (41/2) % 8 = 20 % 8 = 4, channel B
  *
  * For 44.1 kHz sample rate with 150 MHz clock:
  *   divider = 150 MHz / (44100 * 1024) ≈ 3.32
@@ -51,10 +51,10 @@
  */
 
 #define AUDIO_PWM_WRAP     (1 << BOARD_AUDIO_PWM_BITS)  /* 1024 */
-#define AUDIO_PWM_SLICE    4     /* GP26/GP27 → slice 5 */
+#define AUDIO_PWM_SLICE    4     /* GP40/GP41 → slice 4 */
 #define AUDIO_PWM_DIV_INT  3     /* Integer part of clock divider */
 #define AUDIO_PWM_DIV_FRAC 5     /* Fractional part (1/16ths) */
-#define AUDIO_RING_SAMPLES 8192  /* Ring buffer size (power of 2) */
+#define AUDIO_RING_SAMPLES_DEFAULT 8192  /* Preferred ring buffer size */
 
 /****************************************************************************
  * Private Types
@@ -173,25 +173,45 @@ int rp23xx_audio_initialize(void)
   syslog(LOG_INFO, "audio: initializing PWM audio on slice %d...\n",
          AUDIO_PWM_SLICE);
 
-  /* Step 1: Allocate ring buffer in SRAM (directly addressable for ISR) */
+  /* Step 1: Allocate ring buffer in SRAM (directly addressable for ISR).
+   * Under low-memory conditions (e.g. PSRAM unavailable + framebuffer in
+   * SRAM), fall back to smaller ring sizes instead of failing bring-up.
+   */
 
-  dev->ring_buffer = (int16_t *)kmm_zalloc(
-    AUDIO_RING_SAMPLES * sizeof(int16_t));
+  static const size_t ring_candidates[] = { 8192, 4096, 2048, 1024 };
+
+  dev->ring_buffer = NULL;
+  dev->ring_size = 0;
+
+  for (unsigned int i = 0;
+       i < sizeof(ring_candidates) / sizeof(ring_candidates[0]);
+       i++)
+    {
+      size_t samples = ring_candidates[i];
+      dev->ring_buffer = (int16_t *)kmm_zalloc(samples * sizeof(int16_t));
+      if (dev->ring_buffer != NULL)
+        {
+          dev->ring_size = samples;
+          break;
+        }
+    }
+
   if (dev->ring_buffer == NULL)
     {
-      syslog(LOG_ERR, "audio: ring buffer allocation failed (%d bytes)\n",
-             (int)(AUDIO_RING_SAMPLES * sizeof(int16_t)));
+      syslog(LOG_ERR, "audio: ring buffer allocation failed (tried %u/%u/%u/%u bytes)\n",
+             (unsigned)(ring_candidates[0] * sizeof(int16_t)),
+             (unsigned)(ring_candidates[1] * sizeof(int16_t)),
+             (unsigned)(ring_candidates[2] * sizeof(int16_t)),
+             (unsigned)(ring_candidates[3] * sizeof(int16_t)));
       return -ENOMEM;
     }
 
-  dev->ring_size = AUDIO_RING_SAMPLES;
+  syslog(LOG_DEBUG, "audio: ring buffer %u KB allocated (%u samples)\n",
+         (unsigned)((dev->ring_size * sizeof(int16_t)) / 1024),
+         (unsigned)dev->ring_size);
 
-  syslog(LOG_DEBUG, "audio: ring buffer %d KB allocated\n",
-         (int)(AUDIO_RING_SAMPLES * sizeof(int16_t) / 1024));
-
-  /* Step 2: Assign GP26/GP27 to PWM function (function 4 on RP2350).
-   * Without this, the pins remain in default SIO mode and produce
-   * no PWM output.
+  /* Step 2: Assign configured board pins to PWM function.
+   * Without this, pins remain in default SIO mode and produce no PWM output.
    */
 
   rp23xx_gpio_set_function(BOARD_AUDIO_PIN_LEFT,
@@ -199,9 +219,8 @@ int rp23xx_audio_initialize(void)
   rp23xx_gpio_set_function(BOARD_AUDIO_PIN_RIGHT,
                            RP23XX_GPIO_FUNC_PWM);
 
-  /* Step 3: Configure PWM slice 5 for audio output
-   * GP26 → slice 5, channel A (left speaker)
-   * GP27 → slice 5, channel B (right speaker)
+  /* Step 3: Configure PWM slice for board-selected audio pins.
+   * Left pin maps to channel A, right pin maps to channel B.
    *
    * Set wrap (TOP) = 1023 for 10-bit resolution.
    * Set clock divider for ~44.1 kHz sample rate.
@@ -266,8 +285,8 @@ int rp23xx_audio_initialize(void)
 
   syslog(LOG_INFO, "audio: ring buffer %d KB in SRAM "
          "(%d samples)\n",
-         (int)(AUDIO_RING_SAMPLES * sizeof(int16_t) / 1024),
-         AUDIO_RING_SAMPLES);
+      (int)(dev->ring_size * sizeof(int16_t) / 1024),
+      (int)dev->ring_size);
   syslog(LOG_INFO, "audio: PWM slice %d: GP%d(L) GP%d(R), "
          "%d-bit @ %d Hz\n",
          AUDIO_PWM_SLICE,

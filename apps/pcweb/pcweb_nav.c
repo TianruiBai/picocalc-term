@@ -19,7 +19,7 @@
  ****************************************************************************/
 
 #define HISTORY_MAX        32
-#define BOOKMARKS_FILE     "/mnt/sd/etc/bookmarks.json"
+#define BOOKMARKS_FILE     "/flash/home/picocalc/.bookmarks.json"
 #define BOOKMARKS_MAX      32
 
 /****************************************************************************

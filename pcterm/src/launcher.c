@@ -49,22 +49,6 @@ static bool            g_has_pending = false;
 static int             g_arrange_mode = 0;         /* 0=builtin, 1=alpha */
 static char            g_selected_name[64];        /* Persist selection */
 
-/* Default icon symbols (LVGL built-in) for built-in apps */
-
-static const char *g_builtin_icons[] =
-{
-  LV_SYMBOL_SETTINGS,    /* settings */
-  LV_SYMBOL_EDIT,        /* pcedit */
-  LV_SYMBOL_LIST,        /* pccsv */
-  LV_SYMBOL_AUDIO,       /* pcaudio */
-  LV_SYMBOL_VIDEO,       /* pcvideo */
-  LV_SYMBOL_KEYBOARD,    /* pcterm */
-  LV_SYMBOL_USB,         /* pcterm-serial */
-  LV_SYMBOL_WIFI,        /* pcssh */
-  LV_SYMBOL_BLUETOOTH,   /* pcwireless */
-  LV_SYMBOL_GPS,         /* pcweb */
-  LV_SYMBOL_DIRECTORY,   /* pcfiles */
-};
 
 static void launcher_update_selection(int old_sel, int new_sel);
 
@@ -390,11 +374,7 @@ void launcher_refresh(void)
     {
       const pc_app_info_t *info = refs[i].info;
 
-      const char *icon_sym = LV_SYMBOL_FILE;
-      if (i < (int)(sizeof(g_builtin_icons) / sizeof(g_builtin_icons[0])))
-        {
-          icon_sym = g_builtin_icons[i];
-        }
+      const char *icon_sym = (info->icon != NULL) ? info->icon : LV_SYMBOL_FILE;
 
       launcher_create_item(g_launcher_cont, g_item_count,
                            info->name, info->display_name, icon_sym);

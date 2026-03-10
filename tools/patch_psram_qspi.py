@@ -4,9 +4,14 @@
 Run from WSL: python3 tools/patch_psram_qspi.py
 """
 
+import os
 import sys
 
-PSRAM_FILE = '/home/polar/picocalc-term/boards/arm/rp23xx/picocalc-rp2350b/src/rp23xx_psram.c'
+# Support both absolute path and relative path from workspace root
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+WORKSPACE_ROOT = os.path.dirname(SCRIPT_DIR)
+PSRAM_FILE = os.path.join(WORKSPACE_ROOT,
+    'boards/arm/rp23xx/picocalc-rp2350b/src/rp23xx_psram.c')
 
 with open(PSRAM_FILE, 'r') as f:
     content = f.read()

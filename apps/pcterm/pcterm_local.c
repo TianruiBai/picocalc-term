@@ -113,6 +113,15 @@ static int pcterm_local_main(int argc, char *argv[])
   else
     {
       syslog(LOG_INFO, "PCTERM: NuttShell session started\n");
+
+      /* Give NSH ~200 ms to print its banner/prompt, then set
+       * the working directory to the user home folder.  Without
+       * this, NSH starts in / (pseudo-root) where file creation
+       * is not supported, causing "vi newfile" to fail with
+       * ENOENT.                                                  */
+
+      usleep(200000);
+      pcterm_nsh_write(g_nsh, "cd /flash/home/picocalc\n", 24);
     }
 
   /* Run local event loop — LVGL pumps display + keyboard.
@@ -159,6 +168,7 @@ const pc_app_t g_pcterm_local_app = {
     .display_name = "Local Terminal",
     .version      = "1.0.0",
     .category     = "system",
+    .icon         = LV_SYMBOL_KEYBOARD,
     .min_ram      = 32768,   /* Terminal grid + scrollback */
     .flags        = PC_APP_FLAG_BUILTIN | PC_APP_FLAG_STATEFUL,
   },

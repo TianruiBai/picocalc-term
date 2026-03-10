@@ -1,7 +1,12 @@
 #!/bin/bash
 # Install picotool for RP2350 UF2 generation
 set -e
-export PATH="/home/polar/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="${HOME}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+if command -v picotool >/dev/null 2>&1; then
+  echo "picotool already installed: $(picotool version | head -1)"
+  exit 0
+fi
 
 PICOTOOL_DIR="/tmp/picotool_build"
 

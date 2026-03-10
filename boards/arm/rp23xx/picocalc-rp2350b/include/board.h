@@ -11,7 +11,7 @@
  *   - Display: 320×320 IPS LCD, ILI9488-compat (SPI1)
  *   - PSRAM: 8 MB SPI PSRAM (PIO-driven, DMA)
  *   - SD Card: SPI0 (default) or PIO 1-bit SDIO (optional)
- *   - Audio: PWM (GP26 left, GP27 right)
+ *   - Audio: PWM (GP40 left, GP41 right)
  *   - Wi-Fi/BT: CYW43439 (on-module, managed by pico-sdk/cyw43)
  *
  ****************************************************************************/
@@ -127,14 +127,12 @@
 /* South Bridge Config Bits (REG_CFG) */
 
 #define SB_CFG_OVERFLOW_ON      0x01  /* FIFO overwrite on overflow */
-#define SB_CFG_OVERFLOW_ON      0x01  /* FIFO overwrite on overflow */
 #define SB_CFG_OVERFLOW_INT     0x02  /* FIFO overflow interrupt enable */
 #define SB_CFG_CAPSLOCK_INT     0x04  /* Capslock change interrupt enable */
 #define SB_CFG_NUMLOCK_INT      0x08  /* Numlock change interrupt enable */
 #define SB_CFG_KEY_INT          0x10  /* Key event interrupt enable */
 #define SB_CFG_PANIC_INT        0x20  /* Panic interrupt enable */
 #define SB_CFG_REPORT_MODS      0x40  /* Report modifiers as keycodes */
-#define SB_CFG_USE_MODS         0x80  /* Apply modifier transform to key output */
 #define SB_CFG_USE_MODS         0x80  /* Apply modifier transform to key output */
 
 /* Special Key Codes from South Bridge FIFO */
@@ -187,6 +185,7 @@
 #define BOARD_SD_PIN_MOSI       19           /* GP19 - SPI0 TX (MOSI) */
 #define BOARD_SD_PIN_MISO       16           /* GP16 - SPI0 RX (MISO) */
 #define BOARD_SD_PIN_CS         17           /* GP17 - SPI0 CSn */
+#define BOARD_SD_PIN_DET        22           /* GP22 - SD card detect (active-low) */
 
 /* --- PIO SDIO 1-bit (optional, faster SD card access) ---
  *
@@ -208,8 +207,8 @@
 
 /* --- Audio: PWM --- */
 
-#define BOARD_AUDIO_PIN_LEFT    40           /* GP26 - PWM left channel */
-#define BOARD_AUDIO_PIN_RIGHT   41           /* GP27 - PWM right channel */
+#define BOARD_AUDIO_PIN_LEFT    40           /* GP40 - PWM left channel */
+#define BOARD_AUDIO_PIN_RIGHT   41           /* GP41 - PWM right channel */
 #define BOARD_AUDIO_PWM_FREQ    (44100)      /* Base sample rate */
 #define BOARD_AUDIO_PWM_BITS    10           /* PWM resolution bits */
 
@@ -275,12 +274,16 @@
 #define BOARD_PSRAM_PIN_SIO3    5            /* GP5  - PSRAM SIO3 */
 
 /* PSRAM clock frequency: sys_clk / clkdiv
- * At 150 MHz sys_clk with clkdiv=2.0: SPI_CLK = 75 MHz
- * Use fudge factor (extra read cycle) above 83 MHz
+ * At 150 MHz sys_clk with clkdiv=4.0: PIO_CLK = 37.5 MHz → SCK ~18.75 MHz
+ *
+ * The fudge PIO program reads exactly y bits (check-before-read loop),
+ * while the non-fudge program reads y+1 bits (read-before-check).
+ * The reference rp2040-psram library always uses fudge=true.
+ * Our driver compensates for both modes, but fudge=true is safer.
  */
 
-#define BOARD_PSRAM_CLKDIV      1.0f         /* 75 MHz effective SPI clock */
-#define BOARD_PSRAM_USE_FUDGE   true         /* Extra read cycle for timing margin */
+#define BOARD_PSRAM_CLKDIV      4.0f         /* 37.5 MHz PIO clock → ~18.75 MHz SCK */
+#define BOARD_PSRAM_USE_FUDGE   true         /* Match reference; reads exactly y bits */
 
 /* PSRAM memory-mapped base (after PIO init + heap registration) */
 
@@ -299,20 +302,18 @@
 
 /* --- Wi-Fi / Bluetooth (CYW43439) --- */
 
-/* Managed internally by the CYW43 driver via PIO + SPI.
- * No GPIO configuration needed here — the driver accesses
- * the module through the pico-sdk CYW43 interface.
+/* CYW43439 over GSPI (PIO-driven, dedicated interface)
  *
- * Key CYW43 pins (directly wired on the Waveshare module):
- *   WL_ON    = GP23
- *   WL_D     = GP24
- *   WL_CS    = GP25
- *   WL_CLK   = GP29
- *
- * Note: GP25 is exclusively used by CYW43439 for WL_CS.
- * The LCD backlight is NOT on GP25 — it is controlled by the
- * STM32 south bridge.
+ *   WL_ON  = GP36
+ *   WL_D   = GP37
+ *   WL_CS  = GP38
+ *   WL_CLK = GP39
  */
+
+#define BOARD_CYW43_PIN_WL_ON   36
+#define BOARD_CYW43_PIN_WL_D    37
+#define BOARD_CYW43_PIN_WL_CS   38
+#define BOARD_CYW43_PIN_WL_CLK  39
 
 /* =====================================================================
  * GPIO Pin Summary (RP2350B-Plus-W on PicoCalc)
@@ -340,13 +341,17 @@
  *   GP20 - PSRAM CS (PIO0 sideset base)
  *   GP21 - PSRAM SCK (PIO0 sideset base + 1)
  *   GP22 - (available)
- *   GP23 - CYW43 WL_ON
- *   GP24 - CYW43 WL_D
- *   GP25 - CYW43 WL_CS
+ *   GP23 - (available)
+ *   GP24 - (available)
+ *   GP25 - (available)
  *   GP26 - Audio PWM left
  *   GP27 - Audio PWM right
  *   GP28 - (available / ADC2)
- *   GP29 - CYW43 WL_CLK
+ *   GP29 - (available / ADC3)
+ *   GP36 - CYW43 WL_ON
+ *   GP37 - CYW43 WL_D
+ *   GP38 - CYW43 WL_CS
+ *   GP39 - CYW43 WL_CLK
  * ===================================================================== */
 
 /****************************************************************************
@@ -387,8 +392,11 @@ int rp23xx_aon_walltime_settime(const struct timespec *ts);
 
 /* Core clock management (rp23xx_clockmgr.c) */
 
-void rp23xx_set_power_profile(int profile);
-int  rp23xx_get_power_profile(void);
+void        rp23xx_set_power_profile(int profile);
+int         rp23xx_get_power_profile(void);
+uint32_t    rp23xx_get_sys_freq_mhz(void);
+int         rp23xx_get_num_profiles(void);
+const char *rp23xx_get_profile_name(int profile);
 
 /* Backlight / sleep management (rp23xx_sleep.c) */
 

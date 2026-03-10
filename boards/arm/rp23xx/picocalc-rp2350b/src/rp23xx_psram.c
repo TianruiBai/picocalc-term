@@ -1,15 +1,15 @@
 /****************************************************************************
  * boards/arm/rp23xx/picocalc-rp2350b/src/rp23xx_psram.c
  *
- * PIO-driven QSPI PSRAM driver for PicoCalc mainboard (8 MB).
+ * PIO-driven SPI PSRAM driver for PicoCalc mainboard (8 MB).
  *
  * Based on rp2040-psram by Ian Scott (MIT license).
  * Adapted for NuttX RTOS on RP2350B.
  *
  * The PSRAM chip (APS6404L / LY68L6400 / IPS6404 compatible) is accessed
- * via PIO-simulated QSPI (4-bit) for maximum throughput.  Initialization
- * uses bitbang SPI to send reset and Enter QPI commands, then all data
- * access uses a PIO QSPI program with 4 bidirectional data pins (SIO0-3).
+ * via PIO-simulated SPI (1-bit) for stable compatibility with PicoCalc
+ * reference hardware. Initialization sends reset commands, then all data
+ * access uses a PIO SPI program on MOSI/MISO with CS+SCK sideset pins.
  *
  * The PIO program uses 2-bit sideset for CS (bit0) and SCK (bit1).
  * After initialization, a block allocator provides psram_malloc/free.
@@ -22,6 +22,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <syslog.h>
+#include <errno.h>
 
 #include <nuttx/mm/mm.h>
 #include <nuttx/mutex.h>
@@ -112,86 +113,40 @@
 /****************************************************************************
  * PIO Program: SPI PSRAM
  *
- * Translated from psram_spi.pio by Ian Scott.
  * Uses 2-bit sideset: bit0=CS, bit1=SCK.
- *
- * Protocol:
- *   1. Pull output bit count (x) and input bit count (y) from TX FIFO
- *   2. Write 'x' bits MSB-first (data from TX FIFO via autopull)
- *   3. If y>0, read 'y' bits MSB-first into RX FIFO via autopush
+ * Program variants mirror rp2040-psram reference:
+ *   - standard read timing
+ *   - fudge timing (extra cycle + falling-edge sampling)
  *
  ****************************************************************************/
 
-/* PIO instruction encoding (hand-assembled from .pio) */
-
-/* spi_psram program (no fudge factor, for <= 83 MHz)
- *
- * .side_set 2        ; sideset bit0 = CS (GP21), bit1 = SCK (GP22)
- *
- * PIO instruction encoding (with 2-bit sideset, no enable):
- *   [15:13] = opcode
- *   [12:11] = sideset value
- *   [10:8]  = delay
- *   [7:0]   = instruction-specific
- *
- * begin:              ; CS idle high (deasserted)
- *   out x, 8    side 0b01  ; Pull write_bits-1 into X, CS=1(idle)
- *   out y, 8    side 0b01  ; Pull read_bits into Y, CS=1(idle)
- *   jmp x-- writeloop side 0b01  ; Pre-decrement X
- * writeloop:
- *   out pins, 1 side 0b00  ; Output MOSI bit, CS=0 SCK=0 (setup)
- *   jmp x-- writeloop side 0b10  ; CS=0 SCK=1 (latch), loop
- *   jmp !y begin     side 0b00  ; No read? Deassert CS next cycle
- *   jmp readloop_mid side 0b10  ; SCK=1 turnaround
- * readloop:
- *   in pins, 1       side 0b10  ; SCK=1, sample MISO
- * readloop_mid:
- *   jmp y-- readloop  side 0b00  ; SCK=0, loop
- */
-
 static const uint16_t g_psram_pio_program[] =
 {
-  /* begin: */
-  0x6820,   /*  0: out x, 32        side 0b01 */
-  0x6840,   /*  1: out y, 32        side 0b01 */
-  0x0843,   /*  2: jmp x--, 3       side 0b01 */
-  /* writeloop: */
-  0x6001,   /*  3: out pins, 1      side 0b00 */
-  0x1043,   /*  4: jmp x--, 3       side 0b10 */
-  0x0060,   /*  5: jmp !y, 0        side 0b00 */
-  0x1008,   /*  6: jmp 8            side 0b10 */
-  /* readloop: */
-  0x5001,   /*  7: in pins, 1       side 0b10 */
-  /* readloop_mid: */
-  0x0087,   /*  8: jmp y--, 7       side 0b00 */
+  0x6828,   /* out x, 8        side 0b01 */
+  0x6848,   /* out y, 8        side 0b01 */
+  0x0843,   /* jmp x--, 3      side 0b01 */
+  0x6001,   /* out pins, 1     side 0b00 */
+  0x1043,   /* jmp x--, 3      side 0b10 */
+  0x0060,   /* jmp !y, 0       side 0b00 */
+  0x1007,   /* jmp 7           side 0b10 */
+  0x5001,   /* in pins, 1      side 0b10 */
+  0x0087,   /* jmp y--, 7      side 0b00 */
 };
 
-#define PSRAM_PIO_PROGRAM_LEN   9
-
-/* spi_psram_fudge program (for > 83 MHz, extra read cycle)
- *
- * Same as above but adds an extra NOP clock cycle before reading
- * to account for PSRAM output delay at higher frequencies.
- *
- * readloop samples on falling edge (side 0b00) instead of rising.
- */
+#define PSRAM_PIO_PROGRAM_LEN  9
 
 static const uint16_t g_psram_pio_fudge_program[] =
 {
-  /* begin: */
-  0x6820,   /*  0: out x, 32        side 0b01 */
-  0x6840,   /*  1: out y, 32        side 0b01 */
-  0x0843,   /*  2: jmp x--, 3       side 0b01 */
-  /* writeloop: */
-  0x6001,   /*  3: out pins, 1      side 0b00 */
-  0x1043,   /*  4: jmp x--, 3       side 0b10 */
-  0x0060,   /*  5: jmp !y, 0        side 0b00 */
-  0xb042,   /*  6: nop              side 0b10 (fudge cycle) */
-  0x0009,   /*  7: jmp 9            side 0b00 */
-  /* readloop: */
-  0x4001,   /*  8: in pins, 1       side 0b00 (read on falling edge) */
-  /* readloop_mid: */
-  0x1088,   /*  9: jmp y--, 8       side 0b10 */
+  0x6828,   /* out x, 8        side 0b01 */
+  0x6848,   /* out y, 8        side 0b01 */
+  0x0843,   /* jmp x--, 3      side 0b01 */
+  0x6001,   /* out pins, 1     side 0b00 */
+  0x1043,   /* jmp x--, 3      side 0b10 */
+  0x0060,   /* jmp !y, 0       side 0b00 */
+  0xb042,   /* nop             side 0b10 */
+  0x0009,   /* jmp 9           side 0b00 */
+  0x4001,   /* in pins, 1      side 0b00 */
+  0x1088,   /* jmp y--, 8      side 0b10 */
 };
 
 #define PSRAM_PIO_FUDGE_PROGRAM_LEN  10
@@ -209,7 +164,7 @@ struct psram_dev_s
   uint8_t  dma_read;           /* DMA channel for read */
   uint8_t  dma_async;          /* DMA channel for async write */
   mutex_t  lock;               /* Thread-safety mutex */
-  bool     fudge;              /* Using fudge factor program */
+  bool     fudge;              /* Use fudge timing program */
   bool     initialized;
 };
 
@@ -218,7 +173,6 @@ struct psram_dev_s
  ****************************************************************************/
 
 static struct psram_dev_s g_psramdev;
-static struct mm_heap_s *g_psram_heap;
 
 /* Static buffer for PSRAM heap backing.
  * Since we can't memory-map PIO-accessed PSRAM, we allocate a large
@@ -233,6 +187,16 @@ static struct mm_heap_s *g_psram_heap;
 /* Scratch buffer for PIO transfers (in SRAM, DMA-accessible)
  * Note: g_pio_txbuf/rxbuf reserved for future DMA bulk transfer paths.
  */
+
+/****************************************************************************
+ * Private Function Prototypes
+ ****************************************************************************/
+
+static int psram_write8(struct psram_dev_s *dev, uint32_t addr, uint8_t val);
+static int psram_read8(struct psram_dev_s *dev, uint32_t addr,
+                       uint8_t *val);
+void psram_free(void *ptr);
+void psram_memcpy(void *dst_handle, const void *src_handle, size_t len);
 
 /****************************************************************************
  * Private Functions
@@ -273,15 +237,14 @@ static int pio_load_program(uint32_t pio_base, const uint16_t *program,
 }
 
 /****************************************************************************
- * Name: pio_sm_configure
+ * Name: pio_sm_configure_spi
  *
  * Description:
  *   Configure a PIO state machine for SPI PSRAM.
- *   Sets up pin mapping, shift registers, clock divider, and enables SM.
  *
  ****************************************************************************/
 
-static void pio_sm_configure(struct psram_dev_s *dev)
+static void pio_sm_configure_spi(struct psram_dev_s *dev)
 {
   uint32_t base = dev->pio_base;
   uint8_t sm = dev->sm;
@@ -292,28 +255,25 @@ static void pio_sm_configure(struct psram_dev_s *dev)
   ctrl &= ~(1 << sm);
   putreg32(ctrl, base + PIO_CTRL);
 
-  /* PINCTRL: set sideset base, out base, in base, counts
-   *
-   * RP2350 PIO SM_PINCTRL register layout:
-   *   [4:0]   OUT_BASE     = MOSI pin
-   *   [9:5]   SET_BASE     = (unused, 0)
-   *   [14:10] SIDESET_BASE = CS pin (CS=base, SCK=base+1)
-   *   [19:15] IN_BASE      = MISO pin
-   *   [25:20] OUT_COUNT    = 1 (MOSI)
-   *   [28:26] SET_COUNT    = 0
-   *   [31:29] SIDESET_COUNT = 2 (CS + SCK)
-   */
+  /* Restart SM (clear internal state) */
+
+  putreg32(1 << (sm + 4), base + PIO_CTRL);
+
+  /* Drain FIFOs */
+
+  putreg32((1u << (sm + 24)) | (1u << (sm + 28)),
+           base + PIO_FDEBUG);
 
   uint32_t pinctrl =
-    (2u << 29) |                             /* SIDESET_COUNT = 2 */
-    (1u << 20) |                             /* OUT_COUNT = 1 */
-    ((uint32_t)BOARD_PSRAM_PIN_MISO << 15) | /* IN_BASE */
-    ((uint32_t)BOARD_PSRAM_PIN_CS << 10) |   /* SIDESET_BASE */
-    ((uint32_t)BOARD_PSRAM_PIN_MOSI << 0);   /* OUT_BASE */
+    (2u << 29) |                               /* SIDESET_COUNT = 2 */
+    (1u << 20) |                               /* OUT_COUNT = 1 */
+    ((uint32_t)BOARD_PSRAM_PIN_MISO << 15) |   /* IN_BASE = MISO */
+    ((uint32_t)BOARD_PSRAM_PIN_CS << 10) |     /* SIDESET_BASE = CS */
+    ((uint32_t)BOARD_PSRAM_PIN_MOSI << 0);     /* OUT_BASE = MOSI */
 
   putreg32(pinctrl, base + PIO_SM_PINCTRL(sm));
 
-  /* EXECCTRL: wrap_top, wrap_bottom, side_en=0, side_pindir=0 */
+  /* EXECCTRL: wrap around loaded program */
 
   uint8_t prog_len = dev->fudge ?
                      PSRAM_PIO_FUDGE_PROGRAM_LEN :
@@ -322,78 +282,60 @@ static void pio_sm_configure(struct psram_dev_s *dev)
   uint32_t execctrl = getreg32(base + PIO_SM_EXECCTRL(sm));
   execctrl &= ~(0x1F << 7);   /* Clear wrap_bottom */
   execctrl &= ~(0x1F << 12);  /* Clear wrap_top */
-  execctrl |= ((dev->prog_offset) << 7);             /* wrap_bottom */
-  execctrl |= ((dev->prog_offset + prog_len - 1) << 12);  /* wrap_top */
+  execctrl |= ((dev->prog_offset) << 7);
+  execctrl |= ((dev->prog_offset + prog_len - 1) << 12);
   putreg32(execctrl, base + PIO_SM_EXECCTRL(sm));
 
-  /* SHIFTCTRL: autopull on, autopush on, 8-bit threshold
-   *
-   * out_shiftdir = 0 (shift left, MSB first)
-   * in_shiftdir  = 0 (shift left, MSB first)
-   * pull_thresh  = 8  (autopull after 8 bits — one byte per FIFO entry)
-   * push_thresh  = 8  (autopush after 8 bits — one byte per FIFO entry)
-   * autopull     = 1
-   * autopush     = 1
-   *
-   * The reference rp2040-psram uses n_bits=8 for both thresholds.
-   * With byte-sized FIFO writes and RP2040/RP2350 byte-lane replication,
-   * each byte appears in all 4 lanes of the 32-bit FIFO entry.
-   * Shift-left OUT extracts from bits[31:24] = the replicated byte.
-   * Shift-left IN accumulates in bits[7:0] = read via byte-sized read.
-   */
+  /* SHIFTCTRL: autopull/autopush at 8 bits, shift left (MSB first) */
 
   uint32_t shiftctrl =
-    (1u << 17) |   /* autopull */
-    (1u << 16) |   /* autopush */
-    (8u << 20) |   /* pull_thresh = 8 */
-    (8u << 25) |   /* push_thresh = 8 */
-    (0u << 19) |   /* out_shiftdir = left (MSB first) */
-    (0u << 18);    /* in_shiftdir = left (MSB first) */
+    (1u << 17) |   /* AUTOPULL */
+    (1u << 16) |   /* AUTOPUSH */
+    (8u << 25) |   /* PULL_THRESH = 8 */
+    (8u << 20) |   /* PUSH_THRESH = 8 */
+    (0u << 19) |   /* OUT_SHIFTDIR = left (MSB first) */
+    (0u << 18);    /* IN_SHIFTDIR = left (MSB first) */
 
   putreg32(shiftctrl, base + PIO_SM_SHIFTCTRL(sm));
 
-  /* CLKDIV: set clock divider as a 16.8 fixed-point value */
+  /* CLKDIV: set clock divider as 16.8 fixed-point */
 
-  uint32_t clkdiv;
   float div = BOARD_PSRAM_CLKDIV;
   uint16_t div_int = (uint16_t)div;
   uint8_t div_frac = (uint8_t)((div - div_int) * 256);
-  clkdiv = ((uint32_t)div_int << 16) | ((uint32_t)div_frac << 8);
+  uint32_t clkdiv = ((uint32_t)div_int << 16) | ((uint32_t)div_frac << 8);
   putreg32(clkdiv, base + PIO_SM_CLKDIV(sm));
 
-  /* Configure GPIO pin functions */
+  /* Configure GPIO pins for PIO function */
 
-  /* CS and SCK are outputs (sideset) */
-
-  rp23xx_gpio_init(BOARD_PSRAM_PIN_CS);
-  rp23xx_gpio_setdir(BOARD_PSRAM_PIN_CS, true);
-  rp23xx_gpio_set_function(BOARD_PSRAM_PIN_CS,
-                           BOARD_PSRAM_PIO_INST == 0 ? 6 : 7);
-
-  rp23xx_gpio_init(BOARD_PSRAM_PIN_SCK);
-  rp23xx_gpio_setdir(BOARD_PSRAM_PIN_SCK, true);
-  rp23xx_gpio_set_function(BOARD_PSRAM_PIN_SCK,
-                           BOARD_PSRAM_PIO_INST == 0 ? 6 : 7);
-
-  /* MOSI is output (out pin) */
+  uint32_t pio_func = (BOARD_PSRAM_PIO_INST == 0) ? 6 : 7;
 
   rp23xx_gpio_init(BOARD_PSRAM_PIN_MOSI);
   rp23xx_gpio_setdir(BOARD_PSRAM_PIN_MOSI, true);
-  rp23xx_gpio_set_function(BOARD_PSRAM_PIN_MOSI,
-                           BOARD_PSRAM_PIO_INST == 0 ? 6 : 7);
-
-  /* MISO is input (in pin) */
+  rp23xx_gpio_set_drive_strength(BOARD_PSRAM_PIN_MOSI,
+                                 RP23XX_PADS_BANK0_GPIO_DRIVE_4MA);
+  rp23xx_gpio_set_function(BOARD_PSRAM_PIN_MOSI, pio_func);
 
   rp23xx_gpio_init(BOARD_PSRAM_PIN_MISO);
   rp23xx_gpio_setdir(BOARD_PSRAM_PIN_MISO, false);
-  rp23xx_gpio_set_function(BOARD_PSRAM_PIN_MISO,
-                           BOARD_PSRAM_PIO_INST == 0 ? 6 : 7);
+  rp23xx_gpio_set_pulls(BOARD_PSRAM_PIN_MISO, 0, 0);  /* No pull */
+  rp23xx_gpio_set_function(BOARD_PSRAM_PIN_MISO, pio_func);
 
-  /* Note: RP2350 GPIO default drive strength is 4mA, which is adequate
-   * for PSRAM signals.  No explicit drive strength override needed.
-   */
+  /* CS (GP20) and SCK (GP21): PIO function, output */
 
-  /* Enable input synchronizer bypass for MISO (faster reads) */
+  rp23xx_gpio_init(BOARD_PSRAM_PIN_CS);
+  rp23xx_gpio_setdir(BOARD_PSRAM_PIN_CS, true);
+  rp23xx_gpio_set_drive_strength(BOARD_PSRAM_PIN_CS,
+                                 RP23XX_PADS_BANK0_GPIO_DRIVE_4MA);
+  rp23xx_gpio_set_function(BOARD_PSRAM_PIN_CS, pio_func);
+
+  rp23xx_gpio_init(BOARD_PSRAM_PIN_SCK);
+  rp23xx_gpio_setdir(BOARD_PSRAM_PIN_SCK, true);
+  rp23xx_gpio_set_drive_strength(BOARD_PSRAM_PIN_SCK,
+                                 RP23XX_PADS_BANK0_GPIO_DRIVE_4MA);
+  rp23xx_gpio_set_function(BOARD_PSRAM_PIN_SCK, pio_func);
+
+  /* Enable input synchronizer bypass for MISO */
 
   uint32_t sync = getreg32(base + PIO_INPUT_SYNC_BYPASS);
   sync |= (1u << BOARD_PSRAM_PIN_MISO);
@@ -468,94 +410,145 @@ static void dma_configure(struct psram_dev_s *dev)
  *
  * Description:
  *   Perform a PIO SPI write-then-read transaction.
- *   Writes 'write_bits' bits then reads 'read_bits' bits.
- *   Uses CPU polling with byte-sized FIFO accesses matching the
- *   reference rp2040-psram implementation.
- *
- *   Byte protocol to PIO TX FIFO:
- *     byte[0] = write_bits   (actual count; PIO pre-decrements X)
- *     byte[1] = read_bits
- *     byte[2..N] = data to write (MSB first)
- *
- *   The RP2040/RP2350 bus fabric replicates byte-sized writes across
- *   all 4 byte lanes, so a byte write of 0xAB produces FIFO entry
- *   0xABABABAB.  With shift-left and autopull=8, `out x, 8` correctly
- *   extracts bits[31:24] = 0xAB.
+ *   Header format is [write_bits, read_bits] followed by write payload.
+ *   Returns 0 on success, -ETIMEDOUT if PIO FIFO stalls.
  *
  ****************************************************************************/
 
-static void psram_pio_write_read(struct psram_dev_s *dev,
-                                 const uint8_t *write_data,
-                                 size_t write_bits,
-                                 uint8_t *read_data,
-                                 size_t read_bits)
+/* Timeout for PIO FIFO busy-waits.  At 150 MHz the CPU executes ~2
+ * instructions per loop iteration; 500 000 iterations ≈ 3–6 ms which is
+ * far longer than any single-byte PIO SPI transfer should ever take
+ * (< 1 µs at 18.75 MHz SCK).  If we reach the timeout, hardware is stuck.
+ */
+
+#define PIO_FIFO_TIMEOUT  500000
+
+static int psram_pio_write_read(struct psram_dev_s *dev,
+                                const uint8_t *write_data,
+                                size_t write_bits,
+                                uint8_t *read_data,
+                                size_t read_bits)
 {
   uint32_t base = dev->pio_base;
   uint8_t sm = dev->sm;
+  uint32_t timeout;
 
-  volatile uint32_t *txfifo = (volatile uint32_t *)(base + PIO_TXF(sm));
-  volatile uint32_t *rxfifo = (volatile uint32_t *)(base + PIO_RXF(sm));
+  volatile uint8_t *txfifo = (volatile uint8_t *)(base + PIO_TXF(sm));
+  volatile uint8_t *rxfifo = (volatile uint8_t *)(base + PIO_RXF(sm));
 
-  /* Send header: write_bits, then read_bits (no -1; PIO pre-decrements) */
+  /* The non-fudge PIO program reads y+1 bits (read-then-check loop),
+   * while the fudge program reads exactly y bits (check-then-read).
+   * Compensate: pass read_bits-1 for non-fudge so PIO reads the
+   * correct number of bits.
+   */
 
-  while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)));
-  *txfifo = (uint32_t)write_bits;
-
-  while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)));
-  *txfifo = (uint32_t)read_bits;
-
-  /* Feed data bytes to TX FIFO */
-
-  size_t write_bytes = (write_bits + 7) / 8;
-
-  for (size_t i = 0; i < write_bytes; i++)
+  uint8_t pio_read_bits = (uint8_t)read_bits;
+  if (read_bits > 0 && !dev->fudge)
     {
-      while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)));
-      *txfifo = ((uint32_t)write_data[i]) << 24;
+      pio_read_bits = (uint8_t)(read_bits - 1);
     }
 
-  /* Read data from RX FIFO */
+  /* --- Send header: write_bits count --- */
 
-  if (read_bits > 0)
+  timeout = PIO_FIFO_TIMEOUT;
+  while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)))
     {
-      size_t read_bytes = (read_bits + 7) / 8;
-
-      for (size_t i = 0; i < read_bytes; i++)
+      if (--timeout == 0)
         {
-          /* Wait for RX FIFO to have data */
-
-          while (getreg32(base + PIO_FSTAT) & (1u << sm));
-
-          read_data[i] = (uint8_t)(*rxfifo & 0xFF);
+          return -ETIMEDOUT;
         }
     }
+
+  *txfifo = (uint8_t)write_bits;
+
+  /* --- Send header: read_bits count --- */
+
+  timeout = PIO_FIFO_TIMEOUT;
+  while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)))
+    {
+      if (--timeout == 0)
+        {
+          return -ETIMEDOUT;
+        }
+    }
+
+  *txfifo = pio_read_bits;
+
+  /* --- Send write payload --- */
+
+  size_t write_bytes = (write_bits + 7) / 8;
+  for (size_t i = 0; i < write_bytes; i++)
+    {
+      timeout = PIO_FIFO_TIMEOUT;
+      while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)))
+        {
+          if (--timeout == 0)
+            {
+              return -ETIMEDOUT;
+            }
+        }
+
+      *txfifo = write_data[i];
+    }
+
+  /* --- Read response --- */
+
+  if (read_bits > 0 && read_data != NULL)
+    {
+      size_t read_bytes = (read_bits + 7) / 8;
+      for (size_t i = 0; i < read_bytes; i++)
+        {
+          /* Wait for RX FIFO not empty (RXEMPTY bit at position 8+sm).
+           * NOTE: RXFULL is at bit sm, RXEMPTY at bit 8+sm in FSTAT.
+           */
+
+          timeout = PIO_FIFO_TIMEOUT;
+          while (getreg32(base + PIO_FSTAT) & (1u << (8 + sm)))
+            {
+              if (--timeout == 0)
+                {
+                  return -ETIMEDOUT;
+                }
+            }
+
+          read_data[i] = *rxfifo;
+        }
+    }
+
+  return 0;
 }
 
 /****************************************************************************
  * Name: psram_reset
  *
  * Description:
- *   Send reset enable (0x66) and reset (0x99) to PSRAM chip.
+ *   Send reset-enable and reset commands over SPI transport.
  *
  ****************************************************************************/
 
-static void psram_reset(struct psram_dev_s *dev)
+static int psram_reset(struct psram_dev_s *dev)
 {
   uint8_t cmd;
-
-  /* Reset Enable */
+  int ret;
 
   cmd = PSRAM_CMD_RESET_EN;
-  psram_pio_write_read(dev, &cmd, 8, NULL, 0);
-
-  up_udelay(50);
-
-  /* Reset */
-
-  cmd = PSRAM_CMD_RESET;
-  psram_pio_write_read(dev, &cmd, 8, NULL, 0);
+  ret = psram_pio_write_read(dev, &cmd, 8, NULL, 0);
+  if (ret < 0)
+    {
+      return ret;
+    }
 
   up_udelay(100);
+
+  cmd = PSRAM_CMD_RESET;
+  ret = psram_pio_write_read(dev, &cmd, 8, NULL, 0);
+  if (ret < 0)
+    {
+      return ret;
+    }
+
+  up_udelay(500);  /* APS6404L tRST ≤ 200 µs; add margin */
+  return 0;
 }
 
 /****************************************************************************
@@ -567,8 +560,8 @@ static void psram_reset(struct psram_dev_s *dev)
  *
  ****************************************************************************/
 
-static void psram_write8(struct psram_dev_s *dev, uint32_t addr,
-                         uint8_t value)
+static int psram_write8(struct psram_dev_s *dev, uint32_t addr,
+                        uint8_t value)
 {
   uint8_t cmd[5];
 
@@ -578,7 +571,7 @@ static void psram_write8(struct psram_dev_s *dev, uint32_t addr,
   cmd[3] = addr & 0xFF;
   cmd[4] = value;
 
-  psram_pio_write_read(dev, cmd, 40, NULL, 0);
+  return psram_pio_write_read(dev, cmd, 40, NULL, 0);
 }
 
 /****************************************************************************
@@ -590,20 +583,18 @@ static void psram_write8(struct psram_dev_s *dev, uint32_t addr,
  *
  ****************************************************************************/
 
-static uint8_t psram_read8(struct psram_dev_s *dev, uint32_t addr)
+static int psram_read8(struct psram_dev_s *dev, uint32_t addr,
+                       uint8_t *result)
 {
   uint8_t cmd[5];
-  uint8_t result;
 
   cmd[0] = PSRAM_CMD_FAST_READ;
   cmd[1] = (addr >> 16) & 0xFF;
   cmd[2] = (addr >> 8) & 0xFF;
   cmd[3] = addr & 0xFF;
-  cmd[4] = 0x00;  /* Dummy byte */
+  cmd[4] = 0x00;
 
-  psram_pio_write_read(dev, cmd, 40, &result, 8);
-
-  return result;
+  return psram_pio_write_read(dev, cmd, 40, result, 8);
 }
 
 /****************************************************************************
@@ -611,74 +602,47 @@ static uint8_t psram_read8(struct psram_dev_s *dev, uint32_t addr)
  *
  * Description:
  *   Write a block of bytes to PSRAM starting at 'addr'.
+ *   The PIO header uses 8-bit bit-counts, so chunk size is capped.
  *
  ****************************************************************************/
 
-static void psram_write_bulk(struct psram_dev_s *dev, uint32_t addr,
-                             const uint8_t *data, size_t len)
+#define PSRAM_SPI_MAX_WRITE_DATA  27
+#define PSRAM_SPI_MAX_READ_DATA   31
+
+static int psram_write_bulk(struct psram_dev_s *dev, uint32_t addr,
+                            const uint8_t *data, size_t len)
 {
-  /* PSRAM supports page-aligned burst writes (up to 1024 bytes).
-   * For simplicity, write in chunks that don't cross page boundaries.
-   * Page size for SPI PSRAM = 1024 bytes.
-   */
+  int ret;
 
   while (len > 0)
     {
-      /* Calculate bytes until next page boundary */
-
       size_t page_remain = 1024 - (addr & 0x3FF);
       size_t chunk = (len < page_remain) ? len : page_remain;
-
-      /* Build command: 0x02 + 3-byte address + data
-       * Total write bits = (4 + chunk) * 8, read bits = 0
-       *
-       * We must send everything in a single PIO transaction so CS
-       * stays asserted for the entire burst.
-       *
-       * Uses byte-sized FIFO writes matching reference rp2040-psram.
-       */
-
-      uint32_t base = dev->pio_base;
-      uint8_t sm = dev->sm;
-      uint32_t total_write_bits = (4 + chunk) * 8;
-
-      volatile uint32_t *txfifo =
-        (volatile uint32_t *)(base + PIO_TXF(sm));
-
-      /* Send header bytes: write_bits, read_bits=0 */
-
-      while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)));
-      *txfifo = total_write_bits;
-
-      while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)));
-      *txfifo = 0;  /* read_bits = 0 */
-
-      /* Send 4-byte command (0x02 + address) */
-
-      uint8_t cmd[4];
-      cmd[0] = PSRAM_CMD_WRITE;
-      cmd[1] = (addr >> 16) & 0xFF;
-      cmd[2] = (addr >> 8) & 0xFF;
-      cmd[3] = addr & 0xFF;
-
-      for (size_t i = 0; i < 4; i++)
+      if (chunk > PSRAM_SPI_MAX_WRITE_DATA)
         {
-          while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)));
-          *txfifo = ((uint32_t)cmd[i]) << 24;
+          chunk = PSRAM_SPI_MAX_WRITE_DATA;
         }
 
-      /* Send data bytes (continuing same CS assertion) */
+      uint8_t txbuf[4 + PSRAM_SPI_MAX_WRITE_DATA];
 
-      for (size_t i = 0; i < chunk; i++)
+      txbuf[0] = PSRAM_CMD_WRITE;
+      txbuf[1] = (addr >> 16) & 0xFF;
+      txbuf[2] = (addr >> 8) & 0xFF;
+      txbuf[3] = addr & 0xFF;
+      memcpy(&txbuf[4], data, chunk);
+
+      ret = psram_pio_write_read(dev, txbuf, (4 + chunk) * 8, NULL, 0);
+      if (ret < 0)
         {
-          while (getreg32(base + PIO_FSTAT) & (1u << (16 + sm)));
-          *txfifo = ((uint32_t)data[i]) << 24;
+          return ret;
         }
 
       addr += chunk;
       data += chunk;
       len  -= chunk;
     }
+
+  return 0;
 }
 
 /****************************************************************************
@@ -689,21 +653,36 @@ static void psram_write_bulk(struct psram_dev_s *dev, uint32_t addr,
  *
  ****************************************************************************/
 
-static void psram_read_bulk(struct psram_dev_s *dev, uint32_t addr,
-                            uint8_t *data, size_t len)
+static int psram_read_bulk(struct psram_dev_s *dev, uint32_t addr,
+                           uint8_t *data, size_t len)
 {
-  /* Build command: 0x0B + 3-byte address + dummy byte */
+  int ret;
 
-  uint8_t header[5];
-  header[0] = PSRAM_CMD_FAST_READ;
-  header[1] = (addr >> 16) & 0xFF;
-  header[2] = (addr >> 8) & 0xFF;
-  header[3] = addr & 0xFF;
-  header[4] = 0x00;  /* Dummy */
+  while (len > 0)
+    {
+      size_t chunk = (len < PSRAM_SPI_MAX_READ_DATA) ?
+             len : PSRAM_SPI_MAX_READ_DATA;
 
-  /* For bulk read, send header then read 'len' bytes */
+      uint8_t cmd[5];
 
-  psram_pio_write_read(dev, header, 40, data, len * 8);
+      cmd[0] = PSRAM_CMD_FAST_READ;
+      cmd[1] = (addr >> 16) & 0xFF;
+      cmd[2] = (addr >> 8) & 0xFF;
+      cmd[3] = addr & 0xFF;
+      cmd[4] = 0x00;
+
+      ret = psram_pio_write_read(dev, cmd, 40, data, chunk * 8);
+      if (ret < 0)
+        {
+          return ret;
+        }
+
+      addr += chunk;
+      data += chunk;
+      len  -= chunk;
+    }
+
+  return 0;
 }
 
 /****************************************************************************
@@ -724,7 +703,7 @@ static int psram_test(struct psram_dev_s *dev)
   if (val != 0xDE)
     {
       syslog(LOG_ERR, "psram: probe failed at addr 0x%06X "
-             "(wrote 0xDE, read 0x%02X)\n", 0, val);
+             "(wrote 0xDE, read 0x%02X)\n", 0u, (unsigned)val);
       return -1;
     }
 
@@ -755,8 +734,9 @@ static int psram_test(struct psram_dev_s *dev)
   val = psram_read8(dev, end_addr);
   if (val != 0xBE)
     {
-      syslog(LOG_ERR, "psram: probe failed at addr 0x%06X "
-             "(wrote 0xBE, read 0x%02X)\n", end_addr, val);
+      syslog(LOG_ERR, "psram: probe failed at addr 0x%06lX "
+             "(wrote 0xBE, read 0x%02lX)\n",
+             (unsigned long)end_addr, (unsigned long)val);
       return -1;
     }
 
@@ -840,12 +820,10 @@ int rp23xx_psram_init(void)
       return 0;
     }
 
-  syslog(LOG_INFO, "psram: initializing PIO%d SPI interface...\n",
+  syslog(LOG_INFO, "psram: initializing SPI interface on PIO%d...\n",
          BOARD_PSRAM_PIO_INST);
 
   nxmutex_init(&dev->lock);
-
-  /* Select PIO instance and state machine */
 
   dev->pio_base = PIO_BASE;
   dev->sm = BOARD_PSRAM_PIO_SM;
@@ -854,54 +832,58 @@ int rp23xx_psram_init(void)
   dev->dma_async = DMA_CH_ASYNC;
   dev->fudge = BOARD_PSRAM_USE_FUDGE;
 
-  /* Load PIO program */
+  /* Load SPI PIO program and configure state machine */
 
-  const uint16_t *program;
-  size_t prog_len;
-
-  if (dev->fudge)
-    {
-      program = g_psram_pio_fudge_program;
-      prog_len = PSRAM_PIO_FUDGE_PROGRAM_LEN;
-    }
-  else
-    {
-      program = g_psram_pio_program;
-      prog_len = PSRAM_PIO_PROGRAM_LEN;
-    }
+  const uint16_t *program = dev->fudge ?
+        g_psram_pio_fudge_program :
+        g_psram_pio_program;
+  size_t prog_len = dev->fudge ?
+        PSRAM_PIO_FUDGE_PROGRAM_LEN :
+        PSRAM_PIO_PROGRAM_LEN;
 
   pio_load_program(dev->pio_base, program, prog_len,
                    &dev->prog_offset);
 
-  syslog(LOG_DEBUG, "psram: PIO program loaded at offset %d (%zu instructions)\n",
-         dev->prog_offset, prog_len);
+  syslog(LOG_DEBUG, "psram: SPI PIO program loaded at offset %d "
+         "(%d instructions)\n",
+         dev->prog_offset, (int)prog_len);
 
-  /* Configure PIO state machine pins, shifts, clock */
-
-  pio_sm_configure(dev);
-
-  /* Configure DMA channels */
+  pio_sm_configure_spi(dev);
 
   dma_configure(dev);
 
-  /* Reset PSRAM chip */
+  /* Reset PSRAM chip after transport is active */
 
   psram_reset(dev);
 
-  syslog(LOG_INFO, "psram: GPIO CS=GP%d SCK=GP%d MOSI=GP%d MISO=GP%d\n",
+  syslog(LOG_INFO, "psram: GPIO CS=GP%d SCK=GP%d "
+         "MOSI=GP%d MISO=GP%d (SPI)\n",
          BOARD_PSRAM_PIN_CS, BOARD_PSRAM_PIN_SCK,
          BOARD_PSRAM_PIN_MOSI, BOARD_PSRAM_PIN_MISO);
-  syslog(LOG_INFO, "psram: reset sequence complete, running probe...\n");
 
-  /* Verify PSRAM is accessible */
+  /* Verify PSRAM is accessible (retry up to 3 times) */
 
-  if (psram_test(dev) != 0)
+  int probe_ok = -1;
+  for (int attempt = 0; attempt < 3; attempt++)
     {
-      syslog(LOG_ERR, "psram: initialization failed — chip not responding\n");
-      return -EIO;
+      if (attempt > 0)
+        {
+          syslog(LOG_WARNING, "psram: retry %d/3...\n", attempt + 1);
+          psram_reset(dev);
+        }
+
+      if (psram_test(dev) == 0)
+        {
+          probe_ok = 0;
+          break;
+        }
     }
 
-  /* Initialize block allocator */
+  if (probe_ok != 0)
+    {
+      syslog(LOG_ERR, "psram: SPI probe failed after 3 attempts\n");
+      return -EIO;
+    }
 
   memset(g_psram_blocks, 0, sizeof(g_psram_blocks));
   g_psram_next_addr = 0;
@@ -909,12 +891,12 @@ int rp23xx_psram_init(void)
 
   dev->initialized = true;
 
-  syslog(LOG_INFO, "psram: APS6404L %d KB PIO-SPI ready "
+  syslog(LOG_INFO, "psram: APS6404L %d KB SPI ready "
          "(PIO%d SM%d, clkdiv=%.1f, fudge=%s)\n",
          BOARD_PSRAM_SIZE / 1024,
          BOARD_PSRAM_PIO_INST, BOARD_PSRAM_PIO_SM,
          (double)BOARD_PSRAM_CLKDIV,
-         BOARD_PSRAM_USE_FUDGE ? "yes" : "no");
+         dev->fudge ? "yes" : "no");
 
   return 0;
 }

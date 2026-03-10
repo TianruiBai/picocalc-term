@@ -1336,6 +1336,7 @@ const pc_app_t g_pcedit_app = {
     .display_name = "Text Editor",
     .version      = "2.0.0",
     .category     = "office",
+    .icon         = LV_SYMBOL_EDIT,
     .min_ram      = 65536,
     .flags        = PC_APP_FLAG_BUILTIN | PC_APP_FLAG_STATEFUL,
   },

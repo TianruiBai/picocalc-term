@@ -233,9 +233,11 @@ static int audio_service_init(void)
   svc->volume = rp23xx_audio_get_volume();
   svc->state  = AUDIO_SVC_STOPPED;
 
-  /* Allocate decode buffer in PSRAM */
+  /* Allocate decode buffer in system heap so playback init does not depend
+   * on PSRAM allocator availability.
+   */
 
-  svc->decode_buf = (int16_t *)pc_app_psram_alloc(
+  svc->decode_buf = (int16_t *)malloc(
     AUDIO_DECODE_FRAMES * 2 * sizeof(int16_t));
   if (svc->decode_buf == NULL)
     {

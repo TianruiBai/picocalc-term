@@ -2,7 +2,11 @@
  * boards/arm/rp23xx/picocalc-rp2350b/src/rp23xx_lcd.c
  *
  * ILI9488-compatible LCD driver for PicoCalc.
- * Registers as /dev/fb0 framebuffer device.
+ * Direct SPI output — no framebuffer allocation (saves 200 KB SRAM).
+ *
+ * LVGL renders into its own 25 KB partial buffer and calls
+ * rp23xx_lcd_flush_area() which converts RGB565→RGB666 row-by-row
+ * through a tiny 960-byte static buffer and pushes to the panel.
  *
  * Display: 320×320 IPS, RGB666 over SPI (3 bytes/pixel), SPI1 @ 25 MHz
  * Backlight: controlled by STM32 south bridge register SB_REG_BKL
@@ -18,8 +22,8 @@
 #include <syslog.h>
 
 #include <nuttx/irq.h>
+#include <nuttx/kmalloc.h>
 #include <nuttx/spi/spi.h>
-#include <nuttx/video/fb.h>
 
 #include "rp23xx_spi.h"
 #include "rp23xx_gpio.h"
@@ -54,15 +58,12 @@
 #define MADCTL_BGR          0x08  /* BGR pixel order */
 #define MADCTL_MH           0x04  /* Horizontal order */
 
-/* Framebuffer size */
-#define LCD_STRIDE          (BOARD_LCD_WIDTH * sizeof(uint16_t))
-#define LCD_FB_SIZE         (BOARD_LCD_WIDTH * BOARD_LCD_HEIGHT * sizeof(uint16_t))
-
-/* Partial buffer for DMA transfers (in SRAM)
- * Uses 3 bytes per pixel (RGB666) for SPI output format.
+/* Static transfer buffer: 1 row of RGB666 (320 × 3 = 960 bytes).
+ * Used by rp23xx_lcd_flush_area() to convert one row at a time.
  */
-#define LCD_PARTIAL_LINES   10
-#define LCD_PARTIAL_SIZE    (BOARD_LCD_WIDTH * LCD_PARTIAL_LINES * 3)
+
+#define LCD_TRANSFER_LINES  1
+#define LCD_TRANSFER_SIZE   (BOARD_LCD_WIDTH * LCD_TRANSFER_LINES * 3)
 
 /****************************************************************************
  * Private Types
@@ -70,12 +71,7 @@
 
 struct st7365p_dev_s
 {
-  struct fb_vtable_s vtable;        /* Framebuffer interface */
-  struct fb_videoinfo_s vinfo;      /* Video info */
-  struct fb_planeinfo_s pinfo;      /* Plane info */
   struct spi_dev_s *spi;            /* SPI bus handle */
-  uint16_t *framebuffer;            /* Full framebuffer in PSRAM (RGB565) */
-  uint8_t  *partial_buf;            /* Partial buffer in SRAM (RGB666, 3B/px) */
   bool initialized;
 };
 
@@ -84,6 +80,7 @@ struct st7365p_dev_s
  ****************************************************************************/
 
 static struct st7365p_dev_s g_lcddev;
+static uint8_t g_lcd_transfer_buf[LCD_TRANSFER_SIZE];
 
 /****************************************************************************
  * Private Functions
@@ -344,18 +341,15 @@ static void lcd_rgb565_to_rgb666(uint8_t *dst, const uint16_t *src,
 }
 
 /****************************************************************************
- * Name: lcd_flush
+ * Name: lcd_clear_screen
  *
  * Description:
- *   Flush the full framebuffer (PSRAM, RGB565) to the display via SPI.
- *   Converts RGB565→RGB666 in chunks through the SRAM partial buffer.
+ *   Fill the display with black pixels via SPI.
  *
  ****************************************************************************/
 
-static void lcd_flush(struct st7365p_dev_s *dev)
+static void lcd_clear_screen(struct st7365p_dev_s *dev)
 {
-  uint16_t y;
-
   lcd_set_window(dev, 0, 0,
                  BOARD_LCD_WIDTH - 1, BOARD_LCD_HEIGHT - 1);
   lcd_send_cmd(dev, ST7365P_RAMWR);
@@ -363,101 +357,17 @@ static void lcd_flush(struct st7365p_dev_s *dev)
   lcd_set_dc(true);
   lcd_set_cs(true);
 
-  for (y = 0; y < BOARD_LCD_HEIGHT; y += LCD_PARTIAL_LINES)
+  /* Zero the static transfer buffer and send one row at a time */
+
+  memset(g_lcd_transfer_buf, 0, LCD_TRANSFER_SIZE);
+
+  for (uint16_t y = 0; y < BOARD_LCD_HEIGHT; y++)
     {
-      uint16_t lines = LCD_PARTIAL_LINES;
-      if (y + lines > BOARD_LCD_HEIGHT)
-        {
-          lines = BOARD_LCD_HEIGHT - y;
-        }
-
-      size_t pixels = BOARD_LCD_WIDTH * lines;
-
-      /* Convert RGB565 → RGB666 in SRAM partial buffer */
-
-      lcd_rgb565_to_rgb666(dev->partial_buf,
-                           &dev->framebuffer[y * BOARD_LCD_WIDTH],
-                           pixels);
-
-      /* DMA-capable SPI send (3 bytes per pixel) */
-
-      SPI_SNDBLOCK(dev->spi, dev->partial_buf, pixels * 3);
+      SPI_SNDBLOCK(dev->spi, g_lcd_transfer_buf, LCD_TRANSFER_SIZE);
     }
 
   lcd_set_cs(false);
 }
-
-/****************************************************************************
- * Framebuffer Interface Methods
- ****************************************************************************/
-
-static int lcd_getvideoinfo(struct fb_vtable_s *vtable,
-                            struct fb_videoinfo_s *vinfo)
-{
-  struct st7365p_dev_s *dev = (struct st7365p_dev_s *)vtable;
-  memcpy(vinfo, &dev->vinfo, sizeof(struct fb_videoinfo_s));
-  return 0;
-}
-
-static int lcd_getplaneinfo(struct fb_vtable_s *vtable,
-                            int planeno,
-                            struct fb_planeinfo_s *pinfo)
-{
-  struct st7365p_dev_s *dev = (struct st7365p_dev_s *)vtable;
-  if (planeno != 0)
-    {
-      return -EINVAL;
-    }
-  memcpy(pinfo, &dev->pinfo, sizeof(struct fb_planeinfo_s));
-  return 0;
-}
-
-#ifdef CONFIG_FB_UPDATE
-static int lcd_updatearea(struct fb_vtable_s *vtable,
-                          const struct fb_area_s *area)
-{
-  struct st7365p_dev_s *dev = (struct st7365p_dev_s *)vtable;
-
-  /* Partial update: flush only the dirty rectangle rows.
-   * We flush full rows for the affected row range to keep
-   * the SPI transfer simple (row-aligned).
-   */
-
-  uint16_t y0 = area->y;
-  uint16_t y1 = area->y + area->h - 1;
-
-  if (y0 >= BOARD_LCD_HEIGHT) return 0;
-  if (y1 >= BOARD_LCD_HEIGHT) y1 = BOARD_LCD_HEIGHT - 1;
-
-  lcd_set_window(dev, 0, y0, BOARD_LCD_WIDTH - 1, y1);
-  lcd_send_cmd(dev, ST7365P_RAMWR);
-
-  lcd_set_dc(true);
-  lcd_set_cs(true);
-
-  for (uint16_t y = y0; y <= y1; y += LCD_PARTIAL_LINES)
-    {
-      uint16_t lines = LCD_PARTIAL_LINES;
-      if (y + lines > y1 + 1)
-        {
-          lines = y1 - y + 1;
-        }
-
-      size_t pixels = BOARD_LCD_WIDTH * lines;
-
-      /* Convert RGB565 → RGB666 in SRAM partial buffer */
-
-      lcd_rgb565_to_rgb666(dev->partial_buf,
-                           &dev->framebuffer[y * BOARD_LCD_WIDTH],
-                           pixels);
-
-      SPI_SNDBLOCK(dev->spi, dev->partial_buf, pixels * 3);
-    }
-
-  lcd_set_cs(false);
-  return 0;
-}
-#endif
 
 /****************************************************************************
  * Public Functions
@@ -467,27 +377,30 @@ static int lcd_updatearea(struct fb_vtable_s *vtable,
  * Name: rp23xx_lcd_initialize
  *
  * Description:
- *   Initialize the ST7365P display and register as /dev/fb0.
- *   Allocates framebuffer in PSRAM and partial buffer in SRAM.
+ *   Initialize the ST7365P display (SPI setup + panel init commands).
+ *   No framebuffer is allocated — LVGL drives the panel directly via
+ *   rp23xx_lcd_flush_area().
  *
  ****************************************************************************/
 
 int rp23xx_lcd_initialize(void)
 {
   struct st7365p_dev_s *dev = &g_lcddev;
-  int ret;
 
   if (dev->initialized)
     {
       return 0;
     }
 
+  syslog(LOG_INFO, "lcd: initializing ST7365P on SPI%d...\n",
+         BOARD_LCD_SPI_PORT);
+
   /* Get SPI1 bus handle */
 
   dev->spi = rp23xx_spibus_initialize(BOARD_LCD_SPI_PORT);
   if (dev->spi == NULL)
     {
-      syslog(LOG_ERR, "fb0: failed to get SPI%d bus\n",
+      syslog(LOG_ERR, "lcd: failed to get SPI%d bus\n",
              BOARD_LCD_SPI_PORT);
       return -ENODEV;
     }
@@ -512,95 +425,85 @@ int rp23xx_lcd_initialize(void)
   rp23xx_gpio_setdir(BOARD_LCD_PIN_CS, true);
   lcd_set_cs(false);
 
-  /* Note: LCD backlight is controlled by the STM32 south bridge
-   * (register SB_REG_BKL, PA8 PWM). No direct GPIO control.
-   * Brightness is set during lcd_init_sequence() via
-   * rp23xx_sb_set_lcd_backlight(255).
-   */
-
-  /* Allocate framebuffer in SRAM (directly addressable).
-   *
-   * The framebuffer MUST be in directly-accessible memory because:
-   *   - LVGL/NuttX fb interface exposes fbmem for direct CPU writes
-   *   - lcd_flush() reads pixels from framebuffer every display refresh
-   *   - PSRAM handles (via PIO-SPI) are NOT dereferenceable pointers
-   *
-   * 320×320×2 = 200 KB — fits in RP2350B's 520 KB SRAM.
-   * PSRAM should be reserved for large, bulk-accessed data
-   * (editor buffers, file caches) accessed via psram_memcpy_to/from.
-   */
-
-  dev->framebuffer = kmm_zalloc(LCD_FB_SIZE);
-  if (dev->framebuffer == NULL)
-    {
-      syslog(LOG_ERR, "fb0: framebuffer allocation failed (%d bytes)\n",
-             LCD_FB_SIZE);
-      return -ENOMEM;
-    }
-
-  syslog(LOG_INFO, "fb0: framebuffer %d KB allocated in SRAM "
-         "(%dx%d RGB565, stride %d)\n",
-         LCD_FB_SIZE / 1024,
-         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT, LCD_STRIDE);
-
-  /* Allocate partial transfer buffer in SRAM (RGB666, 3 bytes/pixel) */
-
-  dev->partial_buf = (uint8_t *)kmm_malloc(LCD_PARTIAL_SIZE);
-  if (dev->partial_buf == NULL)
-    {
-      syslog(LOG_ERR, "fb0: partial transfer buffer allocation failed\n");
-      return -ENOMEM;
-    }
-
-  /* Run LCD init sequence */
+  /* Run LCD init sequence (reset, configure registers, sleep out, display on) */
 
   lcd_init_sequence(dev);
-
-  /* Fill video info */
-
-  dev->vinfo.fmt     = FB_FMT_RGB16_565;
-  dev->vinfo.xres    = BOARD_LCD_WIDTH;
-  dev->vinfo.yres    = BOARD_LCD_HEIGHT;
-  dev->vinfo.nplanes = 1;
-
-  dev->pinfo.fbmem   = (void *)dev->framebuffer;
-  dev->pinfo.fblen   = LCD_FB_SIZE;
-  dev->pinfo.stride  = LCD_STRIDE;
-  dev->pinfo.display = 0;
-  dev->pinfo.bpp     = BOARD_LCD_BPP;
-
-  /* Fill vtable */
-
-  dev->vtable.getvideoinfo = lcd_getvideoinfo;
-  dev->vtable.getplaneinfo = lcd_getplaneinfo;
-#ifdef CONFIG_FB_UPDATE
-  dev->vtable.updatearea   = lcd_updatearea;
-#endif
-
-  /* Register as /dev/fb0 */
-
-  ret = fb_register_device(0, 0, (struct fb_vtable_s *)dev);
-  if (ret < 0)
-    {
-      syslog(LOG_ERR, "fb0: failed to register /dev/fb0: %d\n", ret);
-      return ret;
-    }
 
   dev->initialized = true;
 
   /* Clear screen to black */
 
-  memset(dev->framebuffer, 0, LCD_FB_SIZE);
-  lcd_flush(dev);
+  lcd_clear_screen(dev);
 
-  syslog(LOG_INFO, "fb0: ST7365P %dx%d IPS LCD on SPI%d @ %d MHz\n",
-         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT,
-         BOARD_LCD_SPI_PORT, BOARD_LCD_SPI_FREQ / 1000000);
-  syslog(LOG_INFO, "fb0: RGB565 internal, RGB666 SPI wire format "
+  syslog(LOG_INFO, "lcd: ST7365P %dx%d IPS on SPI%d @ %d MHz "
          "(DC=GP%d RST=GP%d CS=GP%d)\n",
+         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT,
+         BOARD_LCD_SPI_PORT, BOARD_LCD_SPI_FREQ / 1000000,
          BOARD_LCD_PIN_DC, BOARD_LCD_PIN_RST, BOARD_LCD_PIN_CS);
-  syslog(LOG_INFO, "fb0: registered /dev/fb0 (%dx%d %dbpp)\n",
-         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT, BOARD_LCD_BPP);
+  syslog(LOG_INFO, "lcd: no framebuffer — direct SPI flush "
+         "(saves 200 KB SRAM)\n");
 
+  return 0;
+}
+
+/****************************************************************************
+ * Name: rp23xx_lcd_flush_area
+ *
+ * Description:
+ *   Write a rectangular area of RGB565 pixels to the LCD panel.
+ *   Converts RGB565→RGB666 one row at a time through the 960-byte
+ *   static transfer buffer.
+ *
+ *   Called from the LVGL display flush callback — this is the fast path.
+ *
+ * Input Parameters:
+ *   x1, y1, x2, y2 - Bounding rectangle (inclusive)
+ *   data            - RGB565 pixel array, row-major
+ *   src_stride      - Pixels per row in the source data
+ *
+ ****************************************************************************/
+
+int rp23xx_lcd_flush_area(uint16_t x1, uint16_t y1,
+                          uint16_t x2, uint16_t y2,
+                          const uint16_t *data,
+                          uint16_t src_stride)
+{
+  struct st7365p_dev_s *dev = &g_lcddev;
+
+  if (!dev->initialized || dev->spi == NULL)
+    {
+      return -ENODEV;
+    }
+
+  /* Clip to display bounds */
+
+  if (x2 >= BOARD_LCD_WIDTH)  x2 = BOARD_LCD_WIDTH - 1;
+  if (y2 >= BOARD_LCD_HEIGHT) y2 = BOARD_LCD_HEIGHT - 1;
+  if (x1 > x2 || y1 > y2)    return 0;
+
+  uint16_t w = x2 - x1 + 1;
+  uint16_t h = y2 - y1 + 1;
+
+  /* Set the LCD address window */
+
+  lcd_set_window(dev, x1, y1, x2, y2);
+  lcd_send_cmd(dev, ST7365P_RAMWR);
+
+  lcd_set_dc(true);
+  lcd_set_cs(true);
+
+  /* Convert and send one row at a time through the static buffer.
+   * The buffer is 960 bytes = 320 pixels × 3 bytes (one full row).
+   * For sub-width areas, each row uses only w × 3 bytes.
+   */
+
+  for (uint16_t row = 0; row < h; row++)
+    {
+      const uint16_t *src = &data[row * src_stride];
+      lcd_rgb565_to_rgb666(g_lcd_transfer_buf, src, w);
+      SPI_SNDBLOCK(dev->spi, g_lcd_transfer_buf, (size_t)w * 3);
+    }
+
+  lcd_set_cs(false);
   return 0;
 }

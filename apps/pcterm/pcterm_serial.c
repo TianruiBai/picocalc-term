@@ -187,6 +187,7 @@ const pc_app_t g_pcterm_serial_app = {
     .display_name = "Serial Terminal",
     .version      = "1.0.0",
     .category     = "system",
+    .icon         = LV_SYMBOL_USB,
     .min_ram      = 32768,
     .flags        = PC_APP_FLAG_BUILTIN | PC_APP_FLAG_STATEFUL,
   },

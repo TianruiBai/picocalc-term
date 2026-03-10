@@ -875,7 +875,7 @@ Not a traditional desktop WM — apps run **fullscreen** with a shared status ba
 ```bash
 # Clone NuttX
 git clone https://github.com/apache/nuttx.git nuttx
-git clone https://github.com/apache/nuttx-apps.git apps
+git clone https://github.com/apache/nuttx-apps.git nuttx-apps
 
 # Configure for PicoCalc (custom board, once created)
 cd nuttx

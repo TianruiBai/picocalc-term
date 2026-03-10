@@ -7,7 +7,7 @@
  *   - Navigate directories with arrow keys and Enter
  *   - View file info (size, modified date)
  *   - Copy, move, rename, delete files
- *   - Quick-switch between SD card (/mnt/sd) and flash (/data)
+ *   - Quick-switch between SD card (/mnt/sd) and flash (/flash)
  *   - Open text files in pcedit, audio in pcaudio, etc.
  *   - Preview file contents (first 1KB for text files)
  *
@@ -56,7 +56,7 @@ extern int pcfiles_rename(const char *old_path, const char *new_name);
 /* Root mount points */
 
 #define PCFILES_SD_ROOT       "/mnt/sd"
-#define PCFILES_FLASH_ROOT    "/data"
+#define PCFILES_FLASH_ROOT    "/flash"
 
 /****************************************************************************
  * Private Types
@@ -1064,6 +1064,7 @@ const pc_app_t g_pcfiles_app =
       .display_name = "Files",
       .version      = "1.0.0",
       .category     = "system",
+      .icon         = LV_SYMBOL_DIRECTORY,
       .min_ram      = 32768,      /* 32KB for entries + buffers */
       .flags        = PC_APP_FLAG_BUILTIN,
     },

@@ -45,6 +45,44 @@ ifeq ($(CONFIG_PICOCALC_PIO_SDIO),y)
   CSRCS += rp23xx_pio_sdio.c
 endif
 
+ifeq ($(CONFIG_IEEE80211_INFINEON_CYW43439),y)
+  CSRCS += rp23xx_firmware.c
+endif
+
+ifeq ($(CONFIG_RP23XX_FLASH_FILE_SYSTEM),y)
+  CSRCS += rp23xx_flash_mtd.c
+endif
+
 DEPPATH += --dep-path board
 VPATH += :board
 CFLAGS += ${INCDIR_PREFIX}$(TOPDIR)$(DELIM)arch$(DELIM)$(CONFIG_ARCH)$(DELIM)src$(DELIM)board$(DELIM)board
+
+############################################################################
+# CYW43439 firmware blob
+############################################################################
+
+ifeq ($(CONFIG_IEEE80211_INFINEON_CYW43439),y)
+
+FIRMWARE = cyw43439.firmware.image
+
+ifeq ($(PICO_SDK_PATH),)
+  PICO_SDK_PATH = /tmp
+endif
+
+FIRMWARE_SRC := $(patsubst "%",%,$(CONFIG_CYW43439_FIRMWARE_BIN_PATH))
+
+$(FIRMWARE_SRC):
+	mkdir -p `dirname $(FIRMWARE_SRC)`
+	echo "dummy" >$(FIRMWARE_SRC)
+
+
+$(FIRMWARE): $(FIRMWARE_SRC)
+	$(call CATFILE, $(FIRMWARE), $(FIRMWARE_SRC))
+
+rp23xx_firmware.c: $(FIRMWARE)
+board$(DELIM)rp23xx_firmware.c: $(FIRMWARE)
+
+distclean::
+	$(call DELFILE, cyw43439.firmware.image)
+
+endif

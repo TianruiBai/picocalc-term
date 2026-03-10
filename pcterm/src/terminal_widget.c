@@ -418,7 +418,8 @@ static void terminal_key_event_cb(lv_event_t *e)
  *
  * Description:
  *   Allocate a terminal widget with grid, scrollback, and LVGL canvas.
- *   All large buffers are allocated in PSRAM.
+ *   Uses normal system heap so terminal remains available even when PSRAM
+ *   initialization fails.
  *
  ****************************************************************************/
 
@@ -431,9 +432,9 @@ terminal_t *terminal_create(lv_obj_t *parent,
   size_t scrollback_size;
   size_t canvas_size;
 
-  /* Allocate terminal struct in PSRAM */
+  /* Allocate terminal struct in system heap */
 
-  term = (terminal_t *)pc_app_psram_alloc(sizeof(terminal_t));
+  term = (terminal_t *)malloc(sizeof(terminal_t));
   if (term == NULL)
     {
       syslog(LOG_ERR, "term: Failed to allocate terminal struct\n");
@@ -445,22 +446,22 @@ terminal_t *terminal_create(lv_obj_t *parent,
   /* Allocate grid: COLS × ROWS cells */
 
   grid_size = sizeof(term_cell_t) * TERM_COLS * TERM_ROWS;
-  term->grid = (term_cell_t *)pc_app_psram_alloc(grid_size);
+  term->grid = (term_cell_t *)malloc(grid_size);
   if (term->grid == NULL)
     {
       syslog(LOG_ERR, "term: Failed to allocate grid (%zu bytes)\n",
              grid_size);
-      pc_app_psram_free(term);
+      free(term);
       return NULL;
     }
 
   /* Allocate scrollback buffer */
 
   scrollback_size = sizeof(term_cell_t) * TERM_COLS * TERM_SCROLLBACK;
-  term->scrollback = (term_cell_t *)pc_app_psram_alloc(scrollback_size);
+  term->scrollback = (term_cell_t *)malloc(scrollback_size);
   if (term->scrollback == NULL)
     {
-      syslog(LOG_WARNING, "term: No scrollback (PSRAM low)\n");
+      syslog(LOG_WARNING, "term: No scrollback (heap low)\n");
       /* Non-fatal — proceed without scrollback */
     }
 
@@ -497,21 +498,21 @@ terminal_t *terminal_create(lv_obj_t *parent,
   /* Create LVGL canvas for rendering the terminal grid.
    * Canvas size: TERM_COLS * TERM_CELL_W × TERM_ROWS * TERM_CELL_H
    *            = 53 * 6 × 25 * 12 = 318 × 300 pixels
-   * Buffer: 318 × 300 × 2 bytes (RGB565) = ~186KB → PSRAM
+    * Buffer: 318 × 300 × 2 bytes (RGB565) = ~186KB in SRAM
    */
 
   canvas_size = sizeof(lv_color_t) *
                 (TERM_COLS * TERM_CELL_W) *
                 (TERM_ROWS * TERM_CELL_H);
 
-  term->canvas_buf = (lv_color_t *)pc_app_psram_alloc(canvas_size);
+  term->canvas_buf = (lv_color_t *)malloc(canvas_size);
   if (term->canvas_buf == NULL)
     {
       syslog(LOG_ERR, "term: Failed to allocate canvas (%zu bytes)\n",
              canvas_size);
-      if (term->scrollback) pc_app_psram_free(term->scrollback);
-      pc_app_psram_free(term->grid);
-      pc_app_psram_free(term);
+      if (term->scrollback) free(term->scrollback);
+      free(term->grid);
+      free(term);
       return NULL;
     }
 
@@ -563,11 +564,11 @@ void terminal_destroy(terminal_t *term)
       lv_obj_delete(term->canvas);
     }
 
-  if (term->canvas_buf)  pc_app_psram_free(term->canvas_buf);
-  if (term->scrollback)  pc_app_psram_free(term->scrollback);
-  if (term->grid)        pc_app_psram_free(term->grid);
+  if (term->canvas_buf)  free(term->canvas_buf);
+  if (term->scrollback)  free(term->scrollback);
+  if (term->grid)        free(term->grid);
 
-  pc_app_psram_free(term);
+  free(term);
 }
 
 /****************************************************************************

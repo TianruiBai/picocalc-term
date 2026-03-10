@@ -4,7 +4,7 @@
 # Board-specific Kconfig options for PicoCalc RP2350B-Plus-W
 #
 
-if ARCH_BOARD_PICOCALC_RP2350B
+if ARCH_BOARD_CUSTOM
 
 config PICOCALC_LCD_ST7365P
 	bool "ST7365P LCD display driver"
@@ -59,8 +59,29 @@ config PICOCALC_WIFI
 	bool "Wi-Fi support (CYW43439)"
 	default n
 	depends on NET
+	select DRIVERS_IEEE80211
+	select DRIVERS_WIRELESS
+	select IEEE80211_BROADCOM_FULLMAC_GSPI
+	select IEEE80211_INFINEON_CYW43439
+	select NETDEV_WIRELESS_IOCTL
 	---help---
 		Enable CYW43439 Wi-Fi driver. Requires network stack.
+
+if PICOCALC_WIFI
+
+config CYW43439_FIRMWARE_BIN_PATH
+	string "Path to Infineon 43439 firmware file"
+	default "${PICO_SDK_PATH}/lib/cyw43-driver/firmware/43439A0-7.95.49.00.combined"
+	---help---
+		Path to the combined CYW43439 firmware+CLM blob image.
+
+config CYW43439_FIRMWARE_LEN
+	int "Infineon 43439 firmware length (bytes)"
+	default 224190
+	---help---
+		Length of the base firmware region before the appended CLM blob.
+
+endif
 
 config PICOCALC_HOSTNAME
 	string "Default hostname"
@@ -68,6 +89,6 @@ config PICOCALC_HOSTNAME
 	---help---
 		Default hostname for the device, used in terminal prompt
 		and network identity. Can be changed at runtime via
-		/mnt/sd/etc/hostname.
+		/flash/etc/hostname.
 
-endif # ARCH_BOARD_PICOCALC_RP2350B
+endif # ARCH_BOARD_CUSTOM

@@ -325,6 +325,7 @@ const pc_app_t g_pcvideo_app = {
     .display_name = "Video Player",
     .version      = "1.0.0",
     .category     = "entertainment",
+    .icon         = LV_SYMBOL_VIDEO,
     .min_ram      = 524288,   /* 512 KB for frame buffer + decode */
     .flags        = PC_APP_FLAG_BUILTIN,
   },

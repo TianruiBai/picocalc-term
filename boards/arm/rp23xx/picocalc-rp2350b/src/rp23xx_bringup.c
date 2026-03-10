@@ -31,8 +31,21 @@
 
 #include "rp23xx_spi.h"
 #include "rp23xx_i2c.h"
+#include "rp23xx_gpio.h"
 
 #include <arch/board/board.h>
+
+#ifdef CONFIG_IEEE80211_INFINEON_CYW43439
+#include "rp23xx_cyw43439.h"
+#endif
+
+/****************************************************************************
+ * Private Data
+ ****************************************************************************/
+
+#ifdef CONFIG_IEEE80211_INFINEON_CYW43439
+static gspi_dev_t *g_cyw43439;
+#endif
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -237,18 +250,50 @@ int rp23xx_bringup(void)
   /* --- PWM Audio --- */
 
 #ifdef CONFIG_PICOCALC_AUDIO_PWM
-  extern int rp23xx_audio_initialize(void);
-  ret = rp23xx_audio_initialize();
-  if (ret < 0)
-    {
-      syslog(LOG_ERR, "audio: PWM initialization failed: %d\n", ret);
-    }
+  /* Defer audio hardware/ring-buffer initialization until first real audio
+   * use (startup chime/media playback). This keeps boot resilient when SRAM
+   * is tight and PSRAM is unavailable.
+   */
+  syslog(LOG_INFO, "audio: deferred initialization (lazy-start)\n");
 #endif
 
   /* --- Mount SD card filesystem --- */
 
-#ifdef CONFIG_FS_FAT
-  syslog(LOG_INFO, "vfat: FAT filesystem support enabled\n");
+#ifdef CONFIG_MMCSD
+  mkdir("/mnt", 0777);
+  mkdir("/mnt/sd", 0777);
+
+  /* Check GPIO22 card-detect (active-low: 0 = card present) */
+
+  rp23xx_gpio_init(BOARD_SD_PIN_DET);
+  rp23xx_gpio_setdir(BOARD_SD_PIN_DET, false);   /* input */
+  rp23xx_gpio_set_pulls(BOARD_SD_PIN_DET, 1, 0);  /* pull-up */
+  up_udelay(10);  /* settle */
+
+  bool sd_present = (rp23xx_gpio_get(BOARD_SD_PIN_DET) == 0);
+  syslog(LOG_INFO, "vfat: SD detect GP%d = %d (%s)\n",
+         BOARD_SD_PIN_DET,
+         rp23xx_gpio_get(BOARD_SD_PIN_DET),
+         sd_present ? "card inserted" : "no card");
+
+  if (sd_present)
+    {
+      ret = mount("/dev/mmcsd0", "/mnt/sd", "vfat", 0, NULL);
+      if (ret < 0)
+        {
+          syslog(LOG_WARNING, "vfat: SD card mount at /mnt/sd failed: %d\n",
+                 ret);
+        }
+      else
+        {
+          syslog(LOG_INFO, "vfat: SD card mounted at /mnt/sd\n");
+        }
+    }
+  else
+    {
+      syslog(LOG_INFO, "vfat: no SD card detected (GP%d high)\n",
+             BOARD_SD_PIN_DET);
+    }
 #endif
 
   /* --- PIO SDIO (optional, replaces SPI-mode SD card) --- */
@@ -266,6 +311,30 @@ int rp23xx_bringup(void)
              "(CLK=GP%d CMD=GP%d DAT0=GP%d)\n",
              BOARD_SDIO_PIN_CLK, BOARD_SDIO_PIN_CMD,
              BOARD_SDIO_PIN_DAT0);
+    }
+#endif
+
+  /* --- CYW43439 Wi-Fi (Broadcom FullMAC over GSPI) --- */
+
+#if defined(CONFIG_PICOCALC_WIFI) && defined(CONFIG_IEEE80211_INFINEON_CYW43439)
+  g_cyw43439 = rp23xx_cyw_setup(BOARD_CYW43_PIN_WL_ON,
+                                BOARD_CYW43_PIN_WL_CS,
+                                BOARD_CYW43_PIN_WL_D,
+                                BOARD_CYW43_PIN_WL_CLK,
+                                BOARD_CYW43_PIN_WL_D);
+  if (g_cyw43439 == NULL)
+    {
+      ret = errno;
+      syslog(LOG_ERR, "wifi: CYW43439 setup failed: %d\n", ret);
+    }
+  else
+    {
+      syslog(LOG_INFO, "wifi: CYW43439 ready "
+             "(WL_ON=GP%d WL_D=GP%d WL_CS=GP%d WL_CLK=GP%d)\n",
+             BOARD_CYW43_PIN_WL_ON,
+             BOARD_CYW43_PIN_WL_D,
+             BOARD_CYW43_PIN_WL_CS,
+             BOARD_CYW43_PIN_WL_CLK);
     }
 #endif
 
@@ -304,7 +373,8 @@ int rp23xx_bringup(void)
                     /* First mount fails → format and retry */
 
                     syslog(LOG_WARNING,
-                           "flash: mount failed, formatting LittleFS...\n");
+                           "flash: mount failed, formatting LittleFS "
+                           "(this may take a few minutes)...\n");
 
                     ret = mount("/dev/flash0", mp, "littlefs", 0,
                                 "autoformat");
@@ -351,6 +421,133 @@ int rp23xx_bringup(void)
       syslog(LOG_INFO, "procfs: mounted at /proc\n");
     }
 #endif
+
+  /* --- Mount BINFS at /bin (built-in apps as executable files) ---
+   *
+   * BINFS exposes every NuttX built-in application (ls, cat, nsh, sh,
+   * vi, lua, etc.) as an executable file under /bin.  Combined with
+   * CONFIG_NSH_FILE_APPS=y and CONFIG_PATH_INITIAL="/bin:/usr/bin",
+   * this lets users and scripts reference programs by absolute path
+   * just like a real Unix system:  /bin/sh, /bin/ls, /bin/lua, etc.
+   */
+
+#ifdef CONFIG_FS_BINFS
+  mkdir("/bin", 0755);
+  ret = mount(NULL, "/bin", "binfs", 0, NULL);
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "binfs: mount at /bin failed: %d\n", ret);
+    }
+  else
+    {
+      syslog(LOG_INFO, "binfs: mounted at /bin "
+             "(built-in apps as executables)\n");
+    }
+#endif
+
+  /* --- Mount TMPFS at /tmp (volatile RAM filesystem) ---
+   *
+   * Provides a RAM-backed scratch area that does not wear flash.
+   * Cleared on every reboot, just like /tmp on Linux.
+   */
+
+#ifdef CONFIG_FS_TMPFS
+  mkdir("/tmp", 0755);
+  ret = mount(NULL, "/tmp", "tmpfs", 0, NULL);
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "tmpfs: mount at /tmp failed: %d\n", ret);
+    }
+  else
+    {
+      syslog(LOG_INFO, "tmpfs: mounted at /tmp\n");
+    }
+#endif
+
+  /* --- Buildroot-like directory tree on internal flash ---
+   *
+   * Create a Unix-like hierarchy under /flash/ so the system
+   * feels like a small embedded Linux.  Top-level symlinks
+   * (when CONFIG_PSEUDOFS_SOFTLINKS=y) let users use familiar
+   * paths like /etc, /home, /sbin directly.
+   *
+   * /bin  = BINFS mount (built-in apps — see above)
+   * /tmp  = TMPFS mount (RAM-backed volatile — see above)
+   * /proc = procfs mount (kernel info — see above)
+   * Other standard paths are symlinked to /flash/ equivalents.
+   */
+
+#ifdef CONFIG_RP23XX_FLASH_FILE_SYSTEM
+  {
+    static const char * const dirs[] =
+      {
+        "/flash/sbin",
+        "/flash/lib",
+        "/flash/etc",
+        "/flash/etc/ssh",
+        "/flash/etc/appstate",
+        "/flash/home",
+        "/flash/home/picocalc",
+        "/flash/home/picocalc/.config",
+        "/flash/usr",
+        "/flash/usr/lib",
+        "/flash/usr/share",
+        "/flash/var",
+        "/flash/var/log",
+        "/flash/var/tmp",
+      };
+
+    for (size_t i = 0; i < sizeof(dirs) / sizeof(dirs[0]); i++)
+      {
+        mkdir(dirs[i], 0755);
+      }
+
+    syslog(LOG_INFO, "rootfs: buildroot directory tree created on /flash\n");
+
+    /* Create top-level symlinks for Unix-like root paths.
+     *
+     * /bin and /tmp are NOT symlinked — they are real mounts above
+     * (BINFS and TMPFS respectively).  /usr/bin → /bin so that
+     * PATH="/bin:/usr/bin" finds executables in both places.
+     */
+
+#ifdef CONFIG_PSEUDOFS_SOFTLINKS
+    static const struct
+    {
+      const char *link;
+      const char *target;
+    } links[] =
+      {
+        { "/sbin", "/flash/sbin" },
+        { "/lib",  "/flash/lib"  },
+        { "/etc",  "/flash/etc"  },
+        { "/home", "/flash/home" },
+        { "/usr",  "/flash/usr"  },
+        { "/var",  "/flash/var"  },
+      };
+
+    for (size_t i = 0; i < sizeof(links) / sizeof(links[0]); i++)
+      {
+        /* symlink() is safe to call repeatedly — fails harmlessly
+         * if the link already exists in the pseudo-filesystem.
+         */
+
+        symlink(links[i].target, links[i].link);
+      }
+
+    /* /usr/bin → /bin so PATH lookup finds BINFS executables
+     * via either /bin/foo or /usr/bin/foo.
+     */
+
+    symlink("/bin", "/flash/usr/bin");
+
+    syslog(LOG_INFO,
+           "rootfs: top-level symlinks created "
+           "(/sbin /lib /etc /home /usr /var; "
+           "/usr/bin -> /bin)\n");
+#endif /* CONFIG_PSEUDOFS_SOFTLINKS */
+  }
+#endif /* CONFIG_RP23XX_FLASH_FILE_SYSTEM */
 
   syslog(LOG_INFO, "picocalc: board bring-up complete\n");
 

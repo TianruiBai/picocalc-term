@@ -364,6 +364,7 @@ const pc_app_t g_pcssh_app = {
     .display_name = "SSH Client",
     .version      = "1.0.0",
     .category     = "network",
+    .icon         = LV_SYMBOL_CALL,
     .min_ram      = 131072,   /* SSH buffers + terminal */
     .flags        = PC_APP_FLAG_BUILTIN | PC_APP_FLAG_NETWORK
                     | PC_APP_FLAG_STATEFUL,

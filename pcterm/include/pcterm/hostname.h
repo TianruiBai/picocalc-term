@@ -2,7 +2,7 @@
  * pcterm/include/pcterm/hostname.h
  *
  * Hostname management for PicoCalc-Term.
- * Hostname is stored on /mnt/sd/etc/hostname and used in:
+ * Hostname is stored on the internal flash at /flash/etc/hostname and used in:
  *   - NuttShell prompt: user@<hostname>$
  *   - Status bar display
  *   - Network identity (mDNS future)
@@ -19,7 +19,7 @@
  * Pre-processor Definitions
  ****************************************************************************/
 
-#define HOSTNAME_PATH       "/mnt/sd/etc/hostname"
+#define HOSTNAME_PATH       "/flash/etc/hostname"
 #define HOSTNAME_MAX_LEN    31       /* Max hostname length (excl. NUL) */
 #define HOSTNAME_DEFAULT    "picocalc"
 
@@ -32,7 +32,7 @@ extern "C" {
 #endif
 
 /**
- * Load hostname from /mnt/sd/etc/hostname.
+ * Load hostname from /flash/etc/hostname.
  * Falls back to HOSTNAME_DEFAULT if file is missing or invalid.
  * Also sets the NuttX kernel hostname via sethostname().
  *

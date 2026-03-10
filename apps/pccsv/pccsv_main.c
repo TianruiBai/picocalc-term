@@ -417,6 +417,7 @@ const pc_app_t g_pccsv_app = {
     .display_name = "CSV Editor",
     .version      = "1.0.0",
     .category     = "office",
+    .icon         = LV_SYMBOL_LIST,
     .min_ram      = 131072,
     .flags        = PC_APP_FLAG_BUILTIN | PC_APP_FLAG_STATEFUL,
   },

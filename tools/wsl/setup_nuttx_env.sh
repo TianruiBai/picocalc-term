@@ -2,7 +2,7 @@
 ############################################################################
 # tools/wsl/setup_nuttx_env.sh
 #
-# Install all NuttX build prerequisites on Ubuntu 22.04 (WSL2).
+# Install all NuttX build prerequisites on Ubuntu Linux.
 # Targets: RP2350B (ARM Cortex-M33), arm-none-eabi-gcc 13.x
 #
 # Usage:  chmod +x tools/wsl/setup_nuttx_env.sh
@@ -11,8 +11,17 @@
 set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 echo "==> Installing system packages"
+
+# Some dev containers ship a broken Yarn apt source that blocks apt update.
+# Disable it if present so dependency installation remains deterministic.
+if [[ -f /etc/apt/sources.list.d/yarn.list ]]; then
+  echo "==> Disabling /etc/apt/sources.list.d/yarn.list (known GPG issue in some containers)"
+  sudo mv /etc/apt/sources.list.d/yarn.list /etc/apt/sources.list.d/yarn.list.disabled
+fi
+
 sudo apt-get update -qq
 sudo apt-get install -y -qq \
   build-essential \
@@ -35,6 +44,16 @@ sudo apt-get install -y -qq \
   python3-setuptools \
   python3-wheel \
   python3-yaml \
+  kconfig-frontends \
+  genromfs \
+  u-boot-tools \
+  automake \
+  autoconf \
+  libtool \
+  texinfo \
+  patchelf \
+  gawk \
+  perl \
   gettext \
   unzip \
   curl \
@@ -45,6 +64,13 @@ sudo apt-get install -y -qq \
 echo "==> Installing Python packages (kconfiglib, pyelftools)"
 python3 -m pip install --user -U pip 2>/dev/null || true
 python3 -m pip install --user kconfiglib pyelftools
+
+if ! command -v picotool >/dev/null 2>&1; then
+  echo "==> picotool not found, installing it (required for UF2 generation)"
+  bash "${ROOT_DIR}/tools/wsl/install_picotool.sh"
+else
+  echo "==> picotool already in PATH: $(picotool version | head -1)"
+fi
 
 # -----------------------------------------------------------------------
 # ARM GNU Toolchain — required for RP2350B (Cortex-M33)
@@ -86,9 +112,10 @@ arm-none-eabi-gcc -mcpu=cortex-m33 -mthumb -E -x c /dev/null -o /dev/null 2>/dev
   || echo "  ✗ WARNING: Cortex-M33 not supported by this toolchain"
 
 echo ""
-echo "[OK] WSL NuttX build environment ready for PicoCalc RP2350B."
+echo "[OK] Linux NuttX build environment ready for PicoCalc RP2350B."
 echo ""
 echo "Next steps:"
 echo "  cd $(pwd)"
+echo "  make setup       # fetch/sync NuttX trees"
 echo "  make configure   # one-time configure"
 echo "  make build       # build nuttx.uf2"

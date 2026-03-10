@@ -278,6 +278,7 @@ const pc_app_t g_pcaudio_app = {
     .display_name = "Audio Player",
     .version      = "1.0.0",
     .category     = "entertainment",
+    .icon         = LV_SYMBOL_AUDIO,
     .min_ram      = 262144,   /* 256 KB for decode buffer */
     .flags        = PC_APP_FLAG_BUILTIN | PC_APP_FLAG_BACKGROUND,
   },

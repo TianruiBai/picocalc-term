@@ -7,10 +7,16 @@
  * USB PLL, peripheral clock, and XOSC unchanged.  This means SPI,
  * I2C, UART, USB, and PIO clocks remain stable.
  *
- * Profiles:
- *   0 = Standard     — 150 MHz (default, FBDIV=125, PD1=5, PD2=2)
- *   1 = High Perf    — 200 MHz (FBDIV=100, PD1=3, PD2=2)
- *   2 = Power Save   — 100 MHz (FBDIV=100, PD1=6, PD2=2)
+ * Extended profiles (9 granular steps from 100–400 MHz):
+ *   0 = Power Save    — 100 MHz (FBDIV=100, PD1=6, PD2=2)
+ *   1 = Low           — 120 MHz (FBDIV=120, PD1=6, PD2=2)
+ *   2 = Standard      — 150 MHz (FBDIV=125, PD1=5, PD2=2) [default]
+ *   3 = Medium        — 180 MHz (FBDIV= 90, PD1=3, PD2=2)
+ *   4 = High          — 200 MHz (FBDIV=100, PD1=3, PD2=2)
+ *   5 = Very High     — 225 MHz (FBDIV= 75, PD1=2, PD2=2)
+ *   6 = Performance   — 250 MHz (FBDIV=125, PD1=3, PD2=2)
+ *   7 = Max Boost     — 300 MHz (FBDIV=150, PD1=3, PD2=2)
+ *   8 = Overclock     — 400 MHz (FBDIV=100, PD1=3, PD2=1) **caution**
  *
  * PLL formula: freq = (XOSC / REFDIV) * FBDIV / (PD1 * PD2)
  *   XOSC = 12 MHz, REFDIV = 1
@@ -65,12 +71,21 @@ struct power_profile_s
 
 static const struct power_profile_s g_profiles[] =
 {
-  { "Standard",        150, 125, 5, 2 },  /* 12 * 125 / (5*2) = 150 */
-  { "High Performance", 200, 100, 3, 2 },  /* 12 * 100 / (3*2) = 200 */
-  { "Power Save",      100, 100, 6, 2 },  /* 12 * 100 / (6*2) = 100 */
+  /* idx  name               MHz  FBDIV PD1 PD2   VCO (MHz) */
+  { "Power Save",          100, 100, 6, 2 },  /* 12*100 / 12 = 100, VCO=1200 */
+  { "Low",                 120, 120, 6, 2 },  /* 12*120 / 12 = 120, VCO=1440 */
+  { "Standard",            150, 125, 5, 2 },  /* 12*125 / 10 = 150, VCO=1500 */
+  { "Medium",              180,  90, 3, 2 },  /* 12* 90 /  6 = 180, VCO=1080 */
+  { "High",                200, 100, 3, 2 },  /* 12*100 /  6 = 200, VCO=1200 */
+  { "Very High",           225,  75, 2, 2 },  /* 12* 75 /  4 = 225, VCO= 900 */
+  { "Performance",         250, 125, 3, 2 },  /* 12*125 /  6 = 250, VCO=1500 */
+  { "Max Boost",           300, 150, 3, 2 },  /* 12*150 /  6 = 300, VCO=1800 */
+  { "Overclock (400)",     400, 100, 3, 1 },  /* 12*100 /  3 = 400, VCO=1200 */
 };
 
-static int g_current_profile = 0;
+#define NUM_PROFILES  (sizeof(g_profiles) / sizeof(g_profiles[0]))
+
+static int g_current_profile = 2;  /* Standard 150 MHz */
 
 /****************************************************************************
  * Private Functions
@@ -140,7 +155,7 @@ static void pll_sys_reconfigure(uint16_t fbdiv, uint8_t pd1, uint8_t pd2)
 
 void rp23xx_set_power_profile(int profile)
 {
-  if (profile < 0 || profile > 2)
+  if (profile < 0 || profile >= (int)NUM_PROFILES)
     {
       return;
     }
@@ -180,4 +195,48 @@ void rp23xx_set_power_profile(int profile)
 int rp23xx_get_power_profile(void)
 {
   return g_current_profile;
+}
+
+/****************************************************************************
+ * Name: rp23xx_get_sys_freq_mhz
+ *
+ * Description:
+ *   Return the current system clock frequency in MHz.
+ *
+ ****************************************************************************/
+
+uint32_t rp23xx_get_sys_freq_mhz(void)
+{
+  return g_profiles[g_current_profile].freq_mhz;
+}
+
+/****************************************************************************
+ * Name: rp23xx_get_num_profiles
+ *
+ * Description:
+ *   Return the number of available power profiles.
+ *
+ ****************************************************************************/
+
+int rp23xx_get_num_profiles(void)
+{
+  return (int)NUM_PROFILES;
+}
+
+/****************************************************************************
+ * Name: rp23xx_get_profile_name
+ *
+ * Description:
+ *   Return the name of a power profile.
+ *
+ ****************************************************************************/
+
+const char *rp23xx_get_profile_name(int profile)
+{
+  if (profile < 0 || profile >= (int)NUM_PROFILES)
+    {
+      return "Unknown";
+    }
+
+  return g_profiles[profile].name;
 }

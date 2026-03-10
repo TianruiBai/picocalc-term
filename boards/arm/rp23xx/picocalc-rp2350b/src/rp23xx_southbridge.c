@@ -43,7 +43,7 @@
 
 #define SB_I2C_RETRIES       3       /* Retry count for I2C errors */
 #define SB_I2C_TIMEOUT_MS    50      /* I2C timeout per transfer */
-#define SB_I2C_READ_DELAY_MS 16      /* South-bridge needs delay before read */
+#define SB_I2C_READ_DELAY_MS 4       /* South-bridge needs delay before read */
 #define SB_INIT_RETRY_COUNT  20      /* Probe retries during early boot */
 #define SB_INIT_RETRY_MS     20      /* Delay between probe attempts */
 

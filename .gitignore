@@ -10,6 +10,7 @@ build/
 CMakeFiles/
 CMakeCache.txt
 Makefile
+!/Makefile
 cmake_install.cmake
 
 # NuttX specific
