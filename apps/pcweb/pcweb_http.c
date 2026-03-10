@@ -278,7 +278,7 @@ int http_get(const char *url, http_response_t *resp)
   int req_len = snprintf(request, sizeof(request),
     "GET %s HTTP/1.0\r\n"
     "Host: %s\r\n"
-    "User-Agent: PicoCalc-Term/0.1\r\n"
+    "User-Agent: eUX/0.1\r\n"
     "Accept: text/html, text/plain, image/bmp, image/png, image/*\r\n"
     "Connection: close\r\n"
     "\r\n",

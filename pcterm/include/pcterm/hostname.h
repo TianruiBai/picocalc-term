@@ -1,7 +1,7 @@
 /****************************************************************************
  * pcterm/include/pcterm/hostname.h
  *
- * Hostname management for PicoCalc-Term.
+ * eUX OS — Hostname management.
  * Hostname is stored on the internal flash at /flash/etc/hostname and used in:
  *   - NuttShell prompt: user@<hostname>$
  *   - Status bar display
@@ -21,7 +21,7 @@
 
 #define HOSTNAME_PATH       "/flash/etc/hostname"
 #define HOSTNAME_MAX_LEN    31       /* Max hostname length (excl. NUL) */
-#define HOSTNAME_DEFAULT    "picocalc"
+#define HOSTNAME_DEFAULT    "eux"
 
 /****************************************************************************
  * Public Function Prototypes

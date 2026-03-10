@@ -1,0 +1,4 @@
+#!/bin/sh
+# runit service: audio service
+# Background audio playback (minimp3/WAV), survives app switches
+exec eux_audio 2>&1

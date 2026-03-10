@@ -1,0 +1,1700 @@
+Archive member included to satisfy reference by file (symbol)
+
+YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+                              (_elf_entry_point)
+YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+                              YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj) (Reset_Handler)
+YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                              YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj) (SystemInit)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+                              CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj (operator delete(void*, unsigned int))
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o) (operator delete(void*))
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o (atexit)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o (exit)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o (__libc_fini_array)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o) (_global_impure_ptr)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o (__libc_init_array)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+                              CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj (malloc)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o (memset)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o) (_free_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o) (_malloc_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+                              CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj (printf)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+                              CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj (puts)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o) (_sbrk_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+                              CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj (snprintf)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+                              CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj (sprintf)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+                              CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj (strcpy)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+                              CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj (strlen)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o) (__swbuf_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o) (__swsetup_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o) (__register_exitproc)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o) (__call_exitprocs)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o) (_fflush_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o) (__sinit)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o) (_fwalk)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o) (__smakebuf_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o) (__malloc_lock)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o) (_svfprintf_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o) (_vfprintf_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o) (_printf_i)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o) (errno)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o) (__sread)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o) (_write_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o) (_close_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o) (_fstat_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o) (__sfvwrite_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o) (_isatty_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o) (_lseek_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o) (memchr)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o) (memcpy)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o) (memmove)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o) (_realloc_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o) (_read_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o) (_malloc_usable_size_r)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o) (_sbrk)
+/usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+                              /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o) (_exit)
+
+Discarded input sections
+
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crti.o
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crti.o
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crti.o
+ .data          0x0000000000000000        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+ .rodata        0x0000000000000000       0x24 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .group         0x0000000000000000        0x8 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .group         0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .text          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .data          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .bss           0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .bss._ZN8posix_io4instE
+                0x0000000000000000        0x1 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .group         0x0000000000000000        0x8 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .group         0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .group         0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .group         0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .data          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .bss           0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN4taskD2Ev
+                0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN4task3runEv
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN4taskD0Ev
+                0x0000000000000000       0x18 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task11draw_stringEiiPKch
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task21draw_highlight_stringEiiPKc
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task9draw_charEiic
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task13draw_big_charEiic
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task8draw_barEiii
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task14draw_wrap_textEPKc
+                0x0000000000000000       0x82 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task12clear_screenEv
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task10clear_menuEv
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task9draw_logoEv
+                0x0000000000000000       0x50 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task11draw_headerEPc
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task15draw_footer_escEv
+                0x0000000000000000       0x50 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task17draw_footer_enterEv
+                0x0000000000000000       0x50 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task15draw_footer_navEv
+                0x0000000000000000       0x50 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task17draw_footer_pauseEv
+                0x0000000000000000       0x50 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .text._ZN9main_task12draw_playingEv
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .rodata._ZTV4task
+                0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .data._ZL11header_data
+                0x0000000000000000      0x9c4 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .data._ZL15esc_header_data
+                0x0000000000000000      0x12b CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .data._ZL15nav_header_data
+                0x0000000000000000       0x79 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .data._ZL17enter_header_data
+                0x0000000000000000      0x138 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .data._ZL18icon_p_header_data
+                0x0000000000000000       0xa9 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .rodata._ZL16header_data_cmap
+                0x0000000000000000       0x33 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .rodata._ZL20esc_header_data_cmap
+                0x0000000000000000        0x9 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .rodata._ZL20nav_header_data_cmap
+                0x0000000000000000        0x9 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .rodata._ZL22enter_header_data_cmap
+                0x0000000000000000        0x9 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .rodata._ZL23icon_p_header_data_cmap
+                0x0000000000000000        0x9 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .group         0x0000000000000000        0x8 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .group         0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .text          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .data          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .bss           0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .text._ZN4taskD2Ev
+                0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .text._ZN4task3runEv
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .text._ZN4taskD0Ev
+                0x0000000000000000       0x18 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .text._ZN14sd_reader_task9read_dataEPhtPt
+                0x0000000000000000        0xe CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .rodata._ZTV4task
+                0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .group         0x0000000000000000        0x8 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .group         0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .group         0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .data          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .bss           0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text._ZN4taskD2Ev
+                0x0000000000000000        0xc CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text._ZN4task3runEv
+                0x0000000000000000        0x2 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text._ZN4taskD0Ev
+                0x0000000000000000       0x18 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text._ZN16mp3_decoder_task5inputEPvP10mad_stream
+                0x0000000000000000        0x4 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text._ZN16mp3_decoder_task6headerEPvPK10mad_header
+                0x0000000000000000        0x4 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text._ZN16mp3_decoder_task6outputEPvPK10mad_headerP7mad_pcm
+                0x0000000000000000        0x4 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text._ZN16mp3_decoder_task5errorEPvP10mad_streamP9mad_frame
+                0x0000000000000000        0x4 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text._ZN16mp3_decoder_task5scaleEi
+                0x0000000000000000        0x4 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .rodata._ZTV4task
+                0x0000000000000000       0x14 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .text          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .data          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .bss           0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .text._ZN7i2c_kbd16I2C_Send_RegDataEiic
+                0x0000000000000000       0x10 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .text          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .data          0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .bss           0x0000000000000000        0x0 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .bss.FONT_12X20
+                0x0000000000000000        0x4 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .bss.FONT_6X8  0x0000000000000000        0x4 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .bss.FONT_8X14
+                0x0000000000000000        0x4 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .debug_info    0x0000000000000000       0x79 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .debug_abbrev  0x0000000000000000       0x3d CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .debug_aranges
+                0x0000000000000000       0x18 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .debug_line    0x0000000000000000       0x99 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .debug_str     0x0000000000000000      0x1c2 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .comment       0x0000000000000000       0x34 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .ARM.attributes
+                0x0000000000000000       0x38 CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+ .text          0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .data          0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .bss           0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .text          0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .data          0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .bss           0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .text          0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .data          0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .bss           0x0000000000000000        0x0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .data          0x0000000000000000        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .text          0x0000000000000000      0x114 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+ .rodata        0x0000000000000000       0x24 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+ .eh_frame      0x0000000000000000        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtn.o
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtn.o
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtn.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x0000000010000000 0x0000000000800000 xr
+PSRAM            0x0000000011000000 0x0000000000800000 xrw
+RAM              0x0000000020000000 0x0000000000080000 xrw
+SCRATCH_X        0x0000000020080000 0x0000000000001000 xrw
+SCRATCH_Y        0x0000000020081000 0x0000000000001000 xrw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crti.o
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+
+.text           0x0000000010000000     0x30f8
+                0x0000000010000000                __image_load__ = LOADADDR (.text)
+                0x0000000010000000                __image_start__ = .
+                0x0000000010000000                __vector_start__ = .
+ *(.isr_vector)
+ .isr_vector    0x0000000010000000       0xf0 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+                0x0000000010000100                . = ALIGN (0x100)
+ *fill*         0x00000000100000f0       0x10 
+ *(.reset)
+ .reset         0x0000000010000100       0x88 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+                0x0000000010000108                reset_handler
+                0x000000001000014e                _elf_entry_point
+                0x0000000010000188                . = ALIGN (0x4)
+ *(.boot_blocks)
+ .boot_blocks   0x0000000010000188       0x14 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+                0x000000001000019c                . = ALIGN (0x4)
+ *(.text.*)
+ .text._ZN4taskD2Ev
+                0x000000001000019c        0xc CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+                0x000000001000019c                task::~task()
+                0x000000001000019c                task::~task()
+ .text._ZN4task3runEv
+                0x00000000100001a8        0x2 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+                0x00000000100001a8                task::run()
+ *fill*         0x00000000100001aa        0x2 
+ .text._ZN4taskD0Ev
+                0x00000000100001ac       0x18 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+                0x00000000100001ac                task::~task()
+ .text.main     0x00000000100001c4       0x28 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+                0x00000000100001c4                main
+ .text._ZN19pcm_audio_interfaceD2Ev
+                0x00000000100001ec        0xc CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x00000000100001ec                pcm_audio_interface::~pcm_audio_interface()
+                0x00000000100001ec                pcm_audio_interface::~pcm_audio_interface()
+ .text._ZN9main_taskD2Ev
+                0x00000000100001f8       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x00000000100001f8                main_task::~main_task()
+                0x00000000100001f8                main_task::~main_task()
+ .text._ZN18pcm_pwm_rp2040_drvD2Ev
+                0x000000001000020c       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x000000001000020c                pcm_pwm_rp2040_drv::~pcm_pwm_rp2040_drv()
+                0x000000001000020c                pcm_pwm_rp2040_drv::~pcm_pwm_rp2040_drv()
+ .text._ZN18pcm_pwm_rp2040_drvD0Ev
+                0x0000000010000220       0x20 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000220                pcm_pwm_rp2040_drv::~pcm_pwm_rp2040_drv()
+ .text._ZN19pcm_audio_interfaceD0Ev
+                0x0000000010000240       0x18 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000240                pcm_audio_interface::~pcm_audio_interface()
+ .text._ZN9main_taskD0Ev
+                0x0000000010000258       0x20 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000258                main_task::~main_task()
+ .text._ZN9main_taskC2Ev
+                0x0000000010000278       0xa4 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000278                main_task::main_task()
+                0x0000000010000278                main_task::main_task()
+ .text._ZN9main_task10enum_filesEv
+                0x000000001000031c       0x6a CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x000000001000031c                main_task::enum_files()
+ .text._ZN9main_task10select_mp3Ev
+                0x0000000010000386       0x3e CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000386                main_task::select_mp3()
+ .text._ZN9main_task11draw_cursorEv
+                0x00000000100003c4       0x1c CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x00000000100003c4                main_task::draw_cursor()
+ .text._ZN9main_task7menu_upEv
+                0x00000000100003e0       0x24 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x00000000100003e0                main_task::menu_up()
+ .text._ZN9main_task9menu_downEv
+                0x0000000010000404       0x28 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000404                main_task::menu_down()
+ .text._ZN9main_task10menu_startER14sd_reader_taskR16mp3_decoder_taskR18pcm_pwm_rp2040_drv
+                0x000000001000042c       0x50 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x000000001000042c                main_task::menu_start(sd_reader_task&, mp3_decoder_task&, pcm_pwm_rp2040_drv&)
+ .text._ZN9main_task14menu_start_allER14sd_reader_taskR16mp3_decoder_taskR18pcm_pwm_rp2040_drv
+                0x000000001000047c       0x48 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x000000001000047c                main_task::menu_start_all(sd_reader_task&, mp3_decoder_task&, pcm_pwm_rp2040_drv&)
+ .text._ZN9main_task22draw_footer_pagenumberEv
+                0x00000000100004c4       0x44 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x00000000100004c4                main_task::draw_footer_pagenumber()
+ .text._ZN9main_task11draw_footerEh
+                0x0000000010000508        0xe CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000508                main_task::draw_footer(unsigned char)
+ *fill*         0x0000000010000516        0x2 
+ .text._ZN9main_task9boot_menuEv
+                0x0000000010000518       0x7c CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000518                main_task::boot_menu()
+ .text._ZN9main_task3runEv
+                0x0000000010000594      0x2f0 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010000594                main_task::run()
+ .text._ZN14sd_reader_task3runEv
+                0x0000000010000884        0xc CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+                0x0000000010000884                sd_reader_task::run()
+ .text._ZN14sd_reader_taskD2Ev
+                0x0000000010000890       0x14 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+                0x0000000010000890                sd_reader_task::~sd_reader_task()
+                0x0000000010000890                sd_reader_task::~sd_reader_task()
+ .text._ZN14sd_reader_taskD0Ev
+                0x00000000100008a4       0x20 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+                0x00000000100008a4                sd_reader_task::~sd_reader_task()
+ .text._ZN14sd_reader_taskC2Ev
+                0x00000000100008c4       0x28 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+                0x00000000100008c4                sd_reader_task::sd_reader_task()
+                0x00000000100008c4                sd_reader_task::sd_reader_task()
+ .text._ZN14sd_reader_task5startEP5FatFsPNS0_4FILEE
+                0x00000000100008ec        0xe CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+                0x00000000100008ec                sd_reader_task::start(FatFs*, FatFs::FILE*)
+ .text._ZN16mp3_decoder_task3runEv
+                0x00000000100008fa        0x2 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                0x00000000100008fa                mp3_decoder_task::run()
+ .text._ZN16mp3_decoder_taskD2Ev
+                0x00000000100008fc       0x14 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                0x00000000100008fc                mp3_decoder_task::~mp3_decoder_task()
+                0x00000000100008fc                mp3_decoder_task::~mp3_decoder_task()
+ .text._ZN16mp3_decoder_taskD0Ev
+                0x0000000010000910       0x20 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                0x0000000010000910                mp3_decoder_task::~mp3_decoder_task()
+ .text._ZN16mp3_decoder_taskC2ER19pcm_audio_interfaceR14sd_reader_task
+                0x0000000010000930       0x30 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                0x0000000010000930                mp3_decoder_task::mp3_decoder_task(pcm_audio_interface&, sd_reader_task&)
+                0x0000000010000930                mp3_decoder_task::mp3_decoder_task(pcm_audio_interface&, sd_reader_task&)
+ .text._ZN16mp3_decoder_task5resetEv
+                0x0000000010000960        0x2 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                0x0000000010000960                mp3_decoder_task::reset()
+ .text._ZN16mp3_decoder_task12get_positionEmi
+                0x0000000010000962        0x4 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                0x0000000010000962                mp3_decoder_task::get_position(unsigned long, int)
+ .text._ZN16mp3_decoder_task17get_total_secondsEv
+                0x0000000010000966        0x4 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                0x0000000010000966                mp3_decoder_task::get_total_seconds()
+ *fill*         0x000000001000096a        0x2 
+ .text._ZN7i2c_kbdD2Ev
+                0x000000001000096c        0xc CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+                0x000000001000096c                i2c_kbd::~i2c_kbd()
+                0x000000001000096c                i2c_kbd::~i2c_kbd()
+ .text._ZN7i2c_kbdD0Ev
+                0x0000000010000978       0x14 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+                0x0000000010000978                i2c_kbd::~i2c_kbd()
+ .text._ZN7i2c_kbdC2Ev
+                0x000000001000098c       0x10 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+                0x000000001000098c                i2c_kbd::i2c_kbd()
+                0x000000001000098c                i2c_kbd::i2c_kbd()
+ .text._ZN7i2c_kbd13write_i2c_kbdEv
+                0x000000001000099c        0xe CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+                0x000000001000099c                i2c_kbd::write_i2c_kbd()
+ .text._ZN7i2c_kbd12read_i2c_kbdEv
+                0x00000000100009aa        0x6 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+                0x00000000100009aa                i2c_kbd::read_i2c_kbd()
+ .text.Default_Handler
+                0x00000000100009b0        0x2 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+                0x00000000100009b0                UART0_IRQ_Handler
+                0x00000000100009b0                TIMER1_IRQ_1_Handler
+                0x00000000100009b0                HardFault_Handler
+                0x00000000100009b0                TRNG_IRQ_Handler
+                0x00000000100009b0                PLL_SYS_IRQ_Handler
+                0x00000000100009b0                SysTick_Handler
+                0x00000000100009b0                PendSV_Handler
+                0x00000000100009b0                IO_IRQ_BANK0_Handler
+                0x00000000100009b0                NMI_Handler
+                0x00000000100009b0                PIO0_IRQ_0_Handler
+                0x00000000100009b0                USBCTRL_IRQ_Handler
+                0x00000000100009b0                SPI1_IRQ_Handler
+                0x00000000100009b0                POWMAN_IRQ_POW_Handler
+                0x00000000100009b0                DMA_IRQ_2_Handler
+                0x00000000100009b0                PIO1_IRQ_1_Handler
+                0x00000000100009b0                POWMAN_IRQ_TIMER_Handler
+                0x00000000100009b0                DMA_IRQ_1_Handler
+                0x00000000100009b0                SIO_IRQ_FIFO_Handler
+                0x00000000100009b0                UsageFault_Handler
+                0x00000000100009b0                PLL_USB_IRQ_Handler
+                0x00000000100009b0                TIMER0_IRQ_2_Handler
+                0x00000000100009b0                I2C1_IRQ_Handler
+                0x00000000100009b0                IO_IRQ_BANK0_NS_Handler
+                0x00000000100009b0                PIO2_IRQ_1_Handler
+                0x00000000100009b0                PWM_IRQ_WRAP_0_Handler
+                0x00000000100009b0                TIMER1_IRQ_0_Handler
+                0x00000000100009b0                SPI0_IRQ_Handler
+                0x00000000100009b0                PWM_IRQ_WRAP_1_Handler
+                0x00000000100009b0                SIO_IRQ_BELL_Handler
+                0x00000000100009b0                OTP_IRQ_Handler
+                0x00000000100009b0                PIO0_IRQ_1_Handler
+                0x00000000100009b0                I2C0_IRQ_Handler
+                0x00000000100009b0                SIO_IRQ_FIFO_NS_Handler
+                0x00000000100009b0                SecureFault_Handler
+                0x00000000100009b0                Default_Handler
+                0x00000000100009b0                SIO_IRQ_BELL_NS_Handler
+                0x00000000100009b0                SIO_IRQ_MTIMECMP_Handler
+                0x00000000100009b0                UART1_IRQ_Handler
+                0x00000000100009b0                DMA_IRQ_0_Handler
+                0x00000000100009b0                CLOCKS_IRQ_Handler
+                0x00000000100009b0                PIO1_IRQ_0_Handler
+                0x00000000100009b0                SVC_Handler
+                0x00000000100009b0                PIO2_IRQ_0_Handler
+                0x00000000100009b0                ADC_IRQ_FIFO_Handler
+                0x00000000100009b0                IO_IRQ_QSPI_Handler
+                0x00000000100009b0                TIMER1_IRQ_3_Handler
+                0x00000000100009b0                TIMER0_IRQ_0_Handler
+                0x00000000100009b0                IO_IRQ_QSPI_NS_Handler
+                0x00000000100009b0                BusFault_Handler
+                0x00000000100009b0                MemoryManagement_Handler
+                0x00000000100009b0                TIMER0_IRQ_3_Handler
+                0x00000000100009b0                DebugMonitor_Handler
+                0x00000000100009b0                TIMER1_IRQ_2_Handler
+                0x00000000100009b0                TIMER0_IRQ_1_Handler
+                0x00000000100009b0                DMA_IRQ_3_Handler
+ *fill*         0x00000000100009b2        0x2 
+ .text.Reset_Handler
+                0x00000000100009b4       0x60 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+                0x00000000100009b4                Reset_Handler
+ .text.return_0
+                0x0000000010000a14        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+                0x0000000010000a14                _getpid
+                0x0000000010000a14                _fstat
+                0x0000000010000a14                _isatty
+                0x0000000010000a14                _open
+                0x0000000010000a14                _stat
+                0x0000000010000a14                _lseek
+                0x0000000010000a14                _link
+                0x0000000010000a14                _unlink
+                0x0000000010000a14                _write
+                0x0000000010000a14                _kill
+                0x0000000010000a14                _read
+                0x0000000010000a14                return_0
+                0x0000000010000a14                _close
+ .text.ClockUpdate
+                0x0000000010000a18       0xec YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000010000a18                ClockUpdate
+ .text.SystemInit
+                0x0000000010000b04      0x258 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000010000b04                SystemInit
+ .text._ZdlPvj  0x0000000010000d5c        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+                0x0000000010000d5c                operator delete(void*, unsigned int)
+ .text._ZdlPv   0x0000000010000d60        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+                0x0000000010000d60                operator delete(void*)
+ *(SORT_BY_NAME(.ctors.*))
+ *(.ctors)
+ *(SORT_BY_NAME(.dtors.*))
+ *(.dtors)
+ *(.init)
+ .init          0x0000000010000d64        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crti.o
+                0x0000000010000d64                _init
+ .init          0x0000000010000d68        0x8 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtn.o
+ *(.fini)
+ .fini          0x0000000010000d70        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crti.o
+                0x0000000010000d70                _fini
+ .fini          0x0000000010000d74        0x8 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtn.o
+                0x0000000010000d7c                __preinit_array_start = .
+ *(.preinit_array*)
+                0x0000000010000d7c                __preinit_array_end = .
+                0x0000000010000d7c                __init_array_start = .
+ *(.init_array*)
+ .init_array    0x0000000010000d7c        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+ .init_array    0x0000000010000d80        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000010000d84                __init_array_end = .
+                0x0000000010000d84                __fini_array_start = .
+ *(.fini_array*)
+ .fini_array    0x0000000010000d84        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+                0x0000000010000d88                __fini_array_end = .
+ .text          0x0000000010000d88       0x8c /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+ .text          0x0000000010000e14       0x70 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+                0x0000000010000e14                _stack_init
+                0x0000000010000e1c                _mainCRTStartup
+                0x0000000010000e1c                _start
+ .text          0x0000000010000e84        0xc /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+                0x0000000010000e84                atexit
+ .text          0x0000000010000e90       0x28 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+                0x0000000010000e90                exit
+ .text          0x0000000010000eb8       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+                0x0000000010000eb8                __libc_fini_array
+ .text          0x0000000010000ee4       0x48 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+                0x0000000010000ee4                __libc_init_array
+ .text          0x0000000010000f2c       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+                0x0000000010000f2c                malloc
+                0x0000000010000f3c                free
+ .text          0x0000000010000f4c       0xa4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+                0x0000000010000f4c                memset
+ .text          0x0000000010000ff0       0xac /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+                0x0000000010000ff0                _free_r
+ .text          0x000000001000109c       0xb4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+                0x000000001000109c                _malloc_r
+ .text          0x0000000010001150       0x60 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+                0x0000000010001150                _printf_r
+                0x0000000010001150                _iprintf_r
+                0x000000001000117c                printf
+                0x000000001000117c                iprintf
+ .text          0x00000000100011b0       0xf4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+                0x00000000100011b0                _puts_r
+                0x0000000010001294                puts
+ .text          0x00000000100012a4       0x24 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+                0x00000000100012a4                _sbrk_r
+ .text          0x00000000100012c8      0x108 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+                0x00000000100012c8                _sniprintf_r
+                0x00000000100012c8                _snprintf_r
+                0x0000000010001348                snprintf
+                0x0000000010001348                sniprintf
+ .text          0x00000000100013d0       0x7c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+                0x00000000100013d0                _siprintf_r
+                0x00000000100013d0                _sprintf_r
+                0x0000000010001408                sprintf
+                0x0000000010001408                siprintf
+ .text          0x000000001000144c       0xbc /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+                0x000000001000144c                strcpy
+ .text          0x0000000010001508       0x5c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+                0x0000000010001508                strlen
+ .text          0x0000000010001564       0xc0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+                0x0000000010001564                __swbuf_r
+                0x0000000010001614                __swbuf
+ .text          0x0000000010001624      0x104 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+                0x0000000010001624                __swsetup_r
+ .text          0x0000000010001728       0xac /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+                0x0000000010001728                __register_exitproc
+ .text          0x00000000100017d4       0xc4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+                0x00000000100017d4                __call_exitprocs
+ .text          0x0000000010001898      0x200 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+                0x0000000010001898                __sflush_r
+                0x00000000100019c4                _fflush_r
+                0x0000000010001a18                fflush
+ .text          0x0000000010001a98      0x240 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+                0x0000000010001a9c                _cleanup_r
+                0x0000000010001aac                __sfmoreglue
+                0x0000000010001adc                __sfp
+                0x0000000010001c84                _cleanup
+                0x0000000010001c98                __sinit
+                0x0000000010001ca0                __sfp_lock_acquire
+                0x0000000010001ca4                __sfp_lock_release
+                0x0000000010001ca8                __sinit_lock_acquire
+                0x0000000010001cac                __sinit_lock_release
+                0x0000000010001cb0                __fp_lock_all
+                0x0000000010001cc4                __fp_unlock_all
+ .text          0x0000000010001cd8       0x84 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+                0x0000000010001cd8                _fwalk
+                0x0000000010001d18                _fwalk_reent
+ .text          0x0000000010001d5c      0x120 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+                0x0000000010001d5c                __smakebuf_r
+                0x0000000010001e20                __swhatbuf_r
+ .text          0x0000000010001e7c        0x8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+                0x0000000010001e7c                __malloc_lock
+                0x0000000010001e80                __malloc_unlock
+ .text          0x0000000010001e84      0x3f8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+                0x0000000010001e84                __ssputs_r
+                0x0000000010001f44                __ssprint_r
+                0x0000000010002044                _svfprintf_r
+                0x0000000010002044                _svfiprintf_r
+ .text          0x000000001000227c      0x328 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+                0x00000000100022b8                __sfputs_r
+                0x00000000100022e8                __sprint_r
+                0x0000000010002304                _vfiprintf_r
+                0x0000000010002304                _vfprintf_r
+                0x000000001000258c                vfiprintf
+                0x000000001000258c                vfprintf
+ .text          0x00000000100025a4      0x3e8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00000000100025a4                _printf_common
+                0x00000000100026cc                _printf_i
+ .text          0x000000001000298c       0x94 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+                0x000000001000298c                __sread
+                0x00000000100029b0                __seofread
+                0x00000000100029b4                __swrite
+                0x00000000100029f4                __sseek
+                0x0000000010002a18                __sclose
+ .text          0x0000000010002a20       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+                0x0000000010002a20                _write_r
+ .text          0x0000000010002a4c       0x24 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+                0x0000000010002a4c                _close_r
+ .text          0x0000000010002a70       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+                0x0000000010002a70                _fstat_r
+ .text          0x0000000010002a9c      0x2f4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+                0x0000000010002a9c                __sfvwrite_r
+ .text          0x0000000010002d90       0x24 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+                0x0000000010002d90                _isatty_r
+ .text          0x0000000010002db4       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+                0x0000000010002db4                _lseek_r
+ .text          0x0000000010002de0       0x80 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+                0x0000000010002de0                memchr
+ .text          0x0000000010002e60       0xec /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+                0x0000000010002e60                memcpy
+ .text          0x0000000010002f4c       0xf8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+                0x0000000010002f4c                memmove
+ .text          0x0000000010003044       0x50 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+                0x0000000010003044                _realloc_r
+ .text          0x0000000010003094       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+                0x0000000010003094                _read_r
+ .text          0x00000000100030c0       0x14 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+                0x00000000100030c0                _malloc_usable_size_r
+ .text          0x00000000100030d4       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+                0x00000000100030d4                _sbrk
+ .text          0x00000000100030f4        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+                0x00000000100030f4                _exit
+
+.glue_7         0x00000000100030f8        0x0
+ .glue_7        0x00000000100030f8        0x0 linker stubs
+
+.glue_7t        0x00000000100030f8        0x0
+ .glue_7t       0x00000000100030f8        0x0 linker stubs
+
+.vfp11_veneer   0x00000000100030f8        0x0
+ .vfp11_veneer  0x00000000100030f8        0x0 linker stubs
+
+.v4_bx          0x00000000100030f8        0x0
+ .v4_bx         0x00000000100030f8        0x0 linker stubs
+
+.iplt           0x00000000100030f8        0x0
+ .iplt          0x00000000100030f8        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+
+.ARM.extab      0x00000000100030f8        0x0
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+ .ARM.extab     0x00000000100030f8        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+
+.ARM.exidx      0x00000000100030f8        0x8
+                0x00000000100030f8                __exidx_start = .
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+ .ARM.exidx     0x00000000100030f8        0x8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+                                         0x10 (size before relaxing)
+                0x0000000010003100                __exidx_end = .
+
+.rodata         0x0000000010003100      0x198
+                0x0000000010003100                . = ALIGN (0x4)
+ *(.rodata)
+ .rodata        0x0000000010003100        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+                0x0000000010003100                _global_impure_ptr
+ .rodata        0x0000000010003104       0x60 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+                0x0000000010003104                __sf_fake_stderr
+                0x0000000010003124                __sf_fake_stdout
+                0x0000000010003144                __sf_fake_stdin
+ *(.rodata.*)
+ .rodata._ZTV4task
+                0x0000000010003164       0x14 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+                0x0000000010003164                vtable for task
+ .rodata._ZN9main_task11draw_cursorEv.str1.4
+                0x0000000010003178        0xa CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ *fill*         0x0000000010003182        0x2 
+ .rodata._ZN9main_task10menu_startER14sd_reader_taskR16mp3_decoder_taskR18pcm_pwm_rp2040_drv.str1.4
+                0x0000000010003184       0x10 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .rodata._ZN9main_task14menu_start_allER14sd_reader_taskR16mp3_decoder_taskR18pcm_pwm_rp2040_drv.str1.4
+                0x0000000010003194       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .rodata._ZN9main_task22draw_footer_pagenumberEv.str1.4
+                0x00000000100031a8        0x6 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ *fill*         0x00000000100031ae        0x2 
+ .rodata._ZN9main_task3runEv.str1.4
+                0x00000000100031b0       0x3e CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ *fill*         0x00000000100031ee        0x2 
+ .rodata._ZTV19pcm_audio_interface
+                0x00000000100031f0       0x10 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x00000000100031f0                vtable for pcm_audio_interface
+ .rodata._ZTV18pcm_pwm_rp2040_drv
+                0x0000000010003200       0x10 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010003200                vtable for pcm_pwm_rp2040_drv
+ .rodata._ZTV9main_task
+                0x0000000010003210       0x14 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                0x0000000010003210                vtable for main_task
+ .rodata._ZTV14sd_reader_task
+                0x0000000010003224       0x14 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+                0x0000000010003224                vtable for sd_reader_task
+ .rodata._ZTV16mp3_decoder_task
+                0x0000000010003238       0x14 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                0x0000000010003238                vtable for mp3_decoder_task
+ .rodata._ZTV7i2c_kbd
+                0x000000001000324c       0x10 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+                0x000000001000324c                vtable for i2c_kbd
+ .rodata.str1.4
+                0x000000001000325c       0x13 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .rodata.str1.4
+                0x000000001000326f       0x13 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ *fill*         0x000000001000326f        0x1 
+ .rodata.str1.4
+                0x0000000010003270       0x25 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x0000000010003298                . = ALIGN (0x4)
+ *fill*         0x0000000010003295        0x3 
+
+.eh_frame       0x0000000010003298        0x0
+ .eh_frame      0x0000000010003298        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+
+.rel.dyn        0x0000000010003298        0x0
+ .rel.iplt      0x0000000010003298        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+
+.copy.table     0x0000000010003298       0x18
+                0x0000000010003298                . = ALIGN (0x4)
+                0x0000000010003298                __copy_table_start__ = .
+                0x0000000010003298        0x4 LONG 0x100032c0 __data_load__
+                0x000000001000329c        0x4 LONG 0x20000000 __data_start__
+                0x00000000100032a0        0x4 LONG 0x19 ((__data_end__ - __data_start__) / 0x4)
+                0x00000000100032a4        0x4 LONG 0x10003324 __ps_data_load__
+                0x00000000100032a8        0x4 LONG 0x11000000 __ps_data_start__
+                0x00000000100032ac        0x4 LONG 0x0 ((__ps_data_end__ - __ps_data_start__) / 0x4)
+                0x00000000100032b0                __copy_table_end__ = .
+
+.zero.table     0x00000000100032b0       0x10
+                0x00000000100032b0                . = ALIGN (0x4)
+                0x00000000100032b0                __zero_table_start__ = .
+                0x00000000100032b0        0x4 LONG 0x20000064 __bss_start__
+                0x00000000100032b4        0x4 LONG 0x38 ((__bss_end__ - __bss_start__) / 0x4)
+                0x00000000100032b8        0x4 LONG 0x11000000 __ps_bss_start__
+                0x00000000100032bc        0x4 LONG 0x0 ((__ps_bss_end__ - __ps_bss_start__) / 0x4)
+                0x00000000100032c0                __zero_table_end__ = .
+
+.data           0x0000000020000000       0x64 load address 0x00000000100032c0
+                0x0000000020000000                . = ALIGN (0x4)
+                0x00000000100032c0                __data_load__ = LOADADDR (.data)
+                0x0000000020000000                __data_start__ = .
+ *(.vtable)
+ *(.move_to_ram*)
+ *(.data*)
+ .data          0x0000000020000000       0x64 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+                0x0000000020000000                _impure_ptr
+                0x0000000020000064                . = ALIGN (0x4)
+                0x0000000020000064                __data_end__ = .
+                0x0000000020000064                __image_end__ = .
+
+.tm_clone_table
+                0x0000000020000064        0x0 load address 0x0000000010003324
+ .tm_clone_table
+                0x0000000020000064        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+ .tm_clone_table
+                0x0000000020000064        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+
+.igot.plt       0x0000000020000064        0x0 load address 0x0000000010003324
+ .igot.plt      0x0000000020000064        0x0 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+
+.bss            0x0000000020000064       0xe0 load address 0x0000000010003324
+                0x0000000020000064                . = ALIGN (0x4)
+                0x0000000020000064                __bss_start__ = .
+ *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.bss*)))
+ .bss           0x0000000020000064       0x1c /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+ .bss           0x0000000020000080        0x8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+                0x0000000020000080                __malloc_free_list
+                0x0000000020000084                __malloc_sbrk_start
+ .bss           0x0000000020000088       0x8c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .bss           0x0000000020000114        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+                0x0000000020000114                _global_atexit
+ .bss           0x0000000020000118        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+                0x0000000020000118                errno
+ .bss           0x000000002000011c        0x4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .bss.CLK_ADC   0x0000000020000120        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000020000120                CLK_ADC
+ .bss.CLK_HSTX  0x0000000020000124        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000020000124                CLK_HSTX
+ .bss.CLK_PERI  0x0000000020000128        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000020000128                CLK_PERI
+ .bss.CLK_REF   0x000000002000012c        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x000000002000012c                CLK_REF
+ .bss.CLK_SYS   0x0000000020000130        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000020000130                CLK_SYS
+ .bss.CLK_USB   0x0000000020000134        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000020000134                CLK_USB
+ .bss._ZZN9main_task3runEvE8ctrlheld
+                0x0000000020000138        0x4 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .bss.systick_ref_freq
+                0x000000002000013c        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x000000002000013c                systick_ref_freq
+ .bss.timer_ticks_per_us
+                0x0000000020000140        0x4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                0x0000000020000140                timer_ticks_per_us
+ *(COMMON)
+                0x0000000020000144                . = ALIGN (0x4)
+                0x0000000020000144                __bss_end__ = .
+                0x0000000020000144                __end__ = .
+                0x0000000020000144                end = __end__
+
+.ps_data        0x0000000011000000        0x0 load address 0x0000000010003324
+                0x0000000011000000                . = ALIGN (0x4)
+                0x0000000010003324                __ps_data_load__ = LOADADDR (.ps_data)
+                0x0000000011000000                __ps_data_start__ = .
+ *(.ps_data)
+                0x0000000011000000                . = ALIGN (0x4)
+                0x0000000011000000                __ps_data_end__ = .
+
+.ps_bss         0x0000000011000000        0x0 load address 0x0000000010003324
+                0x0000000011000000                . = ALIGN (0x4)
+                0x0000000011000000                __ps_bss_start__ = .
+ *(.ps_bss)
+                0x0000000011000000                . = ALIGN (0x4)
+                0x0000000011000000                __ps_bss_end__ = .
+
+.ps_noload      0x0000000011000000        0x0 load address 0x0000000010003324
+                0x0000000011000000                . = ALIGN (0x4)
+ *(.ps_noload)
+
+.heap           0x0000000020000144        0x0
+                0x0000000020000144                __heap_start__ = .
+                0x0000000020000144                __HeapBase = .
+ *(.heap*)
+                0x0000000020000144                __heap_end__ = .
+                0x000000002007ffff                __HeapLimit = ((ORIGIN (RAM) + LENGTH (RAM)) - 0x1)
+
+.stack.x
+ *(.stack.x*)
+
+.stack.y
+ *(.stack.y*)
+                0x0000000020080000                __StackLimit = (ORIGIN (RAM) + LENGTH (RAM))
+                0x0000000020081000                __StackXTop = (ORIGIN (SCRATCH_X) + LENGTH (SCRATCH_X))
+                0x0000000020082000                __StackYTop = (ORIGIN (SCRATCH_Y) + LENGTH (SCRATCH_Y))
+                0x0000000020080000                __StackTop = __StackLimit
+                0x0000000020080000                PROVIDE (__stack = __StackTop)
+LOAD CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+LOAD CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+LOAD CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+LOAD CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+LOAD CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+LOAD CMakeFiles/pico-mp3-player.dir/stubs/fake_fonts.cpp.obj
+LOAD YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a
+LOAD MAD_pico-mp3-player/libMAD_pico-mp3-player.a
+LOAD FatFs_pico-mp3-player/libFatFs_pico-mp3-player.a
+LOAD uGUI_pico-mp3-player/libuGUI_pico-mp3-player.a
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libm.a
+START GROUP
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/libgcc.a
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc_nano.a
+END GROUP
+START GROUP
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/libgcc.a
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc_nano.a
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a
+END GROUP
+START GROUP
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/libgcc.a
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libc_nano.a
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a
+END GROUP
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+LOAD /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtn.o
+OUTPUT(pico-mp3-player.elf elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x0000000000000000       0x34
+ .ARM.attributes
+                0x0000000000000000       0x22 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crti.o
+ .ARM.attributes
+                0x0000000000000022       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+ .ARM.attributes
+                0x0000000000000058       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+ .ARM.attributes
+                0x0000000000000078       0x38 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .ARM.attributes
+                0x00000000000000b0       0x38 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .ARM.attributes
+                0x00000000000000e8       0x38 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .ARM.attributes
+                0x0000000000000120       0x38 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .ARM.attributes
+                0x0000000000000158       0x38 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .ARM.attributes
+                0x0000000000000190       0x22 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .ARM.attributes
+                0x00000000000001b2       0x38 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .ARM.attributes
+                0x00000000000001ea       0x38 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .ARM.attributes
+                0x0000000000000222       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .ARM.attributes
+                0x0000000000000258       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .ARM.attributes
+                0x000000000000028e       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .ARM.attributes
+                0x00000000000002c4       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .ARM.attributes
+                0x00000000000002fa       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .ARM.attributes
+                0x0000000000000330       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+ .ARM.attributes
+                0x0000000000000364       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .ARM.attributes
+                0x000000000000039a       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .ARM.attributes
+                0x00000000000003d0       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .ARM.attributes
+                0x0000000000000406       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .ARM.attributes
+                0x000000000000043c       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .ARM.attributes
+                0x0000000000000472       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .ARM.attributes
+                0x00000000000004a8       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .ARM.attributes
+                0x00000000000004de       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .ARM.attributes
+                0x0000000000000514       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .ARM.attributes
+                0x000000000000054a       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .ARM.attributes
+                0x0000000000000580       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .ARM.attributes
+                0x00000000000005b6       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .ARM.attributes
+                0x00000000000005ec       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .ARM.attributes
+                0x0000000000000622       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .ARM.attributes
+                0x0000000000000658       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .ARM.attributes
+                0x000000000000068e       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .ARM.attributes
+                0x00000000000006c4       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .ARM.attributes
+                0x00000000000006fa       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .ARM.attributes
+                0x0000000000000730       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .ARM.attributes
+                0x0000000000000766       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .ARM.attributes
+                0x000000000000079c       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .ARM.attributes
+                0x00000000000007d2       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .ARM.attributes
+                0x0000000000000808       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .ARM.attributes
+                0x000000000000083e       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .ARM.attributes
+                0x0000000000000874       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .ARM.attributes
+                0x00000000000008aa       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .ARM.attributes
+                0x00000000000008e0       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .ARM.attributes
+                0x0000000000000916       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .ARM.attributes
+                0x000000000000094c       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .ARM.attributes
+                0x0000000000000982       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .ARM.attributes
+                0x00000000000009b8       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .ARM.attributes
+                0x00000000000009ee       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .ARM.attributes
+                0x0000000000000a24       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .ARM.attributes
+                0x0000000000000a5a       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+ .ARM.attributes
+                0x0000000000000a7a       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .ARM.attributes
+                0x0000000000000ab0       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .ARM.attributes
+                0x0000000000000ae6       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .ARM.attributes
+                0x0000000000000b1c       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .ARM.attributes
+                0x0000000000000b52       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .ARM.attributes
+                0x0000000000000b88       0x36 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+ .ARM.attributes
+                0x0000000000000bbe       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+ .ARM.attributes
+                0x0000000000000bf2       0x22 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtn.o
+
+.comment        0x0000000000000000       0x33
+ .comment       0x0000000000000000       0x33 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtbegin.o
+                                         0x34 (size before relaxing)
+ .comment       0x0000000000000033       0x34 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .comment       0x0000000000000033       0x34 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .comment       0x0000000000000033       0x34 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .comment       0x0000000000000033       0x34 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .comment       0x0000000000000033       0x34 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .comment       0x0000000000000033       0x34 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .comment       0x0000000000000033       0x34 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+ .comment       0x0000000000000033       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/thumb/v8-m.main+fp/softfp/crtend.o
+
+.debug_line     0x0000000000000000     0x9ddb
+ .debug_line    0x0000000000000000       0x87 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+ .debug_line    0x0000000000000087      0x3f1 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .debug_line    0x0000000000000478     0x10bd CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .debug_line    0x0000000000001535      0x46d CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .debug_line    0x00000000000019a2      0x482 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .debug_line    0x0000000000001e24      0x26b CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .debug_line    0x000000000000208f       0xbb YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .debug_line    0x000000000000214a      0x41d YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .debug_line    0x0000000000002567      0x873 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .debug_line    0x0000000000002dda      0x235 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .debug_line    0x000000000000300f      0x28e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .debug_line    0x000000000000329d       0xc0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .debug_line    0x000000000000335d      0x16d /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .debug_line    0x00000000000034ca       0xed /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .debug_line    0x00000000000035b7       0xe4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+ .debug_line    0x000000000000369b      0x13e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .debug_line    0x00000000000037d9      0x15f /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .debug_line    0x0000000000003938      0x1c1 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .debug_line    0x0000000000003af9      0x2a9 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .debug_line    0x0000000000003da2      0x2c0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_line    0x0000000000004062      0x232 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .debug_line    0x0000000000004294      0x335 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .debug_line    0x00000000000045c9      0x183 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .debug_line    0x000000000000474c      0x38c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .debug_line    0x0000000000004ad8      0x212 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .debug_line    0x0000000000004cea       0xb9 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .debug_line    0x0000000000004da3       0xf4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .debug_line    0x0000000000004e97      0x282 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .debug_line    0x0000000000005119      0x342 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .debug_line    0x000000000000545b      0x1f8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .debug_line    0x0000000000005653      0x1f7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .debug_line    0x000000000000584a      0x48d /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .debug_line    0x0000000000005cd7      0x5d3 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .debug_line    0x00000000000062aa      0x296 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .debug_line    0x0000000000006540      0x3bd /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .debug_line    0x00000000000068fd      0x13e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .debug_line    0x0000000000006a3b      0x82d /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_line    0x0000000000007268      0x6db /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .debug_line    0x0000000000007943      0x768 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_line    0x00000000000080ab      0x2c7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .debug_line    0x0000000000008372      0x241 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .debug_line    0x00000000000085b3      0x18d /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .debug_line    0x0000000000008740      0x183 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .debug_line    0x00000000000088c3      0x1fd /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .debug_line    0x0000000000008ac0      0x5e1 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .debug_line    0x00000000000090a1      0x184 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .debug_line    0x0000000000009225      0x18d /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .debug_line    0x00000000000093b2      0x1a9 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .debug_line    0x000000000000955b       0xc1 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+ .debug_line    0x000000000000961c      0x202 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .debug_line    0x000000000000981e      0x1c7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_line    0x00000000000099e5      0x18c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .debug_line    0x0000000000009b71      0x160 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .debug_line    0x0000000000009cd1       0x95 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .debug_line    0x0000000000009d66       0x75 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+
+.debug_info     0x0000000000000000    0xd5b88
+ .debug_info    0x0000000000000000       0x26 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+ .debug_info    0x0000000000000026     0x1d8c CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .debug_info    0x0000000000001db2     0x44ea CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .debug_info    0x000000000000629c     0x17bd CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .debug_info    0x0000000000007a59     0x1653 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .debug_info    0x00000000000090ac      0x7df CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .debug_info    0x000000000000988b       0x26 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .debug_info    0x00000000000098b1    0x5c04c YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .debug_info    0x00000000000658fd    0x5ad25 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .debug_info    0x00000000000c0622      0x3a1 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .debug_info    0x00000000000c09c3      0x8a2 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .debug_info    0x00000000000c1265      0x100 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .debug_info    0x00000000000c1365      0x81a /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .debug_info    0x00000000000c1b7f      0x102 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .debug_info    0x00000000000c1c81      0x863 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+ .debug_info    0x00000000000c24e4      0x11a /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .debug_info    0x00000000000c25fe      0x832 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .debug_info    0x00000000000c2e30      0x137 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .debug_info    0x00000000000c2f67      0x903 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .debug_info    0x00000000000c386a      0xa0c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_info    0x00000000000c4276      0x8fd /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .debug_info    0x00000000000c4b73      0xa41 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .debug_info    0x00000000000c55b4      0x828 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .debug_info    0x00000000000c5ddc      0x9b5 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .debug_info    0x00000000000c6791      0x926 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .debug_info    0x00000000000c70b7       0xc4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .debug_info    0x00000000000c717b       0xbc /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .debug_info    0x00000000000c7237      0x998 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .debug_info    0x00000000000c7bcf      0x902 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .debug_info    0x00000000000c84d1      0x269 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .debug_info    0x00000000000c873a      0x249 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .debug_info    0x00000000000c8983      0xb11 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .debug_info    0x00000000000c9494      0xfae /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .debug_info    0x00000000000ca442      0x900 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .debug_info    0x00000000000cad42      0xc8a /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .debug_info    0x00000000000cb9cc      0x7dc /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .debug_info    0x00000000000cc1a8     0x10e2 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_info    0x00000000000cd28a     0x115c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .debug_info    0x00000000000ce3e6      0xe9e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_info    0x00000000000cf284      0xa7e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .debug_info    0x00000000000cfd02      0xabc /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .debug_info    0x00000000000d07be      0x85a /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .debug_info    0x00000000000d1018      0x805 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .debug_info    0x00000000000d181d      0xa1d /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .debug_info    0x00000000000d223a      0xb64 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .debug_info    0x00000000000d2d9e      0x805 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .debug_info    0x00000000000d35a3      0x83b /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .debug_info    0x00000000000d3dde      0x14e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .debug_info    0x00000000000d3f2c       0x26 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+ .debug_info    0x00000000000d3f52      0x152 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .debug_info    0x00000000000d40a4      0x911 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_info    0x00000000000d49b5      0x853 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .debug_info    0x00000000000d5208      0x840 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .debug_info    0x00000000000d5a48       0x9d /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .debug_info    0x00000000000d5ae5       0xa3 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+
+.debug_abbrev   0x0000000000000000     0x756b
+ .debug_abbrev  0x0000000000000000       0x14 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+ .debug_abbrev  0x0000000000000014      0x5e5 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .debug_abbrev  0x00000000000005f9      0x866 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .debug_abbrev  0x0000000000000e5f      0x5a0 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .debug_abbrev  0x00000000000013ff      0x548 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .debug_abbrev  0x0000000000001947      0x2c1 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .debug_abbrev  0x0000000000001c08       0x14 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .debug_abbrev  0x0000000000001c1c      0x552 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .debug_abbrev  0x000000000000216e      0x3fb YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .debug_abbrev  0x0000000000002569      0x239 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .debug_abbrev  0x00000000000027a2      0x2ee /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .debug_abbrev  0x0000000000002a90       0xb7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .debug_abbrev  0x0000000000002b47      0x1ba /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .debug_abbrev  0x0000000000002d01       0xcf /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .debug_abbrev  0x0000000000002dd0      0x151 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+ .debug_abbrev  0x0000000000002f21       0xcc /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .debug_abbrev  0x0000000000002fed      0x1b6 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .debug_abbrev  0x00000000000031a3       0xb4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .debug_abbrev  0x0000000000003257      0x235 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .debug_abbrev  0x000000000000348c      0x290 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_abbrev  0x000000000000371c      0x23e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .debug_abbrev  0x000000000000395a      0x28e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .debug_abbrev  0x0000000000003be8      0x1d6 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .debug_abbrev  0x0000000000003dbe      0x216 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .debug_abbrev  0x0000000000003fd4      0x213 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .debug_abbrev  0x00000000000041e7       0x7b /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .debug_abbrev  0x0000000000004262       0x79 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .debug_abbrev  0x00000000000042db      0x21f /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .debug_abbrev  0x00000000000044fa      0x1d4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .debug_abbrev  0x00000000000046ce      0x1bd /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .debug_abbrev  0x000000000000488b      0x179 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .debug_abbrev  0x0000000000004a04      0x2e8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .debug_abbrev  0x0000000000004cec      0x3cd /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .debug_abbrev  0x00000000000050b9      0x197 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .debug_abbrev  0x0000000000005250      0x278 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .debug_abbrev  0x00000000000054c8      0x189 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .debug_abbrev  0x0000000000005651      0x2ca /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_abbrev  0x000000000000591b      0x353 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .debug_abbrev  0x0000000000005c6e      0x25c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_abbrev  0x0000000000005eca      0x265 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .debug_abbrev  0x000000000000612f      0x1fb /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .debug_abbrev  0x000000000000632a      0x1b0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .debug_abbrev  0x00000000000064da      0x1ab /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .debug_abbrev  0x0000000000006685      0x1bf /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .debug_abbrev  0x0000000000006844      0x1f7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .debug_abbrev  0x0000000000006a3b      0x1ab /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .debug_abbrev  0x0000000000006be6      0x1bf /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .debug_abbrev  0x0000000000006da5       0xd4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .debug_abbrev  0x0000000000006e79       0x14 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+ .debug_abbrev  0x0000000000006e8d       0xc0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .debug_abbrev  0x0000000000006f4d      0x1d6 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_abbrev  0x0000000000007123      0x1ab /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .debug_abbrev  0x00000000000072ce      0x191 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .debug_abbrev  0x000000000000745f       0xa2 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .debug_abbrev  0x0000000000007501       0x6a /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+
+.debug_aranges  0x0000000000000000      0x8f8
+ .debug_aranges
+                0x0000000000000000       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+ .debug_aranges
+                0x0000000000000020       0x38 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .debug_aranges
+                0x0000000000000058      0x138 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .debug_aranges
+                0x0000000000000190       0x60 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .debug_aranges
+                0x00000000000001f0       0x90 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .debug_aranges
+                0x0000000000000280       0x48 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .debug_aranges
+                0x00000000000002c8       0x20 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .debug_aranges
+                0x00000000000002e8       0x30 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .debug_aranges
+                0x0000000000000318       0x28 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .debug_aranges
+                0x0000000000000340       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .debug_aranges
+                0x0000000000000360       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .debug_aranges
+                0x0000000000000380       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .debug_aranges
+                0x00000000000003a0       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .debug_aranges
+                0x00000000000003c0       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .debug_aranges
+                0x00000000000003e0       0x18 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+ .debug_aranges
+                0x00000000000003f8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .debug_aranges
+                0x0000000000000418       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .debug_aranges
+                0x0000000000000438       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .debug_aranges
+                0x0000000000000458       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .debug_aranges
+                0x0000000000000478       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_aranges
+                0x0000000000000498       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .debug_aranges
+                0x00000000000004b8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .debug_aranges
+                0x00000000000004d8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .debug_aranges
+                0x00000000000004f8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .debug_aranges
+                0x0000000000000518       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .debug_aranges
+                0x0000000000000538       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .debug_aranges
+                0x0000000000000558       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .debug_aranges
+                0x0000000000000578       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .debug_aranges
+                0x0000000000000598       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .debug_aranges
+                0x00000000000005b8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .debug_aranges
+                0x00000000000005d8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .debug_aranges
+                0x00000000000005f8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .debug_aranges
+                0x0000000000000618       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .debug_aranges
+                0x0000000000000638       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .debug_aranges
+                0x0000000000000658       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .debug_aranges
+                0x0000000000000678       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .debug_aranges
+                0x0000000000000698       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_aranges
+                0x00000000000006b8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .debug_aranges
+                0x00000000000006d8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_aranges
+                0x00000000000006f8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .debug_aranges
+                0x0000000000000718       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .debug_aranges
+                0x0000000000000738       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .debug_aranges
+                0x0000000000000758       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .debug_aranges
+                0x0000000000000778       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .debug_aranges
+                0x0000000000000798       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .debug_aranges
+                0x00000000000007b8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .debug_aranges
+                0x00000000000007d8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .debug_aranges
+                0x00000000000007f8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .debug_aranges
+                0x0000000000000818       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+ .debug_aranges
+                0x0000000000000838       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .debug_aranges
+                0x0000000000000858       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_aranges
+                0x0000000000000878       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .debug_aranges
+                0x0000000000000898       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .debug_aranges
+                0x00000000000008b8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .debug_aranges
+                0x00000000000008d8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+
+.debug_str      0x0000000000000000    0x419e1
+ .debug_str     0x0000000000000000       0x9e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/crt0.o
+ .debug_str     0x000000000000009e      0xea8 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+                                       0x1118 (size before relaxing)
+ .debug_str     0x0000000000000f46     0x11a7 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+                                       0x22ab (size before relaxing)
+ .debug_str     0x00000000000020ed      0x3cd CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+                                       0x1042 (size before relaxing)
+ .debug_str     0x00000000000024ba      0x347 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+                                        0xff9 (size before relaxing)
+ .debug_str     0x0000000000002801      0x22e CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+                                        0x5ac (size before relaxing)
+ .debug_str     0x0000000000002a2f       0xb4 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(reset_rp2350.S.obj)
+ .debug_str     0x0000000000002ae3    0x3d502 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+                                      0x3e876 (size before relaxing)
+ .debug_str     0x000000000003ffe5       0xaa YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+                                      0x3cd14 (size before relaxing)
+ .debug_str     0x000000000004008f      0x1a6 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+                                        0x634 (size before relaxing)
+ .debug_str     0x0000000000040235      0x10b /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+                                        0x73b (size before relaxing)
+ .debug_str     0x0000000000040340      0x15b /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+                                        0x1f7 (size before relaxing)
+ .debug_str     0x000000000004049b       0x7a /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+                                        0x536 (size before relaxing)
+ .debug_str     0x0000000000040515       0xd2 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+                                        0x1ef (size before relaxing)
+ .debug_str     0x00000000000405e7       0xe5 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-impure.o)
+                                        0x56c (size before relaxing)
+ .debug_str     0x00000000000406cc       0x90 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+                                        0x219 (size before relaxing)
+ .debug_str     0x000000000004075c       0x52 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+                                        0x541 (size before relaxing)
+ .debug_str     0x00000000000407ae       0xb0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+                                        0x1ce (size before relaxing)
+ .debug_str     0x000000000004085e       0xb4 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+                                        0x5a3 (size before relaxing)
+ .debug_str     0x0000000000040912       0x46 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+                                        0x5ce (size before relaxing)
+ .debug_str     0x0000000000040958       0xd6 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+                                        0x559 (size before relaxing)
+ .debug_str     0x0000000000040a2e       0x6e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+                                        0x5a1 (size before relaxing)
+ .debug_str     0x0000000000040a9c       0x47 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+                                        0x524 (size before relaxing)
+ .debug_str     0x0000000000040ae3       0x57 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+                                        0x569 (size before relaxing)
+ .debug_str     0x0000000000040b3a       0x47 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+                                        0x55a (size before relaxing)
+ .debug_str     0x0000000000040b81       0xb0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+                                        0x1c0 (size before relaxing)
+ .debug_str     0x0000000000040c31       0x48 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+                                        0x1cc (size before relaxing)
+ .debug_str     0x0000000000040c79       0x43 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+                                        0x590 (size before relaxing)
+ .debug_str     0x0000000000040cbc       0x40 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+                                        0x58b (size before relaxing)
+ .debug_str     0x0000000000040cfc       0x85 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+                                        0x2a5 (size before relaxing)
+ .debug_str     0x0000000000040d81       0x62 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+                                        0x269 (size before relaxing)
+ .debug_str     0x0000000000040de3       0x5c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+                                        0x5cc (size before relaxing)
+ .debug_str     0x0000000000040e3f      0x1af /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+                                        0x745 (size before relaxing)
+ .debug_str     0x0000000000040fee       0x41 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+                                        0x532 (size before relaxing)
+ .debug_str     0x000000000004102f      0x161 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+                                        0x6ae (size before relaxing)
+ .debug_str     0x0000000000041190       0x4c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+                                        0x53a (size before relaxing)
+ .debug_str     0x00000000000411dc      0x267 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+                                        0x863 (size before relaxing)
+ .debug_str     0x0000000000041443       0x37 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+                                        0x8c7 (size before relaxing)
+ .debug_str     0x000000000004147a       0x8d /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+                                        0x7fa (size before relaxing)
+ .debug_str     0x0000000000041507       0x5e /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+                                        0x54c (size before relaxing)
+ .debug_str     0x0000000000041565       0x92 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+                                        0x581 (size before relaxing)
+ .debug_str     0x00000000000415f7       0x33 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+                                        0x521 (size before relaxing)
+ .debug_str     0x000000000004162a       0x33 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+                                        0x511 (size before relaxing)
+ .debug_str     0x000000000004165d       0x40 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+                                        0x663 (size before relaxing)
+ .debug_str     0x000000000004169d       0x43 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+                                        0x5bf (size before relaxing)
+ .debug_str     0x00000000000416e0       0x3c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+                                        0x51b (size before relaxing)
+ .debug_str     0x000000000004171c       0x3a /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+                                        0x51f (size before relaxing)
+ .debug_str     0x0000000000041756       0x5b /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+                                        0x1e6 (size before relaxing)
+ .debug_str     0x00000000000417b1       0x43 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memcpy.o)
+                                         0xbc (size before relaxing)
+ .debug_str     0x00000000000417f4       0x56 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+                                        0x1ed (size before relaxing)
+ .debug_str     0x000000000004184a       0x23 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+                                        0x58d (size before relaxing)
+ .debug_str     0x000000000004186d       0x32 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+                                        0x51f (size before relaxing)
+ .debug_str     0x000000000004189f        0xf /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+                                        0x56b (size before relaxing)
+ .debug_str     0x00000000000418ae      0x104 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+                                        0x11d (size before relaxing)
+ .debug_str     0x00000000000419b2       0x2f /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+                                        0x18d (size before relaxing)
+
+.debug_loc      0x0000000000000000     0x6142
+ .debug_loc     0x0000000000000000       0x62 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .debug_loc     0x0000000000000062      0x9ec CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .debug_loc     0x0000000000000a4e       0xe3 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .debug_loc     0x0000000000000b31      0x156 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .debug_loc     0x0000000000000c87       0x57 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .debug_loc     0x0000000000000cde       0x4c YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .debug_loc     0x0000000000000d2a       0x26 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .debug_loc     0x0000000000000d50       0x25 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .debug_loc     0x0000000000000d75       0x25 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .debug_loc     0x0000000000000d9a       0x32 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .debug_loc     0x0000000000000dcc       0x22 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .debug_loc     0x0000000000000dee       0x68 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .debug_loc     0x0000000000000e56       0xba /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .debug_loc     0x0000000000000f10       0x64 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .debug_loc     0x0000000000000f74      0x22c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .debug_loc     0x00000000000011a0      0x1db /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .debug_loc     0x000000000000137b      0x3c0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_loc     0x000000000000173b       0x98 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .debug_loc     0x00000000000017d3      0x2e7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .debug_loc     0x0000000000001aba       0x6c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .debug_loc     0x0000000000001b26      0x2b1 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .debug_loc     0x0000000000001dd7       0xa8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .debug_loc     0x0000000000001e7f       0x25 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .debug_loc     0x0000000000001ea4       0x25 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .debug_loc     0x0000000000001ec9      0x193 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .debug_loc     0x000000000000205c       0xb7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .debug_loc     0x0000000000002113      0x1f5 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .debug_loc     0x0000000000002308      0x1a8 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .debug_loc     0x00000000000024b0      0x509 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .debug_loc     0x00000000000029b9      0x3d6 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .debug_loc     0x0000000000002d8f      0x1d9 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .debug_loc     0x0000000000002f68      0x31a /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .debug_loc     0x0000000000003282      0x8df /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_loc     0x0000000000003b61      0x7f0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .debug_loc     0x0000000000004351      0x58c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_loc     0x00000000000048dd      0x1cd /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .debug_loc     0x0000000000004aaa      0x3a0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .debug_loc     0x0000000000004e4a       0xf7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .debug_loc     0x0000000000004f41       0x6c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .debug_loc     0x0000000000004fad       0xab /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .debug_loc     0x0000000000005058      0x782 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .debug_loc     0x00000000000057da       0x6c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .debug_loc     0x0000000000005846       0xf7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .debug_loc     0x000000000000593d      0x1a6 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .debug_loc     0x0000000000005ae3      0x335 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .debug_loc     0x0000000000005e18      0x133 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_loc     0x0000000000005f4b       0xf7 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .debug_loc     0x0000000000006042       0x86 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .debug_loc     0x00000000000060c8       0x65 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .debug_loc     0x000000000000612d       0x15 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)
+
+.debug_ranges   0x0000000000000000      0xa08
+ .debug_ranges  0x0000000000000000       0x28 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .debug_ranges  0x0000000000000028      0x2b0 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .debug_ranges  0x00000000000002d8       0x70 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .debug_ranges  0x0000000000000348       0x80 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .debug_ranges  0x00000000000003c8       0x38 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .debug_ranges  0x0000000000000400       0x50 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .debug_ranges  0x0000000000000450       0x18 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .debug_ranges  0x0000000000000468       0x10 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .debug_ranges  0x0000000000000478       0x10 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .debug_ranges  0x0000000000000488       0x28 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .debug_ranges  0x00000000000004b0       0x38 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_ranges  0x00000000000004e8       0x60 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .debug_ranges  0x0000000000000548       0x10 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .debug_ranges  0x0000000000000558       0x10 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .debug_ranges  0x0000000000000568       0x28 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .debug_ranges  0x0000000000000590       0x30 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .debug_ranges  0x00000000000005c0       0x30 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .debug_ranges  0x00000000000005f0       0xa0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .debug_ranges  0x0000000000000690      0x1b0 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .debug_ranges  0x0000000000000840       0x80 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .debug_ranges  0x00000000000008c0       0x58 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_ranges  0x0000000000000918       0x28 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .debug_ranges  0x0000000000000940       0x98 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_ranges  0x00000000000009d8       0x30 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+
+.debug_frame    0x0000000000000000     0x1348
+ .debug_frame   0x0000000000000000       0x64 CMakeFiles/pico-mp3-player.dir/pico_mp3_player.cpp.obj
+ .debug_frame   0x0000000000000064      0x354 CMakeFiles/pico-mp3-player.dir/main_task.cpp.obj
+ .debug_frame   0x00000000000003b8       0xb0 CMakeFiles/pico-mp3-player.dir/sd_reader_task.cpp.obj
+ .debug_frame   0x0000000000000468      0x118 CMakeFiles/pico-mp3-player.dir/mp3_decoder_task.cpp.obj
+ .debug_frame   0x0000000000000580       0x88 CMakeFiles/pico-mp3-player.dir/i2ckbd.cpp.obj
+ .debug_frame   0x0000000000000608       0x48 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(startup_rp2350.cpp.obj)
+ .debug_frame   0x0000000000000650       0x48 YAHAL_pico-mp3-player/libYAHAL_pico-mp3-player.a(system_rp2350.cpp.obj)
+ .debug_frame   0x0000000000000698       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_ops.o)
+ .debug_frame   0x00000000000006b8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libstdc++_nano.a(del_op.o)
+ .debug_frame   0x00000000000006d8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-atexit.o)
+ .debug_frame   0x00000000000006f8       0x28 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-exit.o)
+ .debug_frame   0x0000000000000720       0x34 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fini.o)
+ .debug_frame   0x0000000000000754       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-init.o)
+ .debug_frame   0x0000000000000780       0x30 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-malloc.o)
+ .debug_frame   0x00000000000007b0       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memset.o)
+ .debug_frame   0x00000000000007dc       0x54 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x0000000000000830       0x30 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x0000000000000860       0x7c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-printf.o)
+ .debug_frame   0x00000000000008dc       0x40 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-puts.o)
+ .debug_frame   0x000000000000091c       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sbrkr.o)
+ .debug_frame   0x0000000000000948       0x94 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-snprintf.o)
+ .debug_frame   0x00000000000009dc       0x7c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-sprintf.o)
+ .debug_frame   0x0000000000000a58       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strcpy.o)
+ .debug_frame   0x0000000000000a78       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-strlen-stub.o)
+ .debug_frame   0x0000000000000a98       0x40 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wbuf.o)
+ .debug_frame   0x0000000000000ad8       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-wsetup.o)
+ .debug_frame   0x0000000000000b04       0x38 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__atexit.o)
+ .debug_frame   0x0000000000000b3c       0x4c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-__call_atexit.o)
+ .debug_frame   0x0000000000000b88       0x88 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fflush.o)
+ .debug_frame   0x0000000000000c10      0x124 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-findfp.o)
+ .debug_frame   0x0000000000000d34       0x54 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fwalk.o)
+ .debug_frame   0x0000000000000d88       0x68 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-makebuf.o)
+ .debug_frame   0x0000000000000df0       0x30 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-mlock.o)
+ .debug_frame   0x0000000000000e20       0x98 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_frame   0x0000000000000eb8       0xbc /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf.o)
+ .debug_frame   0x0000000000000f74       0x6c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_frame   0x0000000000000fe0       0x70 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-reent.o)
+ .debug_frame   0x0000000000001050       0x8c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-stdio.o)
+ .debug_frame   0x00000000000010dc       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-writer.o)
+ .debug_frame   0x0000000000001108       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-closer.o)
+ .debug_frame   0x0000000000001134       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fstatr.o)
+ .debug_frame   0x0000000000001160       0x64 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-fvwrite.o)
+ .debug_frame   0x00000000000011c4       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-isattyr.o)
+ .debug_frame   0x00000000000011f0       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-lseekr.o)
+ .debug_frame   0x000000000000121c       0x28 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memchr-stub.o)
+ .debug_frame   0x0000000000001244       0x40 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-memmove.o)
+ .debug_frame   0x0000000000001284       0x38 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_frame   0x00000000000012bc       0x2c /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-readr.o)
+ .debug_frame   0x00000000000012e8       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libg_nano.a(lib_a-nano-msizer.o)
+ .debug_frame   0x0000000000001308       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(sbrk.o)
+ .debug_frame   0x0000000000001328       0x20 /usr/lib/gcc/arm-none-eabi/10.3.1/../../../arm-none-eabi/lib/thumb/v8-m.main+fp/softfp/libnosys.a(_exit.o)

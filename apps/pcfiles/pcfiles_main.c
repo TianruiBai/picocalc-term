@@ -57,6 +57,7 @@ extern int pcfiles_rename(const char *old_path, const char *new_name);
 
 #define PCFILES_SD_ROOT       "/mnt/sd"
 #define PCFILES_FLASH_ROOT    "/flash"
+#define PCFILES_HOME_DEFAULT  "/mnt/sd/home/user"
 
 /****************************************************************************
  * Private Types
@@ -1015,7 +1016,7 @@ static int pcfiles_main(int argc, char *argv[])
   /* Initialize state */
 
   memset(&g_state, 0, sizeof(g_state));
-  strncpy(g_state.cwd, PCFILES_SD_ROOT, PCFILES_PATH_MAX - 1);
+  strncpy(g_state.cwd, PCFILES_HOME_DEFAULT, PCFILES_PATH_MAX - 1);
   g_state.sort_mode   = SORT_NAME_ASC;
   g_state.show_hidden = false;
 

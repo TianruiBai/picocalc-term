@@ -19,7 +19,7 @@
  ****************************************************************************/
 
 #define PLAYLIST_MAX_ENTRIES   256
-#define MUSIC_DIR              "/mnt/sd/music"
+#define MUSIC_DIR              "/mnt/sd/home/user/music"
 
 /****************************************************************************
  * Public Types

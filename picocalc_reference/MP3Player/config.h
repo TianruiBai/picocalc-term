@@ -17,8 +17,9 @@
 #define LCD_RST_PIN 15
 
 // GPIOs for audio output
-#define AUDIO_LEFT     28
-#define AUDIO_RIGHT    27
+// PWM outputs now on GPIO40/41 for left and right channels
+#define AUDIO_LEFT     40
+#define AUDIO_RIGHT    41
 
 // GPIOs for buttons
 #define NEXT_BUTTON    2

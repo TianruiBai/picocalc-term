@@ -1,7 +1,12 @@
 /****************************************************************************
  * pcterm/src/config.c
  *
- * System settings persistence — JSON on SD card.
+ * eUX OS — System settings persistence and configuration overlay.
+ *
+ * Overlay resolution order (highest → lowest priority):
+ *   1. /flash/etc/<path>   — Writable user overrides (LittleFS)
+ *   2. /mnt/sd/etc/<path>  — SD card overrides (portable config)
+ *   3. Compiled defaults   — Hardcoded in pc_config_defaults()
  *
  ****************************************************************************/
 
@@ -10,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <syslog.h>
 
 #include <nuttx/mutex.h>
@@ -26,7 +32,62 @@ static pc_config_t g_global_config;
 static mutex_t     g_config_lock = NXMUTEX_INITIALIZER;
 
 /****************************************************************************
- * Public Functions
+ * Public Functions — Configuration Overlay
+ ****************************************************************************/
+
+const char *config_resolve(const char *relpath)
+{
+  static char buf[128];
+
+  /* Priority 1: Writable flash overlay */
+
+  snprintf(buf, sizeof(buf), FLASH_ETC "/%s", relpath);
+  if (access(buf, R_OK) == 0)
+    {
+      return buf;
+    }
+
+  /* Priority 2: SD card overlay */
+
+  snprintf(buf, sizeof(buf), SD_ETC "/%s", relpath);
+  if (access(buf, R_OK) == 0)
+    {
+      return buf;
+    }
+
+  /* Fall back to flash path (will be created on first save) */
+
+  snprintf(buf, sizeof(buf), FLASH_ETC "/%s", relpath);
+  return buf;
+}
+
+const char *config_save_path(const char *relpath)
+{
+  static char buf[128];
+
+  snprintf(buf, sizeof(buf), FLASH_ETC "/%s", relpath);
+  return buf;
+}
+
+const char *config_home_dir(void)
+{
+  static char buf[64];
+
+  /* Prefer SD card home if the directory exists */
+
+  if (access(SD_HOME, F_OK) == 0)
+    {
+      return SD_HOME;
+    }
+
+  /* Fall back to flash home */
+
+  snprintf(buf, sizeof(buf), "%s", FLASH_HOME_USER);
+  return buf;
+}
+
+/****************************************************************************
+ * Public Functions — Settings Load/Save
  ****************************************************************************/
 
 void pc_config_defaults(pc_config_t *config)
@@ -43,7 +104,7 @@ void pc_config_defaults(pc_config_t *config)
   config->key_repeat_delay = 500 / 10;  /* stored as / 10 for uint8_t */
   config->key_repeat_rate  = 50 / 10;
   config->wifi_autoconnect = false;
-  strncpy(config->hostname, "picocalc", sizeof(config->hostname));
+  strncpy(config->hostname, "eux", sizeof(config->hostname));
   strncpy(config->timezone, "UTC", sizeof(config->timezone));
   config->auto_sleep       = true;
   config->sleep_timeout    = 300;        /* 5 minutes */
@@ -54,10 +115,10 @@ void pc_config_defaults(pc_config_t *config)
   config->vconsole_count   = 3;         /* 3 text consoles (tty1-3) */
   config->clock_profile    = 2;         /* Standard 150 MHz (index 2 in ext table) */
 
-  /* Default login: username "picocalc", password "password" */
+  /* Default login: username "user", password "password" */
 
   config->login_enabled    = true;
-  strncpy(config->login_user, "picocalc", sizeof(config->login_user));
+  strncpy(config->login_user, "user", sizeof(config->login_user));
   strncpy(config->login_hash,
           "a171dd7e5d3961e4c8ce6f0cb0a1e4c4"
           "d8d3034b2cc1ca2c7d42aa085fc9a1e8",

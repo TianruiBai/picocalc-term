@@ -1,5 +1,10 @@
 # PicoCalc-Term: A Handheld Terminal OS for PicoCalc
 
+> **ARCHIVED** — This document is superseded by [eUX Project Plan.md](eUX%20Project%20Plan.md).
+> The project has been renamed from PicoCalc-Term to **eUX OS** (Embedded Unix).
+> Key changes: PSRAM is now XIP-mapped (not PIO-driven), entry point is `eux_init`,
+> runit service manager, ROMFS root filesystem. See the new docs for current info.
+
 ## Project Overview
 
 Build a lightweight, handheld terminal operating system with a small GUI for the [ClockworkPi PicoCalc](https://www.clockworkpi.com/picocalc), replacing the stock Pico 2 W with a **Waveshare RP2350B-Plus-W** for expanded capabilities.

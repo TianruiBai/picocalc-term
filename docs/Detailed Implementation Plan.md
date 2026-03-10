@@ -1,5 +1,8 @@
 # PicoCalc-Term: Detailed Implementation Plan
 
+> **ARCHIVED** — This document is superseded by [eUX Implementation Plan.md](eUX%20Implementation%20Plan.md).
+> The project has been renamed to **eUX OS**. See the new implementation plan for current info.
+
 This document expands each development phase from the [Project Plan](Project%20Plan.md) into concrete, actionable tasks with technical specifics, file paths, NuttX configuration, dependencies, and estimated effort.
 
 ---

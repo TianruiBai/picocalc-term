@@ -401,7 +401,7 @@ static int pcweb_main(int argc, char *argv[])
   lv_obj_set_style_text_color(g_content, lv_color_white(), 0);
   lv_obj_set_style_text_font(g_content, &lv_font_unscii_8, 0);
   lv_label_set_text(g_content,
-    "PicoCalc Web Browser\n\n"
+    "eUX Web Browser\n\n"
     "Enter a URL and press Enter.\n\n"
     "[Up/Down] Scroll  [Backspace] Back\n"
     "[B] Bookmark  [Q] Quit");

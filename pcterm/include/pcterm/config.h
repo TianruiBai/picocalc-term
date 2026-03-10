@@ -1,10 +1,17 @@
 /****************************************************************************
  * pcterm/include/pcterm/config.h
  *
- * System settings persistence API.
- * Settings are stored as JSON on the internal flash filesystem.
- * Path: /flash/etc/settings.json
+ * eUX OS — System settings persistence and configuration overlay API.
+ *
+ * Settings are stored as JSON on the internal flash LittleFS filesystem.
  * The flash is always mounted at /flash regardless of SD card presence.
+ *
+ * Configuration overlay resolution order (highest → lowest priority):
+ *   1. /flash/etc/<path>   — Writable user overrides (LittleFS)
+ *   2. /mnt/sd/etc/<path>  — SD card overrides (portable config)
+ *   3. Compiled defaults   — Hardcoded in pc_config_defaults()
+ *
+ * Saving always writes to /flash/etc/ (writable flash).
  *
  ****************************************************************************/
 
@@ -23,9 +30,31 @@
 #define FLASH_ROOT          "/flash"
 #define FLASH_ETC           FLASH_ROOT "/etc"
 #define FLASH_HOME          FLASH_ROOT "/home"
-#define FLASH_HOME_USER     FLASH_HOME "/picocalc"
+#define FLASH_HOME_USER     FLASH_HOME "/user"
 
-#define CONFIG_PATH         FLASH_ETC "/settings.json"
+/* eUX-specific config paths */
+
+#define EUX_ETC             FLASH_ETC "/eux"
+#define EUX_WIFI_ETC        FLASH_ETC "/wifi"
+#define EUX_SSH_ETC         FLASH_ETC "/ssh"
+#define EUX_CACHE           FLASH_ROOT "/var/cache"
+#define EUX_LOG             FLASH_ROOT "/var/log"
+
+/* SD card overlay paths */
+
+#define SD_ROOT             "/mnt/sd"
+#define SD_ETC              SD_ROOT "/etc"
+#define SD_HOME             SD_ROOT "/home/user"
+
+/* Default user home — SD card when available, flash fallback */
+
+#define EUX_HOME_DEFAULT    SD_HOME
+#define EUX_MUSIC_DIR       SD_HOME "/music"
+#define EUX_VIDEO_DIR       SD_HOME "/video"
+#define EUX_DOCUMENTS_DIR   SD_HOME "/documents"
+#define EUX_DOWNLOADS_DIR   SD_HOME "/downloads"
+
+#define CONFIG_PATH         EUX_ETC "/settings.json"
 #define CONFIG_MAX_SIZE     (4 * 1024)  /* 4 KB max settings file */
 
 /****************************************************************************
@@ -91,12 +120,12 @@ extern "C" {
 #endif
 
 /**
- * Load settings from SD card. Falls back to defaults if file missing.
+ * Load settings from flash. Falls back to defaults if file missing.
  */
 int pc_config_load(pc_config_t *config);
 
 /**
- * Save settings to SD card as JSON.
+ * Save settings to flash as JSON.
  */
 int pc_config_save(const pc_config_t *config);
 
@@ -109,6 +138,34 @@ void pc_config_defaults(pc_config_t *config);
  * Get the global config instance (loaded at boot).
  */
 pc_config_t *pc_config_get(void);
+
+/**
+ * Resolve a config file path using the overlay chain.
+ * Checks (in order): /flash/etc/<relpath>, /mnt/sd/etc/<relpath>.
+ * Returns pointer to static buffer with the first path that exists,
+ * or the flash path if neither exists (for use as default write target).
+ *
+ * @param relpath  Relative path within /etc (e.g. "eux/settings.json")
+ * @return         Resolved absolute path (static buffer — not thread-safe)
+ */
+const char *config_resolve(const char *relpath);
+
+/**
+ * Get the writable save path for a config file.
+ * Always returns /flash/etc/<relpath> — the LittleFS writable location.
+ *
+ * @param relpath  Relative path within /etc (e.g. "eux/settings.json")
+ * @return         Writable absolute path (static buffer — not thread-safe)
+ */
+const char *config_save_path(const char *relpath);
+
+/**
+ * Get the user's home directory.
+ * Returns SD card home if available, flash home otherwise.
+ *
+ * @return  Path to home directory (static buffer)
+ */
+const char *config_home_dir(void);
 
 #ifdef __cplusplus
 }

@@ -1,17 +1,18 @@
 /****************************************************************************
  * pcterm/src/main.c
  *
- * PicoCalc-Term OS entry point.
+ * eUX OS entry point (PID 1).
  * Boot sequence:
  *   1. Mount SD card
- *   2. Load hostname
- *   3. Load settings
- *   4. Initialize LVGL
- *   5. Create status bar
- *   6. Initialize app framework (register built-in apps)
- *   7. Initialize package manager (scan SD for third-party apps)
- *   8. Launch the home screen (launcher)
- *   9. Enter main event loop
+ *   2. Create SD card user directory structure
+ *   3. Load hostname (flash overlay)
+ *   4. Load settings (config overlay: /flash/etc → /mnt/sd/etc)
+ *   5. Initialize LVGL
+ *   6. Create status bar
+ *   7. Initialize app framework (register built-in apps)
+ *   8. Initialize package manager (scan SD for third-party apps)
+ *   9. Launch the home screen (launcher)
+ *  10. Enter main event loop
  *
  ****************************************************************************/
 
@@ -19,7 +20,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <time.h>
 #include <syslog.h>
 
@@ -70,6 +73,26 @@ static int boot_mount_sd(void)
     {
       syslog(LOG_WARNING,
              "boot: SD card not available — running in limited mode\n");
+      return ret;
+    }
+
+  /* Ensure user home directory structure on SD card */
+
+  static const char * const sd_dirs[] =
+    {
+      SD_HOME,
+      SD_HOME "/documents",
+      SD_HOME "/music",
+      SD_HOME "/video",
+      SD_HOME "/pictures",
+      SD_HOME "/downloads",
+      SD_ROOT "/apps",
+      SD_ROOT "/ssh",
+    };
+
+  for (size_t i = 0; i < sizeof(sd_dirs) / sizeof(sd_dirs[0]); i++)
+    {
+      mkdir(sd_dirs[i], 0755);
     }
 
   return ret;
@@ -182,19 +205,22 @@ static void status_bar_timer_cb(lv_timer_t *timer)
  ****************************************************************************/
 
 /****************************************************************************
- * Name: pcterm_main
+ * Name: eux_init
  *
  * Description:
- *   PicoCalc-Term OS entry point (CONFIG_INIT_ENTRYPOINT in full config).
+ *   eUX OS entry point (CONFIG_INIT_ENTRYPOINT in full config).
+ *   PID 1 — the first userspace process. ROMFS is already mounted
+ *   at /etc by NuttX's nsh_romfsetc mechanism before we get here.
+ *   The init script /etc/init.d/rcS has also been executed.
  *
  ****************************************************************************/
 
-int pcterm_main(int argc, char *argv[])
+int eux_init(int argc, char *argv[])
 {
   int ret;
 
   printf("\n");
-  printf("  PicoCalc-Term  v0.1.0\n");
+  printf("  eUX OS  v0.1.0\n");
   printf("  NuttX / LVGL / RP2350B\n");
   printf("\n");
 
@@ -250,7 +276,7 @@ int pcterm_main(int argc, char *argv[])
   lv_obj_t *app_area = statusbar_get_app_area();
   launcher_init(app_area);
 
-  syslog(LOG_INFO, "boot: PicoCalc-Term ready!\n");
+  syslog(LOG_INFO, "boot: eUX OS ready!\n");
 
   /* --- Step 9: Main event loop --- */
 
@@ -274,6 +300,6 @@ int pcterm_main(int argc, char *argv[])
       usleep(sleep_ms * 1000);
     }
 
-  syslog(LOG_INFO, "PicoCalc-Term shutting down\n");
+  syslog(LOG_INFO, "eUX OS shutting down\n");
   return 0;
 }

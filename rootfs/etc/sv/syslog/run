@@ -1,0 +1,4 @@
+#!/bin/sh
+# runit service: syslog daemon
+# Collects kernel and app logs to /tmp/log/messages
+exec eux_syslogd 2>&1

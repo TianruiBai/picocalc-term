@@ -1,8 +1,8 @@
-# PicoCalc-Term: Stub Audit & Implementation Locations
+# eUX OS: Stub Audit & Implementation Locations
 
 This document tracks all stub/placeholder implementations across the codebase for systematic completion.
 
-**Last updated:** 2026-03-09
+**Last updated:** 2026-03-10
 
 ---
 
@@ -25,7 +25,7 @@ This document tracks all stub/placeholder implementations across the codebase fo
 | 1.2 | `pc_app_yield()` | `app_framework.c` | ~248 | ✅ | Saves state + longjmp return |
 | 1.3 | `boot_init_lvgl()` | `main.c` | ~93 | ✅ | lv_init + display/input driver |
 | 1.4 | `status_bar_timer_cb()` | `main.c` | ~114 | ✅ | Real WiFi/battery/audio queries |
-| 1.5 | `pcterm_main()` step 6 | `main.c` | ~189 | ✅ | app_framework_init() call |
+| 1.5 | `eux_init()` step 6 | `main.c` | ~189 | ✅ | app_framework_init() call |
 | 1.6 | `terminal_resize()` | `terminal_widget.c` | ~983 | STUB | Low priority — fixed 320×320 display |
 | 1.7 | `terminal_scroll()` | `terminal_widget.c` | ~949 | ✅ | Scrollback row mapping |
 | 1.8 | `terminal_render()` bg | `terminal_widget.c` | ~880 | ✅ | Direct pixel bg fill + scrollback |
@@ -77,9 +77,18 @@ This document tracks all stub/placeholder implementations across the codebase fo
 | # | Function | File | Status | Description |
 |---|----------|------|--------|-------------|
 | 4.1 | `pcedit_main()` | `pcedit_main.c` | ✅ | Canvas editor + vi state machine |
-| 4.2 | `vi_normal_key()` 'd' | `pcedit_vi.c` | STUB | Operator-pending delete mode |
-| 4.3 | `vi_normal_key()` 'u' | `pcedit_vi.c` | STUB | Undo stack not implemented |
-| 4.4 | `vi_normal_key()` 'o'/'O' | `pcedit_vi.c` | PARTIAL | Mode switch only, no newline insert |
+| 4.2 | `vi_normal_key()` 'd' / dd | `pcedit_main.c` | ✅ | Full delete: x, X, D, dd, cc operators |
+| 4.3 | `vi_normal_key()` 'u' / Ctrl-R | `pcedit_main.c` | ✅ | Full undo/redo stack with linear history |
+| 4.4 | `vi_normal_key()` 'o'/'O' | `pcedit_main.c` | ✅ | Newline insert + cursor + enter insert mode |
+| 4.5 | `vi_normal_key()` 'p'/'P' | `pcedit_main.c` | ✅ | Put/paste from registers (linewise + charwise) |
+| 4.6 | `vi_normal_key()` 'Y' / yy | `pcedit_main.c` | ✅ | Yank line into register |
+| 4.7 | `vi_normal_key()` 'r' | `pcedit_main.c` | ✅ | Replace single char (two-key sequence) |
+| 4.8 | `vi_normal_key()` 'J' | `pcedit_main.c` | ✅ | Join lines with space |
+| 4.9 | `vi_normal_key()` 's'/'S'/'C' | `pcedit_main.c` | ✅ | Substitute char/line, change to EOL |
+| 4.10 | `vi_normal_key()` '~' | `pcedit_main.c` | ✅ | Toggle case at cursor |
+| 4.11 | `vi_normal_key()` 'm'/\'/\` | `pcedit_main.c` | ✅ | Set mark / jump to mark |
+| 4.12 | `vi_insert_key()` Ctrl-W | `pcedit_main.c` | ✅ | Delete word backward in insert mode |
+| 4.13 | `vi_insert_key()` Ctrl-U | `pcedit_main.c` | ✅ | Delete to line start in insert mode |
 
 ---
 
@@ -90,7 +99,7 @@ This document tracks all stub/placeholder implementations across the codebase fo
 | 5.1 | `pccsv_main()` | `pccsv_main.c` | ✅ | RFC 4180 parser + cell editing |
 | 5.2 | `pccsv_save()` | `pccsv_main.c` | ✅ | CSV serialization |
 | 5.3 | `pccsv_restore()` | `pccsv_main.c` | ✅ | CSV deserialization |
-| 5.4 | `pccsv_table_move_selection()` | `pccsv_table.c` | PARTIAL | Updates indices; needs visual highlight |
+| 5.4 | `pccsv_table_move_selection()` | `pccsv_table.c` | ✅ | Cell selection with LVGL draw event highlight |
 
 ---
 
@@ -168,8 +177,8 @@ This document tracks all stub/placeholder implementations across the codebase fo
 | Core framework | 22 | 21 | 1 (terminal_resize — low priority) |
 | Board support | 5 | 5 | 0 |
 | Local terminal | 4 | 4 | 0 |
-| Text editor | 4 | 1 | 3 (vi delete/undo/newline) |
-| Spreadsheet | 4 | 3 | 1 (visual selection highlight) |
+| Text editor | 13 | 13 | 0 |
+| Spreadsheet | 4 | 4 | 0 |
 | Audio player | 6 | 6 | 0 |
 | Video player | 2 | 2 | 0 |
 | SSH client | 14 | 14 | 0 |
@@ -177,7 +186,7 @@ This document tracks all stub/placeholder implementations across the codebase fo
 | Settings | 7 | 7 | 0 |
 | Package manager | 5 | 5 | 0 |
 | File explorer | 2 | 2 | 0 |
-| **Total** | **~78** | **73** | **5** |
+| **Total** | **~87** | **86** | **1** |
 
 ### New Implementations (Session 4)
 
@@ -192,10 +201,8 @@ This document tracks all stub/placeholder implementations across the codebase fo
 ### Remaining Items (non-critical)
 
 1. `terminal_resize()` — Fixed 320×320 display, rarely needed
-2. `vi_normal_key()` 'd' delete — Operator-pending mode
-3. `vi_normal_key()` 'u' undo — Undo stack
-4. `vi_normal_key()` 'o'/'O' — Newline insertion in gap buffer
-5. `pccsv_table_move_selection()` — Visual cell highlight
+
+All vi command stubs and pccsv cell highlight have been fully implemented.
 
 ### Crypto Guard Pattern
 

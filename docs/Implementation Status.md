@@ -1,5 +1,10 @@
 # PicoCalc-Term: Implementation Status & Roadmap
 
+> **ARCHIVED** — This document tracks the original PicoCalc-Term sessions.
+> The project has been renamed to **eUX OS**. For current status, see
+> [eUX Implementation Plan.md](eUX%20Implementation%20Plan.md) and
+> [Stub Audit & Locations.md](Stub%20Audit%20%26%20Locations.md).
+
 **Last Updated:** Session 3 (TermOS Packaging Validation)
 
 ---

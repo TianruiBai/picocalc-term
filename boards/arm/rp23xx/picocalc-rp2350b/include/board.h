@@ -9,7 +9,7 @@
  *     Manages: keyboard, AXP2101 battery PMIC, LCD backlight,
  *     keyboard backlight, PA enable, headphone detect, power control
  *   - Display: 320×320 IPS LCD, ILI9488-compat (SPI1)
- *   - PSRAM: 8 MB SPI PSRAM (PIO-driven, DMA)
+ *   - PSRAM: 8 MB QSPI PSRAM on RP2350B-Plus-W module (XIP-mapped)
  *   - SD Card: SPI0 (default) or PIO 1-bit SDIO (optional)
  *   - Audio: PWM (GP40 left, GP41 right)
  *   - Wi-Fi/BT: CYW43439 (on-module, managed by pico-sdk/cyw43)
@@ -233,59 +233,38 @@
  * There is NO direct battery ADC connection to the RP2350.
  */
 
-/* --- PSRAM (8 MB, PIO-driven SPI with DMA) ---
+/* --- PSRAM (8 MB, XIP-mapped on RP2350B-Plus-W module) ---
  *
- * The PicoCalc mainboard has 8 MB SPI PSRAM (e.g., APS6404L or
- * compatible). Access is via PIO-simulated SPI using DMA for
- * maximum throughput.
+ * The PSRAM is physically located on the Waveshare RP2350B-Plus-W
+ * module itself (not on the PicoCalc mainboard). The RP2350B maps
+ * PSRAM via the dedicated QSPI1 interface into the XIP address space,
+ * allowing direct memory-mapped (linear) access — no PIO or DMA
+ * transfers required.
  *
- * PIO sideset constraint: CS and SCK must be on consecutive GPIOs
- * with CS at the lower pin. The PIO program uses 2-bit sideset
- * where bit 0 = CS, bit 1 = SCK.
+ * XIP address range:
+ *   0x11000000 – 0x117FFFFF  (8 MB PSRAM, QSPI1 CS1)
  *
- *   Pin assignment (from PicoCalc reference):
- *   CS  = GP20 (sideset base, active low)
- *   SCK = GP21 (sideset base + 1)
- *   MOSI = GP2 (SPI mode: IO0 output)
- *   MISO = GP3 (SPI mode: IO0 input)
+ * The RP2350B has two QSPI controllers:
+ *   - QSPI0: 16 MB NOR flash (firmware + LittleFS)
+ *   - QSPI1: 8 MB PSRAM (APS6404L or compatible)
  *
- * For QSPI mode (fast bulk transfers):
- *   SIO0-SIO3 = GP2-GP5 (consecutive, bidirectional)
+ * Because PSRAM is XIP-mapped, the previous PIO-driven bit-banging
+ * is no longer needed. GP2-GP5 and GP20-GP21 are freed up for
+ * other uses (though GP2-5 may still be routed to QSPI1 on the
+ * module PCB — they are not available as user GPIO).
  *
- * Commands:
- *   0x02 = Write (addr[23:0] + data)
- *   0x0B = Fast Read (addr[23:0] + dummy_byte + data)
- *   0x66 = Reset Enable
- *   0x99 = Reset
- *   0x35 = Enter QPI mode
+ * Access: standard C pointer dereference. The RP2350 hardware
+ * handles QSPI protocol, refresh, and caching transparently.
  */
 
 #define BOARD_PSRAM_SIZE        (8 * 1024 * 1024)  /* 8 MB */
-#define BOARD_PSRAM_PIO_INST    1            /* PIO1 for PSRAM (matches reference) */
-#define BOARD_PSRAM_PIO_SM      0            /* State machine 0 */
 
-#define BOARD_PSRAM_PIN_CS      20           /* GP20 - PSRAM CS (PIO sideset base) */
-#define BOARD_PSRAM_PIN_SCK     21           /* GP21 - PSRAM SCK (CS + 1) */
-#define BOARD_PSRAM_PIN_MOSI    2            /* GP2  - PSRAM MOSI (SPI mode) */
-#define BOARD_PSRAM_PIN_MISO    3            /* GP3  - PSRAM MISO (SPI mode) */
-#define BOARD_PSRAM_PIN_SIO0    2            /* GP2  - PSRAM SIO0 (QSPI base) */
-#define BOARD_PSRAM_PIN_SIO1    3            /* GP3  - PSRAM SIO1 */
-#define BOARD_PSRAM_PIN_SIO2    4            /* GP4  - PSRAM SIO2 */
-#define BOARD_PSRAM_PIN_SIO3    5            /* GP5  - PSRAM SIO3 */
+/* XIP-mapped PSRAM base address (RP2350B QSPI1 region) */
 
-/* PSRAM clock frequency: sys_clk / clkdiv
- * At 150 MHz sys_clk with clkdiv=4.0: PIO_CLK = 37.5 MHz → SCK ~18.75 MHz
- *
- * The fudge PIO program reads exactly y bits (check-before-read loop),
- * while the non-fudge program reads y+1 bits (read-before-check).
- * The reference rp2040-psram library always uses fudge=true.
- * Our driver compensates for both modes, but fudge=true is safer.
- */
+#define BOARD_PSRAM_XIP_BASE    0x11000000
+#define BOARD_PSRAM_XIP_END     (BOARD_PSRAM_XIP_BASE + BOARD_PSRAM_SIZE)
 
-#define BOARD_PSRAM_CLKDIV      4.0f         /* 37.5 MHz PIO clock → ~18.75 MHz SCK */
-#define BOARD_PSRAM_USE_FUDGE   true         /* Match reference; reads exactly y bits */
-
-/* PSRAM memory-mapped base (after PIO init + heap registration) */
+/* PSRAM heap name for NuttX memory manager */
 
 #define BOARD_PSRAM_HEAP_NAME   "psram"
 
@@ -320,13 +299,13 @@
  *
  *   GP0  - UART0 TX (debug console)
  *   GP1  - UART0 RX (debug console)
- *   GP2  - PSRAM SIO0 / MOSI (PIO0)
- *   GP3  - PSRAM SIO1 / MISO (PIO0)
- *   GP4  - PSRAM SIO2 (QSPI mode)
- *   GP5  - PSRAM SIO3 (QSPI mode)
+ *   GP2  - (QSPI1 SIO0 — routed to on-module PSRAM, not user-available)
+ *   GP3  - (QSPI1 SIO1 — routed to on-module PSRAM, not user-available)
+ *   GP4  - (QSPI1 SIO2 — routed to on-module PSRAM, not user-available)
+ *   GP5  - (QSPI1 SIO3 — routed to on-module PSRAM, not user-available)
  *   GP6  - I2C1 SDA (south bridge)
  *   GP7  - I2C1 SCL (south bridge)
- *   GP8  - (available)
+ *   GP8  - South bridge INT (active low)
  *   GP9  - (available)
  *   GP10 - SPI1 SCK (LCD)
  *   GP11 - SPI1 MOSI (LCD)
@@ -338,20 +317,22 @@
  *   GP17 - SPI0 CS (SD card)
  *   GP18 - SPI0 SCK / SDIO CLK (SD card)
  *   GP19 - SPI0 MOSI / SDIO CMD (SD card)
- *   GP20 - PSRAM CS (PIO0 sideset base)
- *   GP21 - PSRAM SCK (PIO0 sideset base + 1)
- *   GP22 - (available)
+ *   GP20 - (available — was PSRAM CS, now freed)
+ *   GP21 - (available — was PSRAM SCK, now freed)
+ *   GP22 - SD card detect (active-low)
  *   GP23 - (available)
  *   GP24 - (available)
  *   GP25 - (available)
- *   GP26 - Audio PWM left
- *   GP27 - Audio PWM right
+ *   GP26 - (available / ADC0)
+ *   GP27 - (available / ADC1)
  *   GP28 - (available / ADC2)
  *   GP29 - (available / ADC3)
  *   GP36 - CYW43 WL_ON
  *   GP37 - CYW43 WL_D
  *   GP38 - CYW43 WL_CS
  *   GP39 - CYW43 WL_CLK
+ *   GP40 - Audio PWM left
+ *   GP41 - Audio PWM right
  * ===================================================================== */
 
 /****************************************************************************

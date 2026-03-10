@@ -103,7 +103,7 @@ static int pcterm_local_main(int argc, char *argv[])
       const char *hostname = hostname_get();
       char welcome[128];
       snprintf(welcome, sizeof(welcome),
-               "\r\nPicoCalc-Term v0.1.0\r\n"
+               "\r\neUX OS v0.1.0\r\n"
                "%s login: user\r\n"
                "user@%s:~$ ",
                hostname, hostname);
@@ -121,7 +121,7 @@ static int pcterm_local_main(int argc, char *argv[])
        * ENOENT.                                                  */
 
       usleep(200000);
-      pcterm_nsh_write(g_nsh, "cd /flash/home/picocalc\n", 24);
+      pcterm_nsh_write(g_nsh, "cd /home/user\n", 15);
     }
 
   /* Run local event loop — LVGL pumps display + keyboard.

@@ -12,6 +12,7 @@
 #include <lvgl/lvgl.h>
 
 #include "pcterm/app.h"
+#include "pcterm/config.h"
 
 /****************************************************************************
  * External References — pcaudio modules
@@ -202,12 +203,12 @@ static int pcaudio_main(int argc, char *argv[])
 
   pcaudio_ui_create(screen);
 
-  /* Scan /mnt/sd/music/ for audio files */
+  /* Scan $HOME/music/ for audio files */
 
   g_playlist = playlist_create();
   if (g_playlist != NULL)
     {
-      int count = playlist_scan_dir(g_playlist, "/mnt/sd/music");
+      int count = playlist_scan_dir(g_playlist, EUX_MUSIC_DIR);
       if (count > 0)
         {
           pcaudio_play_current();
@@ -215,7 +216,7 @@ static int pcaudio_main(int argc, char *argv[])
       else
         {
           pcaudio_ui_set_title("No music files found");
-          pcaudio_ui_set_artist("Add .mp3/.wav to /mnt/sd/music/");
+          pcaudio_ui_set_artist("Add .mp3/.wav to ~/music/");
         }
     }
 

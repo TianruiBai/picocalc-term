@@ -1398,3 +1398,28 @@ void vi_reset(void)
   memset(g_marks, 0, sizeof(g_marks));
 }
 
+/**
+ * Store text into a register (public API for pcedit_main.c).
+ */
+void vi_register_store(int idx, const char *text, size_t len,
+                       bool linewise)
+{
+  register_set(idx, text, len, linewise);
+}
+
+/**
+ * Shift numbered registers 1-9 (public API for pcedit_main.c).
+ */
+void vi_shift_numbered_registers(void)
+{
+  shift_numbered_registers();
+}
+
+/**
+ * Get register index for a character (public API).
+ */
+int vi_reg_index(char c)
+{
+  return reg_index(c);
+}
+

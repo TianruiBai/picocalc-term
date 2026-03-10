@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Set the target board
-set(YAHAL_BOARD "rpi-pico")
-# set(YAHAL_DIR ~/gitlab/YAHAL)
+# real YAHAL supports "rp2350-launchpad"; the Plus‑W should be compatible
+set(YAHAL_BOARD "rp2350-launchpad")
+
+# Use the YAHAL repository we just cloned locally
+set(YAHAL_DIR "${CMAKE_CURRENT_LIST_DIR}/YAHAL")
+# (delete or override this if you move YAHAL elsewhere)
+
 
 # Locate the YAHAL library folder
 include(YAHAL_import.cmake)
@@ -15,6 +20,13 @@ add_executable(pico-mp3-player
     sd_reader_task.cpp
     mp3_decoder_task.cpp
     i2ckbd.cpp
+    # include stub implementations for standalone build
+    stubs/fake_fonts.cpp
+)
+
+# include our local stub headers so project can compile without full YAHAL
+target_include_directories(pico-mp3-player PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/stubs
 )
 
 # Add YAHAL, MAD and FatFs libraries

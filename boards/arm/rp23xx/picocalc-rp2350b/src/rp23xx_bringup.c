@@ -484,16 +484,19 @@ int rp23xx_bringup(void)
         "/flash/sbin",
         "/flash/lib",
         "/flash/etc",
+        "/flash/etc/eux",
         "/flash/etc/ssh",
+        "/flash/etc/wifi",
         "/flash/etc/appstate",
         "/flash/home",
-        "/flash/home/picocalc",
-        "/flash/home/picocalc/.config",
+        "/flash/home/user",
+        "/flash/home/user/.config",
         "/flash/usr",
         "/flash/usr/lib",
         "/flash/usr/share",
         "/flash/var",
         "/flash/var/log",
+        "/flash/var/cache",
         "/flash/var/tmp",
       };
 
@@ -549,7 +552,7 @@ int rp23xx_bringup(void)
   }
 #endif /* CONFIG_RP23XX_FLASH_FILE_SYSTEM */
 
-  syslog(LOG_INFO, "picocalc: board bring-up complete\n");
+  syslog(LOG_INFO, "eux: board bring-up complete\n");
 
   return 0;
 }

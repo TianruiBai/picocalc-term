@@ -1,0 +1,74 @@
+#!/bin/sh
+# eUX OS — System initialization script
+# Executed by NSH at boot via CONFIG_NSH_ROMFSETC
+#
+# By the time this runs, rp23xx_bringup.c has already:
+#   - Mounted LittleFS at /flash (writable internal flash)
+#   - Mounted SD card at /mnt/sd (if card present)
+#   - Mounted tmpfs at /tmp, procfs at /proc, binfs at /bin
+#   - Created /flash/{sbin,lib,etc,home,usr,var} + symlinks
+#
+# This script handles remaining init: environment, hostname, services.
+
+echo "[eUX] init: configuring environment..."
+
+# Create runtime directories (volatile — cleared on reboot)
+mkdir -p /tmp/run
+mkdir -p /tmp/run/sv
+
+# Ensure eUX config directories exist on flash
+mkdir -p /flash/etc/eux
+mkdir -p /flash/etc/wifi
+mkdir -p /flash/etc/sv
+mkdir -p /flash/var/cache
+
+# Copy default runit service templates from ROMFS to flash (first boot)
+for svc in display audio network syslog; do
+  if [ ! -d /flash/etc/sv/$svc ]; then
+    mkdir -p /flash/etc/sv/$svc
+    if [ -f /etc/sv/$svc/run ]; then
+      cp /etc/sv/$svc/run /flash/etc/sv/$svc/run
+    fi
+  fi
+done
+
+# Ensure SD card user home structure
+if [ -d /mnt/sd ]; then
+  mkdir -p /mnt/sd/home/user/documents
+  mkdir -p /mnt/sd/home/user/music
+  mkdir -p /mnt/sd/home/user/video
+  mkdir -p /mnt/sd/home/user/pictures
+  mkdir -p /mnt/sd/home/user/downloads
+  mkdir -p /mnt/sd/apps
+  mkdir -p /mnt/sd/ssh
+fi
+
+# Load hostname (/flash/etc/hostname — writable on flash)
+if [ -f /flash/etc/hostname ]; then
+  hostname -F /flash/etc/hostname
+elif [ -f /etc/hostname ]; then
+  hostname -F /etc/hostname
+fi
+
+# Shell environment
+export PATH=/bin:/sbin:/usr/bin
+export HOME=/mnt/sd/home/user
+export TERM=vt100
+export PS1='\h:\w\$ '
+export EDITOR=vi
+
+# Source user profile if it exists on flash
+if [ -f /flash/etc/profile ]; then
+  . /flash/etc/profile
+fi
+
+# Start runit service supervision
+if [ -d /flash/etc/sv ]; then
+  runsvdir /flash/etc/sv &
+  echo "[eUX] init: runit service supervisor started"
+fi
+
+# Print message of the day
+cat /etc/motd 2>/dev/null
+
+echo "[eUX] init: system ready"

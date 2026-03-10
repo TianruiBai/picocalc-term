@@ -177,7 +177,7 @@ static int vc_console_task(int argc, FAR char *argv[])
 
   /* Banner */
 
-  printf("\nPicoCalc-Term %s\n", tty_name);
+  printf("\neUX OS %s\n", tty_name);
   printf("NuttX / RP2350B\n\n");
 
   /* --- Authentication --- */

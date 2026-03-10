@@ -214,5 +214,5 @@ const char *user_get_name(void)
       return cfg->login_user;
     }
 
-  return "picocalc";
+  return "user";
 }

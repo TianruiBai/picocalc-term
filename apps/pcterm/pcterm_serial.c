@@ -100,7 +100,7 @@ static int pcterm_serial_main(int argc, char *argv[])
     {
       char msg[192];
       snprintf(msg, sizeof(msg),
-               "\r\nPicoCalc-Term Serial\r\n"
+               "\r\neUX Serial Terminal\r\n"
                "Cannot open %s (errno=%d)\r\n"
                "\r\nPress Fn+ESC to return to launcher\r\n",
                CONFIG_PCTERM_SERIAL_DEV, errno);
@@ -126,7 +126,7 @@ static int pcterm_serial_main(int argc, char *argv[])
     const char *hostname = hostname_get();
     char banner[192];
     snprintf(banner, sizeof(banner),
-             "\r\nPicoCalc-Term Serial\r\n"
+             "\r\neUX Serial Terminal\r\n"
              "Connected to %s\r\n"
              "%s serial> ",
              CONFIG_PCTERM_SERIAL_DEV, hostname);

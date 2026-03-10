@@ -5,6 +5,7 @@ NUTTX_DIR := $(ROOT_DIR)/nuttx
 NUTTX_APPS_DIR := $(ROOT_DIR)/nuttx-apps
 BOARD_SRC_DIR := $(ROOT_DIR)/boards/arm/rp23xx/picocalc-rp2350b
 BOARD_DST_DIR := $(NUTTX_DIR)/boards/arm/rp23xx/picocalc-rp2350b
+BUILD_DIR := $(ROOT_DIR)/build
 
 NUTTX_REMOTE ?= https://github.com/apache/nuttx.git
 NUTTX_APPS_REMOTE ?= https://github.com/apache/nuttx-apps.git
@@ -15,16 +16,17 @@ BOARD_CONFIG ?= picocalc-rp2350b:full
 JOBS ?= $(shell nproc)
 
 .PHONY: help setup fetch-nuttx fetch-nuttx-apps sync-board configure build rebuild \
-	clean distclean menuconfig uf2 clean-deps fix-eol tips
+	clean distclean menuconfig uf2 clean-deps fix-eol tips rootfs romfs
 
 help:
-	@echo "PicoCalc-Term build targets"
+	@echo "eUX OS build targets"
 	@echo "  make setup                  Install host dependencies and fetch NuttX trees"
 	@echo "  make fetch-nuttx            Clone apache/nuttx into ./nuttx if missing"
 	@echo "  make fetch-nuttx-apps       Clone apache/nuttx-apps into ./nuttx-apps if missing"
 	@echo "  make sync-board             Copy custom board files into nuttx tree"
 	@echo "  make configure              Configure NuttX (BOARD_CONFIG=picocalc-rp2350b:full)"
-	@echo "  make build                  Build configured firmware"
+	@echo "  make rootfs                 Generate ROMFS image from rootfs/"
+	@echo "  make build                  Build configured firmware (includes ROMFS)"
 	@echo "  make rebuild                Clean and rebuild"
 	@echo "  make clean                  Clean build artifacts"
 	@echo "  make distclean              Remove build artifacts and .config"
@@ -75,7 +77,7 @@ configure: fetch-nuttx fetch-nuttx-apps sync-board
 	@cd "$(NUTTX_DIR)" && ./tools/configure.sh -l "$(BOARD_CONFIG)"
 	@$(MAKE) -C "$(NUTTX_DIR)" olddefconfig
 
-build: fetch-nuttx fetch-nuttx-apps sync-board
+build: fetch-nuttx fetch-nuttx-apps sync-board rootfs
 	@if [ ! -f "$(NUTTX_DIR)/.config" ]; then \
 		echo "ERROR: .config missing. Run 'make configure BOARD_CONFIG=$(BOARD_CONFIG)' first."; \
 		exit 1; \
@@ -84,10 +86,17 @@ build: fetch-nuttx fetch-nuttx-apps sync-board
 
 rebuild: clean build
 
+rootfs:
+	@echo "==> Generating ROMFS image from rootfs/"
+	@./tools/mkrootfs.sh "$(BUILD_DIR)"
+
+romfs: rootfs
+
 clean:
 	@if [ -f "$(NUTTX_DIR)/Makefile" ]; then \
 		$(MAKE) -C "$(NUTTX_DIR)" clean; \
 	fi
+	@rm -rf "$(BUILD_DIR)"
 
 distclean:
 	@if [ -f "$(NUTTX_DIR)/Makefile" ]; then \

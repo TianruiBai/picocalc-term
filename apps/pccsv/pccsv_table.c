@@ -30,6 +30,61 @@ static int       g_sel_row    = 0;
 static int       g_sel_col    = 0;
 static int       g_scroll_row = 0;
 static int       g_scroll_col = 0;
+static int       g_prev_sel_row = -1;
+static int       g_prev_sel_col = -1;
+
+/****************************************************************************
+ * Private Functions
+ ****************************************************************************/
+
+/**
+ * Draw event callback to highlight the selected cell.
+ */
+static void table_draw_cb(lv_event_t *e)
+{
+  lv_draw_task_t *draw_task = lv_event_get_draw_task(e);
+  lv_draw_dsc_base_t *base = draw_task->draw_dsc;
+
+  if (base->part != LV_PART_ITEMS) return;
+
+  uint32_t row = base->id1;
+  uint32_t col = base->id2;
+
+  if ((int)row == g_sel_row && (int)col == g_sel_col)
+    {
+      /* Highlight selected cell with inverted colors */
+
+      lv_draw_fill_dsc_t *fill = lv_draw_task_get_fill_dsc(draw_task);
+      if (fill)
+        {
+          fill->color = lv_color_hex(0x4080FF);
+          fill->opa = LV_OPA_COVER;
+        }
+
+      lv_draw_label_dsc_t *label = lv_draw_task_get_label_dsc(draw_task);
+      if (label)
+        {
+          label->color = lv_color_white();
+        }
+    }
+  else if ((int)row == 0)
+    {
+      /* Header row styling */
+
+      lv_draw_fill_dsc_t *fill = lv_draw_task_get_fill_dsc(draw_task);
+      if (fill)
+        {
+          fill->color = lv_color_hex(0x333333);
+          fill->opa = LV_OPA_COVER;
+        }
+
+      lv_draw_label_dsc_t *label = lv_draw_task_get_label_dsc(draw_task);
+      if (label)
+        {
+          label->color = lv_color_hex(0xCCCCCC);
+        }
+    }
+}
 
 /****************************************************************************
  * Public Functions
@@ -83,6 +138,14 @@ lv_obj_t *pccsv_table_create(lv_obj_t *parent, int nrows, int ncols)
 
   g_sel_row = 1;
   g_sel_col = 0;
+  g_prev_sel_row = -1;
+  g_prev_sel_col = -1;
+
+  /* Register draw event for cell highlighting */
+
+  lv_obj_add_event_cb(g_table, table_draw_cb, LV_EVENT_DRAW_TASK_ADDED,
+                      NULL);
+  lv_obj_add_flag(g_table, LV_OBJ_FLAG_SEND_DRAW_TASK_EVENTS);
 
   syslog(LOG_DEBUG, "PCCSV: Table created %d×%d\n", nrows, ncols);
   return g_table;
@@ -121,6 +184,9 @@ void pccsv_table_populate(char ***cells, int nrows, int ncols)
  */
 void pccsv_table_move_selection(int dr, int dc, int max_rows, int max_cols)
 {
+  g_prev_sel_row = g_sel_row;
+  g_prev_sel_col = g_sel_col;
+
   g_sel_row += dr;
   g_sel_col += dc;
 
@@ -129,8 +195,13 @@ void pccsv_table_move_selection(int dr, int dc, int max_rows, int max_cols)
   if (g_sel_col < 0) g_sel_col = 0;
   if (g_sel_col >= max_cols) g_sel_col = max_cols - 1;
 
-  /* Highlight selected cell — use custom draw or style */
-  /* TODO: Implement cell highlight via table cell user data */
+  /* Invalidate the table to trigger redraw with new highlight */
+
+  if (g_table &&
+      (g_sel_row != g_prev_sel_row || g_sel_col != g_prev_sel_col))
+    {
+      lv_obj_invalidate(g_table);
+    }
 }
 
 /**

@@ -1,0 +1,9 @@
+# eUX OS filesystem table
+# Note: Most mounts are performed by rp23xx_bringup.c before this
+# file is read. This serves as documentation of the mount layout.
+# <device>        <mount>      <type>      <options>
+/dev/flash0       /flash       littlefs    defaults
+/dev/mmcsd0       /mnt/sd      vfat        defaults
+none              /tmp         tmpfs       defaults
+none              /proc        procfs      defaults
+none              /bin         binfs       defaults

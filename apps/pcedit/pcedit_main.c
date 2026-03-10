@@ -89,6 +89,10 @@ extern const char  *vi_get_register_text(char reg, size_t *len,
                                           bool *linewise);
 extern void         vi_get_visual_range(size_t *sl, size_t *sc,
                                          size_t *el, size_t *ec);
+extern void         vi_register_store(int idx, const char *text,
+                                       size_t len, bool linewise);
+extern void         vi_shift_numbered_registers(void);
+extern int          vi_reg_index(char c);
 
 /* pcedit_buffer.c */
 
@@ -230,6 +234,9 @@ static int           g_msg_timer = 0;
 
 static bool          g_syntax_enabled = true;
 static bool          g_initialized = false;
+static bool          g_replace_char_pending = false;  /* 'r' awaits char */
+static bool          g_mark_set_pending = false;      /* 'm' awaits mark */
+static bool          g_mark_jump_pending = false;     /* '/'` awaits mark */
 
 /****************************************************************************
  * Private Functions — Buffer Helpers
@@ -997,7 +1004,84 @@ static void pcedit_key_handler(lv_event_t *e)
           if (max_y < 0) max_y = 0;
           if (max_x < 1) max_x = 1;
 
-          /* Handle undo/redo ctrl keys */
+          /* Handle pending 'r' replacement */
+
+          if (g_replace_char_pending)
+            {
+              g_replace_char_pending = false;
+
+              if (key >= 0x20 && key < 0x7F)
+                {
+                  size_t offset = line_to_offset(&eb->gb,
+                                    eb->cursor_line) + eb->cursor_col;
+                  size_t ll = line_length(&eb->gb, eb->cursor_line);
+
+                  if (ll > 0 && eb->cursor_col < ll)
+                    {
+                      char old_ch = gap_buffer_char_at(&eb->gb,
+                                      offset);
+                      char old_buf[2] = { old_ch, '\0' };
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      gap_buffer_delete_forward(&eb->gb);
+                      gap_buffer_insert(&eb->gb, (char)key);
+
+                      undo_push(offset, old_buf, 1, false,
+                                eb->cursor_line, eb->cursor_col);
+
+                      eb->modified = true;
+                    }
+                }
+              break;
+            }
+
+          /* Handle pending 'm' — set mark */
+
+          if (g_mark_set_pending)
+            {
+              g_mark_set_pending = false;
+
+              if ((key >= 'a' && key <= 'z') ||
+                  (key >= 'A' && key <= 'Z'))
+                {
+                  vi_set_mark((char)key, eb->cursor_line,
+                              eb->cursor_col);
+                  snprintf(g_message, sizeof(g_message),
+                           "Mark '%c' set", (char)key);
+                  g_msg_timer = 20;
+                }
+              break;
+            }
+
+          /* Handle pending goto mark */
+
+          if (g_mark_jump_pending)
+            {
+              g_mark_jump_pending = false;
+
+              if ((key >= 'a' && key <= 'z') ||
+                  (key >= 'A' && key <= 'Z'))
+                {
+                  size_t ml, mc;
+                  if (vi_get_mark((char)key, &ml, &mc))
+                    {
+                      if (ml < eb->total_lines)
+                        {
+                          move_cursor_to(eb, ml, mc);
+                          ensure_cursor_visible(eb);
+                        }
+                    }
+                  else
+                    {
+                      snprintf(g_message, sizeof(g_message),
+                               "Mark '%c' not set", (char)key);
+                      g_msg_timer = 30;
+                    }
+                }
+              break;
+            }
+
+          /* Handle undo/redo */
 
           if (key == 'u')
             {
@@ -1010,6 +1094,550 @@ static void pcedit_key_handler(lv_event_t *e)
               pcedit_redo();
               break;
             }
+
+          /* ---- Buffer-modifying normal-mode commands ---- */
+
+          if (key == 'x')
+            {
+              /* Delete char at cursor */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line) + eb->cursor_col;
+              size_t len = gap_buffer_length(&eb->gb);
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+
+              if (ll > 0 && eb->cursor_col < ll)
+                {
+                  char ch = gap_buffer_char_at(&eb->gb, offset);
+                  char buf[2] = { ch, '\0' };
+
+                  /* Yank into register */
+
+                  int ri = vi_get_pending_register() ?
+                           vi_reg_index(vi_get_pending_register()) : -1;
+                  if (ri < 0) ri = 26;  /* register "0" */
+                  vi_register_store(ri, buf, 1, false);
+
+                  gap_buffer_move_gap(&eb->gb, offset);
+                  gap_buffer_delete_forward(&eb->gb);
+
+                  undo_push(offset, buf, 1, false,
+                            eb->cursor_line, eb->cursor_col);
+
+                  if (eb->cursor_col >= line_length(&eb->gb,
+                                          eb->cursor_line) &&
+                      eb->cursor_col > 0)
+                    {
+                      eb->cursor_col--;
+                    }
+
+                  eb->modified = true;
+                }
+              break;
+            }
+
+          if (key == 'X')
+            {
+              /* Delete char before cursor (backspace in normal) */
+
+              if (eb->cursor_col > 0)
+                {
+                  size_t offset = line_to_offset(&eb->gb,
+                                    eb->cursor_line) + eb->cursor_col;
+                  char ch = gap_buffer_char_at(&eb->gb, offset - 1);
+                  char buf[2] = { ch, '\0' };
+
+                  gap_buffer_move_gap(&eb->gb, offset);
+                  gap_buffer_delete_back(&eb->gb);
+
+                  undo_push(offset - 1, buf, 1, false,
+                            eb->cursor_line, eb->cursor_col);
+
+                  eb->cursor_col--;
+                  eb->modified = true;
+                }
+              break;
+            }
+
+          if (key == 'r')
+            {
+              /* Replace single char: next key is the replacement */
+
+              g_replace_char_pending = true;
+              break;
+            }
+
+          if (key == 'm')
+            {
+              /* Set mark: next key is mark name */
+
+              g_mark_set_pending = true;
+              break;
+            }
+
+          if (key == '\'' || key == '`')
+            {
+              /* Jump to mark: next key is mark name */
+
+              g_mark_jump_pending = true;
+              break;
+            }
+
+          if (key == 'D')
+            {
+              /* Delete to end of line (d$) */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line) + eb->cursor_col;
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+
+              if (eb->cursor_col < ll)
+                {
+                  size_t del_len = ll - eb->cursor_col;
+                  char *del_text = malloc(del_len + 1);
+
+                  if (del_text)
+                    {
+                      for (size_t i = 0; i < del_len; i++)
+                        {
+                          del_text[i] = gap_buffer_char_at(&eb->gb,
+                                          offset + i);
+                        }
+                      del_text[del_len] = '\0';
+
+                      /* Yank deleted text */
+
+                      vi_shift_numbered_registers();
+                      vi_register_store(27, del_text, del_len, false);
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      for (size_t i = 0; i < del_len; i++)
+                        {
+                          gap_buffer_delete_forward(&eb->gb);
+                        }
+
+                      undo_push(offset, del_text, del_len, false,
+                                eb->cursor_line, eb->cursor_col);
+
+                      free(del_text);
+                      eb->modified = true;
+
+                      if (eb->cursor_col > 0)
+                        {
+                          eb->cursor_col--;
+                        }
+                    }
+                }
+              break;
+            }
+
+          if (key == 'J')
+            {
+              /* Join current line with next line */
+
+              if (eb->cursor_line + 1 < eb->total_lines)
+                {
+                  size_t ll = line_length(&eb->gb, eb->cursor_line);
+                  size_t nl_offset = line_to_offset(&eb->gb,
+                                       eb->cursor_line) + ll;
+
+                  /* Delete the newline char */
+
+                  gap_buffer_move_gap(&eb->gb, nl_offset);
+                  gap_buffer_delete_forward(&eb->gb);
+
+                  undo_push(nl_offset, "\n", 1, false,
+                            eb->cursor_line, eb->cursor_col);
+
+                  /* Insert a space to separate the lines */
+
+                  gap_buffer_insert(&eb->gb, ' ');
+                  undo_push(nl_offset, " ", 1, true,
+                            eb->cursor_line, eb->cursor_col);
+
+                  eb->cursor_col = ll;
+                  eb->modified = true;
+                  eb->total_lines = count_lines(&eb->gb);
+                }
+              break;
+            }
+
+          if (key == 'Y')
+            {
+              /* Yank entire line (like yy) */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line);
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+              size_t yank_len = ll;
+              size_t buf_len = gap_buffer_length(&eb->gb);
+
+              /* Include trailing newline if present */
+
+              if (offset + ll < buf_len &&
+                  gap_buffer_char_at(&eb->gb, offset + ll) == '\n')
+                {
+                  yank_len++;
+                }
+
+              char *yank_text = malloc(yank_len + 1);
+              if (yank_text)
+                {
+                  for (size_t i = 0; i < yank_len; i++)
+                    {
+                      yank_text[i] = gap_buffer_char_at(&eb->gb,
+                                       offset + i);
+                    }
+                  yank_text[yank_len] = '\0';
+
+                  vi_shift_numbered_registers();
+                  vi_register_store(27, yank_text, yank_len, true);
+
+                  free(yank_text);
+
+                  snprintf(g_message, sizeof(g_message),
+                           "1 line yanked");
+                  g_msg_timer = 30;
+                }
+              break;
+            }
+
+          if (key == 'p')
+            {
+              /* Put after cursor */
+
+              size_t rlen;
+              bool linewise;
+              const char *text = vi_get_register_text(
+                vi_get_pending_register() ?
+                  vi_get_pending_register() : '0',
+                &rlen, &linewise);
+
+              if (text && rlen > 0)
+                {
+                  if (linewise)
+                    {
+                      /* Insert on new line below */
+
+                      size_t ll = line_length(&eb->gb,
+                                    eb->cursor_line);
+                      size_t eol = line_to_offset(&eb->gb,
+                                     eb->cursor_line) + ll;
+                      size_t buf_len = gap_buffer_length(&eb->gb);
+
+                      /* Move past newline if present */
+
+                      if (eol < buf_len &&
+                          gap_buffer_char_at(&eb->gb, eol) == '\n')
+                        {
+                          eol++;
+                        }
+
+                      gap_buffer_move_gap(&eb->gb, eol);
+                      gap_buffer_insert_str(&eb->gb, text, rlen);
+
+                      /* Ensure trailing newline */
+
+                      if (text[rlen - 1] != '\n')
+                        {
+                          gap_buffer_insert(&eb->gb, '\n');
+                          undo_push(eol, text, rlen + 1, true,
+                                    eb->cursor_line, eb->cursor_col);
+                        }
+                      else
+                        {
+                          undo_push(eol, text, rlen, true,
+                                    eb->cursor_line, eb->cursor_col);
+                        }
+
+                      eb->cursor_line++;
+                      eb->cursor_col = 0;
+                    }
+                  else
+                    {
+                      /* Insert after cursor position */
+
+                      size_t offset = line_to_offset(&eb->gb,
+                                        eb->cursor_line) +
+                                      eb->cursor_col + 1;
+                      size_t buf_len = gap_buffer_length(&eb->gb);
+                      if (offset > buf_len) offset = buf_len;
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      gap_buffer_insert_str(&eb->gb, text, rlen);
+
+                      undo_push(offset, text, rlen, true,
+                                eb->cursor_line, eb->cursor_col);
+
+                      eb->cursor_col += rlen;
+                    }
+
+                  eb->modified = true;
+                  eb->total_lines = count_lines(&eb->gb);
+                }
+              break;
+            }
+
+          if (key == 'P')
+            {
+              /* Put before cursor */
+
+              size_t rlen;
+              bool linewise;
+              const char *text = vi_get_register_text(
+                vi_get_pending_register() ?
+                  vi_get_pending_register() : '0',
+                &rlen, &linewise);
+
+              if (text && rlen > 0)
+                {
+                  if (linewise)
+                    {
+                      /* Insert on line above */
+
+                      size_t offset = line_to_offset(&eb->gb,
+                                        eb->cursor_line);
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      gap_buffer_insert_str(&eb->gb, text, rlen);
+
+                      if (text[rlen - 1] != '\n')
+                        {
+                          gap_buffer_insert(&eb->gb, '\n');
+                          undo_push(offset, text, rlen + 1, true,
+                                    eb->cursor_line, eb->cursor_col);
+                        }
+                      else
+                        {
+                          undo_push(offset, text, rlen, true,
+                                    eb->cursor_line, eb->cursor_col);
+                        }
+
+                      eb->cursor_col = 0;
+                    }
+                  else
+                    {
+                      /* Insert at cursor position */
+
+                      size_t offset = line_to_offset(&eb->gb,
+                                        eb->cursor_line) +
+                                      eb->cursor_col;
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      gap_buffer_insert_str(&eb->gb, text, rlen);
+
+                      undo_push(offset, text, rlen, true,
+                                eb->cursor_line, eb->cursor_col);
+                    }
+
+                  eb->modified = true;
+                  eb->total_lines = count_lines(&eb->gb);
+                }
+              break;
+            }
+
+          if (key == 'o')
+            {
+              /* Open line below: insert newline after current line */
+
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+              size_t eol = line_to_offset(&eb->gb,
+                             eb->cursor_line) + ll;
+
+              gap_buffer_move_gap(&eb->gb, eol);
+              gap_buffer_insert(&eb->gb, '\n');
+
+              undo_push(eol, "\n", 1, true,
+                        eb->cursor_line, eb->cursor_col);
+
+              eb->cursor_line++;
+              eb->cursor_col = 0;
+              eb->modified = true;
+              eb->total_lines = count_lines(&eb->gb);
+
+              /* Let vi_normal_key set mode to insert */
+            }
+
+          if (key == 'O')
+            {
+              /* Open line above: insert newline before current line */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line);
+
+              gap_buffer_move_gap(&eb->gb, offset);
+              gap_buffer_insert(&eb->gb, '\n');
+
+              undo_push(offset, "\n", 1, true,
+                        eb->cursor_line, eb->cursor_col);
+
+              /* cursor_line stays same (new line pushed content down),
+               * but we want to edit the new blank line above */
+
+              eb->cursor_col = 0;
+              eb->modified = true;
+              eb->total_lines = count_lines(&eb->gb);
+
+              /* Let vi_normal_key set mode to insert */
+            }
+
+          if (key == 's')
+            {
+              /* Substitute: delete char at cursor, enter insert mode */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line) + eb->cursor_col;
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+
+              if (ll > 0 && eb->cursor_col < ll)
+                {
+                  char ch = gap_buffer_char_at(&eb->gb, offset);
+                  char buf[2] = { ch, '\0' };
+
+                  gap_buffer_move_gap(&eb->gb, offset);
+                  gap_buffer_delete_forward(&eb->gb);
+
+                  undo_push(offset, buf, 1, false,
+                            eb->cursor_line, eb->cursor_col);
+
+                  eb->modified = true;
+                }
+
+              /* Let vi_normal_key set mode to insert */
+            }
+
+          if (key == 'S')
+            {
+              /* Substitute entire line: clear line, enter insert */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line);
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+
+              if (ll > 0)
+                {
+                  char *del_text = malloc(ll + 1);
+                  if (del_text)
+                    {
+                      for (size_t i = 0; i < ll; i++)
+                        {
+                          del_text[i] = gap_buffer_char_at(&eb->gb,
+                                          offset + i);
+                        }
+                      del_text[ll] = '\0';
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      for (size_t i = 0; i < ll; i++)
+                        {
+                          gap_buffer_delete_forward(&eb->gb);
+                        }
+
+                      undo_push(offset, del_text, ll, false,
+                                eb->cursor_line, eb->cursor_col);
+                      free(del_text);
+
+                      eb->cursor_col = 0;
+                      eb->modified = true;
+                    }
+                }
+
+              /* Let vi_normal_key set mode to insert */
+            }
+
+          if (key == 'C')
+            {
+              /* Change to end of line: delete from cursor to EOL */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line) + eb->cursor_col;
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+
+              if (eb->cursor_col < ll)
+                {
+                  size_t del_len = ll - eb->cursor_col;
+                  char *del_text = malloc(del_len + 1);
+
+                  if (del_text)
+                    {
+                      for (size_t i = 0; i < del_len; i++)
+                        {
+                          del_text[i] = gap_buffer_char_at(&eb->gb,
+                                          offset + i);
+                        }
+                      del_text[del_len] = '\0';
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      for (size_t i = 0; i < del_len; i++)
+                        {
+                          gap_buffer_delete_forward(&eb->gb);
+                        }
+
+                      undo_push(offset, del_text, del_len, false,
+                                eb->cursor_line, eb->cursor_col);
+                      free(del_text);
+
+                      eb->modified = true;
+                    }
+                }
+
+              /* Let vi_normal_key set mode to insert */
+            }
+
+          if (key == 'd')
+            {
+              /* Check for dd (delete line) — vi_normal_key handles
+               * the double-key detection, but we need to do the
+               * actual deletion. We peek at the pending operator. */
+
+              /* dd is handled after vi_normal_key detects it */
+            }
+
+          if (key == '~')
+            {
+              /* Toggle case of char at cursor */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line) + eb->cursor_col;
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+
+              if (ll > 0 && eb->cursor_col < ll)
+                {
+                  char ch = gap_buffer_char_at(&eb->gb, offset);
+                  char toggled;
+
+                  if (islower(ch))
+                    toggled = toupper(ch);
+                  else if (isupper(ch))
+                    toggled = tolower(ch);
+                  else
+                    toggled = ch;
+
+                  if (toggled != ch)
+                    {
+                      char old_buf[2] = { ch, '\0' };
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      gap_buffer_delete_forward(&eb->gb);
+                      gap_buffer_insert(&eb->gb, toggled);
+
+                      undo_push(offset, old_buf, 1, false,
+                                eb->cursor_line, eb->cursor_col);
+
+                      eb->modified = true;
+                    }
+
+                  /* Move cursor right */
+
+                  if (eb->cursor_col + 1 < line_length(&eb->gb,
+                                             eb->cursor_line))
+                    {
+                      eb->cursor_col++;
+                    }
+                }
+              break;
+            }
+
+          /* Let vi_normal_key handle mode/cursor changes */
 
           if (vi_normal_key((uint8_t)key, mods, &cx, &cy,
                             max_x, max_y))
@@ -1027,9 +1655,159 @@ static void pcedit_key_handler(lv_event_t *e)
                 }
             }
 
-          /* Check if mode changed */
+          /* Post-processing: handle dd/yy/cc after vi detected them */
 
           vi_mode_t new_mode = vi_get_mode();
+
+          /* dd: vi_normal_key sets pending_op back to NONE when 'dd'
+           * is detected, and mode goes back to NORMAL. We detect this
+           * pattern: key='d', mode was OPERATOR_PENDING with DELETE,
+           * and now mode is NORMAL with no pending op. */
+
+          if (key == 'd' && mode == VI_MODE_OPERATOR_PENDING)
+            {
+              /* dd: delete entire line */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line);
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+              size_t buf_len = gap_buffer_length(&eb->gb);
+              size_t del_len = ll;
+
+              /* Include the trailing newline */
+
+              if (offset + ll < buf_len &&
+                  gap_buffer_char_at(&eb->gb, offset + ll) == '\n')
+                {
+                  del_len++;
+                }
+              else if (offset > 0)
+                {
+                  /* Last line: delete preceding newline instead */
+
+                  offset--;
+                  del_len++;
+                }
+
+              if (del_len > 0)
+                {
+                  char *del_text = malloc(del_len + 1);
+                  if (del_text)
+                    {
+                      for (size_t i = 0; i < del_len; i++)
+                        {
+                          del_text[i] = gap_buffer_char_at(&eb->gb,
+                                          offset + i);
+                        }
+                      del_text[del_len] = '\0';
+
+                      vi_shift_numbered_registers();
+                      vi_register_store(27, del_text, del_len, true);
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      for (size_t i = 0; i < del_len; i++)
+                        {
+                          gap_buffer_delete_forward(&eb->gb);
+                        }
+
+                      undo_push(offset, del_text, del_len, false,
+                                eb->cursor_line, eb->cursor_col);
+                      free(del_text);
+
+                      eb->modified = true;
+                      eb->total_lines = count_lines(&eb->gb);
+
+                      if (eb->cursor_line >= eb->total_lines &&
+                          eb->total_lines > 0)
+                        {
+                          eb->cursor_line = eb->total_lines - 1;
+                        }
+
+                      eb->cursor_col = 0;
+                      move_cursor_to(eb, eb->cursor_line, 0);
+
+                      snprintf(g_message, sizeof(g_message),
+                               "1 line deleted");
+                      g_msg_timer = 30;
+                    }
+                }
+            }
+
+          if (key == 'y' && mode == VI_MODE_OPERATOR_PENDING)
+            {
+              /* yy: yank entire line */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line);
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+              size_t buf_len = gap_buffer_length(&eb->gb);
+              size_t yank_len = ll;
+
+              if (offset + ll < buf_len &&
+                  gap_buffer_char_at(&eb->gb, offset + ll) == '\n')
+                {
+                  yank_len++;
+                }
+
+              char *yank_text = malloc(yank_len + 1);
+              if (yank_text)
+                {
+                  for (size_t i = 0; i < yank_len; i++)
+                    {
+                      yank_text[i] = gap_buffer_char_at(&eb->gb,
+                                       offset + i);
+                    }
+                  yank_text[yank_len] = '\0';
+
+                  vi_shift_numbered_registers();
+                  vi_register_store(27, yank_text, yank_len, true);
+
+                  free(yank_text);
+
+                  snprintf(g_message, sizeof(g_message),
+                           "1 line yanked");
+                  g_msg_timer = 30;
+                }
+            }
+
+          if (key == 'c' && mode == VI_MODE_OPERATOR_PENDING)
+            {
+              /* cc: change entire line — clear line, insert mode */
+
+              size_t offset = line_to_offset(&eb->gb,
+                                eb->cursor_line);
+              size_t ll = line_length(&eb->gb, eb->cursor_line);
+
+              if (ll > 0)
+                {
+                  char *del_text = malloc(ll + 1);
+                  if (del_text)
+                    {
+                      for (size_t i = 0; i < ll; i++)
+                        {
+                          del_text[i] = gap_buffer_char_at(&eb->gb,
+                                          offset + i);
+                        }
+                      del_text[ll] = '\0';
+
+                      gap_buffer_move_gap(&eb->gb, offset);
+                      for (size_t i = 0; i < ll; i++)
+                        {
+                          gap_buffer_delete_forward(&eb->gb);
+                        }
+
+                      undo_push(offset, del_text, ll, false,
+                                eb->cursor_line, eb->cursor_col);
+                      free(del_text);
+
+                      eb->cursor_col = 0;
+                      eb->modified = true;
+                    }
+                }
+            }
+
+          /* Check if mode changed */
+
           if (new_mode != mode)
             {
               pcedit_plugin_fire_hook(3 /* HOOK_ON_MODE_CHANGE */,
@@ -1039,6 +1817,103 @@ static void pcedit_key_handler(lv_event_t *e)
         break;
 
       case VI_MODE_INSERT:
+        /* Handle insert-mode ctrl keys that need buffer ops */
+
+        if (key == 0x17)  /* Ctrl-W: delete word backward */
+          {
+            if (eb->cursor_col > 0)
+              {
+                size_t line_off = line_to_offset(&eb->gb,
+                                    eb->cursor_line);
+                size_t col = eb->cursor_col;
+
+                /* Skip trailing spaces */
+
+                while (col > 0 &&
+                       gap_buffer_char_at(&eb->gb,
+                         line_off + col - 1) == ' ')
+                  {
+                    col--;
+                  }
+
+                /* Then delete word chars */
+
+                while (col > 0 &&
+                       gap_buffer_char_at(&eb->gb,
+                         line_off + col - 1) != ' ')
+                  {
+                    col--;
+                  }
+
+                size_t del_len = eb->cursor_col - col;
+                if (del_len > 0)
+                  {
+                    size_t del_off = line_off + col;
+                    char *del_text = malloc(del_len + 1);
+                    if (del_text)
+                      {
+                        for (size_t i = 0; i < del_len; i++)
+                          {
+                            del_text[i] = gap_buffer_char_at(&eb->gb,
+                                            del_off + i);
+                          }
+                        del_text[del_len] = '\0';
+
+                        gap_buffer_move_gap(&eb->gb, del_off);
+                        for (size_t i = 0; i < del_len; i++)
+                          {
+                            gap_buffer_delete_forward(&eb->gb);
+                          }
+
+                        undo_push(del_off, del_text, del_len, false,
+                                  eb->cursor_line, eb->cursor_col);
+
+                        free(del_text);
+                        eb->cursor_col = col;
+                        eb->modified = true;
+                      }
+                  }
+              }
+            vi_insert_key((uint8_t)key, mods);  /* consume key */
+            break;
+          }
+
+        if (key == 0x15)  /* Ctrl-U: delete to start of line */
+          {
+            if (eb->cursor_col > 0)
+              {
+                size_t line_off = line_to_offset(&eb->gb,
+                                    eb->cursor_line);
+                size_t del_len = eb->cursor_col;
+                char *del_text = malloc(del_len + 1);
+
+                if (del_text)
+                  {
+                    for (size_t i = 0; i < del_len; i++)
+                      {
+                        del_text[i] = gap_buffer_char_at(&eb->gb,
+                                        line_off + i);
+                      }
+                    del_text[del_len] = '\0';
+
+                    gap_buffer_move_gap(&eb->gb, line_off);
+                    for (size_t i = 0; i < del_len; i++)
+                      {
+                        gap_buffer_delete_forward(&eb->gb);
+                      }
+
+                    undo_push(line_off, del_text, del_len, false,
+                              eb->cursor_line, eb->cursor_col);
+
+                    free(del_text);
+                    eb->cursor_col = 0;
+                    eb->modified = true;
+                  }
+              }
+            vi_insert_key((uint8_t)key, mods);
+            break;
+          }
+
         if (vi_insert_key((uint8_t)key, mods))
           {
             /* ESC → back to normal; adjust cursor */

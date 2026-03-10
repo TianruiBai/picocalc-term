@@ -1,4 +1,4 @@
-# PicoCalc-Term App Framework API
+# eUX OS App Framework API
 
 ## Overview
 

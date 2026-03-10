@@ -12,6 +12,7 @@
 #include <lvgl/lvgl.h>
 
 #include "pcterm/app.h"
+#include "pcterm/config.h"
 
 /****************************************************************************
  * External References — pcvideo modules
@@ -84,7 +85,7 @@ static int find_first_pcv(char *buf, size_t buflen)
   DIR           *dir;
   struct dirent *entry;
 
-  dir = opendir("/mnt/sd/video");
+  dir = opendir(EUX_VIDEO_DIR);
   if (dir == NULL)
     {
       return -1;
@@ -95,7 +96,7 @@ static int find_first_pcv(char *buf, size_t buflen)
       const char *ext = strrchr(entry->d_name, '.');
       if (ext && strcasecmp(ext, ".pcv") == 0)
         {
-          snprintf(buf, buflen, "/mnt/sd/video/%s", entry->d_name);
+          snprintf(buf, buflen, EUX_VIDEO_DIR "/%s", entry->d_name);
           closedir(dir);
           return 0;
         }
@@ -257,7 +258,7 @@ static int pcvideo_main(int argc, char *argv[])
     }
   else if (find_first_pcv(filepath, sizeof(filepath)) < 0)
     {
-      pcvideo_ui_set_title("No .pcv files in /mnt/sd/video/");
+      pcvideo_ui_set_title("No .pcv files in ~/video/");
       return 0;
     }
 

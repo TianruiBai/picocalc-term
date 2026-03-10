@@ -1,0 +1,4 @@
+#!/bin/sh
+# runit service: display server (LVGL compositor)
+# Manages framebuffer, status bar, and app rendering
+exec eux_display 2>&1

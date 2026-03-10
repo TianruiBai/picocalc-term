@@ -1,0 +1,23 @@
+eUX OS — Embedded Unix Experience
+
+Welcome to eUX OS, a complete Unix-like operating system built on
+the Apache NuttX RTOS kernel for the RP2350B microcontroller.
+
+Getting Started:
+  help          Show available commands
+  ls /          Browse root filesystem
+  cat /etc/motd Show login message
+  settings      Open system settings (GUI)
+  pcedit <file> Edit a text file (vi-style)
+  pcaudio       Play music from /mnt/sd/music/
+  pcweb <url>   Browse the web
+
+Filesystem Layout:
+  /etc          System configuration (read-only, ROMFS)
+  /data         Persistent storage (flash, writable)
+  /mnt/sd       SD card (FAT32, user files)
+  /tmp          Temporary files (RAM-backed)
+  /proc         Process and system information
+  /dev          Device files
+
+For more information, visit the project documentation.

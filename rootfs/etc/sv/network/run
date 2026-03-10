@@ -1,0 +1,4 @@
+#!/bin/sh
+# runit service: network manager
+# Wi-Fi auto-connect, DHCP, hostname propagation
+exec eux_network 2>&1

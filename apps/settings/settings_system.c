@@ -67,7 +67,7 @@ void settings_system_create(lv_obj_t *parent)
 
   lv_obj_t *lbl_about = lv_label_create(parent);
   lv_label_set_text(lbl_about,
-    "PicoCalc-Term v0.1.0\n"
+    "eUX OS v0.1.0\n"
     "NuttX RTOS + LVGL\n"
     "RP2350B + CYW43439");
   lv_obj_align(lbl_about, LV_ALIGN_TOP_LEFT, 8, 148);

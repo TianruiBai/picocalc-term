@@ -1,0 +1,11 @@
+# eUX OS shell profile
+export PATH=/bin:/sbin:/usr/bin
+export HOME=/mnt/sd/home/user
+export TERM=vt100
+export EDITOR=vi
+export PS1='\h:\w\$ '
+
+# Source user overrides from writable flash
+if [ -f /flash/etc/profile ]; then
+  . /flash/etc/profile
+fi

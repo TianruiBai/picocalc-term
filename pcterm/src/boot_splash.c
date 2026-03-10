@@ -78,10 +78,10 @@ void boot_splash_show(lv_obj_t *parent)
                         LV_FLEX_ALIGN_CENTER,
                         LV_FLEX_ALIGN_CENTER);
 
-  /* Title: PicoCalc-Term */
+  /* Title: eUX OS */
 
   g_lbl_title = lv_label_create(g_splash_cont);
-  lv_label_set_text(g_lbl_title, "PicoCalc-Term");
+  lv_label_set_text(g_lbl_title, "eUX OS");
   lv_obj_set_style_text_color(g_lbl_title,
                               lv_color_hex(SPLASH_TITLE_COLOR), 0);
   lv_obj_set_style_text_font(g_lbl_title,

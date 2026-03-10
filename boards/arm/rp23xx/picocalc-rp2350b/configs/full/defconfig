@@ -1,8 +1,9 @@
 #
 # boards/arm/rp23xx/picocalc-rp2350b/configs/full/defconfig
 #
-# Full PicoCalc-Term OS configuration
-# Includes: display, keyboard, LVGL, audio, Wi-Fi, all apps
+# eUX OS full configuration
+# Includes: ROMFS root filesystem, display, keyboard, LVGL,
+# audio, Wi-Fi, runit services, all built-in apps
 #
 
 # --- Host ---
@@ -78,6 +79,15 @@ CONFIG_FS_FAT=y
 CONFIG_FAT_LCNAMES=y
 CONFIG_FS_PROCFS=y
 CONFIG_FS_TMPFS=y
+CONFIG_FS_ROMFS=y
+
+# --- ROMFS root filesystem (/etc) ---
+CONFIG_NSH_ROMFSETC=y
+CONFIG_NSH_ROMFSRC=y
+CONFIG_NSH_INITSCRIPT="init.d/rcS"
+CONFIG_NSH_ROMFSMOUNTPT="/etc"
+CONFIG_NSH_ROMFSDEVNO=0
+CONFIG_NSH_ROMFSSECTSIZE=64
 
 # --- LVGL v9 ---
 CONFIG_GRAPHICS_LVGL=y
@@ -153,6 +163,8 @@ CONFIG_NSH_READLINE=y
 CONFIG_READLINE_CMD_HISTORY=y
 CONFIG_SYSTEM_NSH=y
 CONFIG_SYSTEM_VI=y
+CONFIG_SYSTEM_VI_COLS=40
+CONFIG_SYSTEM_VI_ROWS=20
 CONFIG_SYSLOG_CONSOLE=y
 
 # --- ELF loader (for third-party apps) ---
@@ -160,11 +172,13 @@ CONFIG_ELF=y
 CONFIG_LIBC_EXECFUNCS=y
 
 # --- Hostname ---
-CONFIG_PICOCALC_HOSTNAME="picocalc"
+CONFIG_PICOCALC_HOSTNAME="eux"
+CONFIG_NET_HOSTNAME=y
+CONFIG_LIBC_HOSTNAME_MAX=32
 
 # --- Entry point ---
 CONFIG_EXAMPLES_PCTERM=y
-CONFIG_INIT_ENTRYPOINT="pcterm_main"
+CONFIG_INIT_ENTRYPOINT="eux_init"
 CONFIG_INIT_STACKSIZE=8192
 
 # --- Debug (minimal for production) ---

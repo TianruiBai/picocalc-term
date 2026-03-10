@@ -173,7 +173,7 @@ static void login_build_ui(lv_obj_t *parent)
   /* Title */
 
   lv_obj_t *lbl_title = lv_label_create(g_ctx.cont);
-  lv_label_set_text(lbl_title, LV_SYMBOL_CHARGE "  PicoCalc-Term");
+  lv_label_set_text(lbl_title, LV_SYMBOL_CHARGE "  eUX OS");
   lv_obj_set_style_text_color(lbl_title, lv_color_hex(LOGIN_TITLE_COLOR), 0);
   lv_obj_set_style_pad_bottom(lbl_title, 12, 0);
 
