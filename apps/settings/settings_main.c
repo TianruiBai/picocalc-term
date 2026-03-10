@@ -21,6 +21,7 @@ typedef enum
 {
   SETTINGS_TAB_WIFI,
   SETTINGS_TAB_DISPLAY,
+  SETTINGS_TAB_POWER,
   SETTINGS_TAB_KEYBOARD,
   SETTINGS_TAB_AUDIO,
   SETTINGS_TAB_STORAGE,
@@ -34,7 +35,7 @@ typedef enum
  ****************************************************************************/
 
 static const char *g_tab_names[] = {
-  "Wi-Fi", "Display", "Keyboard", "Audio",
+  "Wi-Fi", "Display", "Battery", "Keyboard", "Audio",
   "Storage", "System", "Packages"
 };
 
@@ -45,6 +46,7 @@ static const char *g_tab_names[] = {
 /* Forward declarations for tab page builders */
 extern void settings_wifi_create(lv_obj_t *parent);
 extern void settings_display_create(lv_obj_t *parent);
+extern void settings_power_create(lv_obj_t *parent);
 extern void settings_keyboard_create(lv_obj_t *parent);
 extern void settings_audio_create(lv_obj_t *parent);
 extern void settings_storage_create(lv_obj_t *parent);
@@ -73,6 +75,7 @@ static int settings_main(int argc, char *argv[])
 
   settings_wifi_create(tabs[SETTINGS_TAB_WIFI]);
   settings_display_create(tabs[SETTINGS_TAB_DISPLAY]);
+  settings_power_create(tabs[SETTINGS_TAB_POWER]);
   settings_keyboard_create(tabs[SETTINGS_TAB_KEYBOARD]);
   settings_audio_create(tabs[SETTINGS_TAB_AUDIO]);
   settings_storage_create(tabs[SETTINGS_TAB_STORAGE]);

@@ -29,6 +29,7 @@
 #include "rp23xx_spidev.h"
 
 #ifndef __ASSEMBLY__
+#  include <time.h>
 #  include <stdint.h>
 #  include <stdbool.h>
 #endif
@@ -261,7 +262,7 @@
  */
 
 #define BOARD_PSRAM_SIZE        (8 * 1024 * 1024)  /* 8 MB */
-#define BOARD_PSRAM_PIO_INST    0            /* PIO0 for PSRAM */
+#define BOARD_PSRAM_PIO_INST    1            /* PIO1 for PSRAM (matches reference) */
 #define BOARD_PSRAM_PIO_SM      0            /* State machine 0 */
 
 #define BOARD_PSRAM_PIN_CS      20           /* GP20 - PSRAM CS (PIO sideset base) */
@@ -278,8 +279,8 @@
  * Use fudge factor (extra read cycle) above 83 MHz
  */
 
-#define BOARD_PSRAM_CLKDIV      2.0f         /* 75 MHz effective SPI clock */
-#define BOARD_PSRAM_USE_FUDGE   false        /* No fudge needed at 75 MHz */
+#define BOARD_PSRAM_CLKDIV      1.0f         /* 75 MHz effective SPI clock */
+#define BOARD_PSRAM_USE_FUDGE   true         /* Extra read cycle for timing margin */
 
 /* PSRAM memory-mapped base (after PIO init + heap registration) */
 
@@ -377,6 +378,24 @@ int     rp23xx_sb_set_lcd_backlight(uint8_t brightness);
 int     rp23xx_sb_set_kbd_backlight(uint8_t brightness);
 int     rp23xx_sb_power_off(uint8_t delay_secs);
 uint8_t rp23xx_sb_get_version(void);
+
+/* Always-on timer / wall-time helpers (rp23xx_aonrtc.c) */
+
+int rp23xx_aon_timer_gettime(struct timespec *ts);
+int rp23xx_aon_walltime_gettime(struct timespec *ts);
+int rp23xx_aon_walltime_settime(const struct timespec *ts);
+
+/* Core clock management (rp23xx_clockmgr.c) */
+
+void rp23xx_set_power_profile(int profile);
+int  rp23xx_get_power_profile(void);
+
+/* Backlight / sleep management (rp23xx_sleep.c) */
+
+void rp23xx_backlight_activity(void);
+void rp23xx_backlight_timer_tick(void);
+void rp23xx_sleep_enter(void);
+void rp23xx_sleep_exit(void);
 
 #endif /* __ASSEMBLY__ */
 #endif /* __BOARDS_ARM_RP23XX_PICOCALC_RP2350B_INCLUDE_BOARD_H */

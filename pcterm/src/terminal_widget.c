@@ -436,7 +436,7 @@ terminal_t *terminal_create(lv_obj_t *parent,
   term = (terminal_t *)pc_app_psram_alloc(sizeof(terminal_t));
   if (term == NULL)
     {
-      syslog(LOG_ERR, "TERM: Failed to allocate terminal struct\n");
+      syslog(LOG_ERR, "term: Failed to allocate terminal struct\n");
       return NULL;
     }
 
@@ -448,7 +448,7 @@ terminal_t *terminal_create(lv_obj_t *parent,
   term->grid = (term_cell_t *)pc_app_psram_alloc(grid_size);
   if (term->grid == NULL)
     {
-      syslog(LOG_ERR, "TERM: Failed to allocate grid (%zu bytes)\n",
+      syslog(LOG_ERR, "term: Failed to allocate grid (%zu bytes)\n",
              grid_size);
       pc_app_psram_free(term);
       return NULL;
@@ -460,7 +460,7 @@ terminal_t *terminal_create(lv_obj_t *parent,
   term->scrollback = (term_cell_t *)pc_app_psram_alloc(scrollback_size);
   if (term->scrollback == NULL)
     {
-      syslog(LOG_WARNING, "TERM: No scrollback (PSRAM low)\n");
+      syslog(LOG_WARNING, "term: No scrollback (PSRAM low)\n");
       /* Non-fatal — proceed without scrollback */
     }
 
@@ -507,7 +507,7 @@ terminal_t *terminal_create(lv_obj_t *parent,
   term->canvas_buf = (lv_color_t *)pc_app_psram_alloc(canvas_size);
   if (term->canvas_buf == NULL)
     {
-      syslog(LOG_ERR, "TERM: Failed to allocate canvas (%zu bytes)\n",
+      syslog(LOG_ERR, "term: Failed to allocate canvas (%zu bytes)\n",
              canvas_size);
       if (term->scrollback) pc_app_psram_free(term->scrollback);
       pc_app_psram_free(term->grid);
@@ -537,7 +537,7 @@ terminal_t *terminal_create(lv_obj_t *parent,
 
   term->dirty = true;
 
-  syslog(LOG_INFO, "TERM: Created %dx%d terminal (%zu + %zu + %zu bytes)\n",
+  syslog(LOG_INFO, "term: Created %dx%d terminal (%zu + %zu + %zu bytes)\n",
          TERM_COLS, TERM_ROWS, grid_size, scrollback_size, canvas_size);
 
   return term;

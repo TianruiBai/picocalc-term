@@ -50,7 +50,7 @@ int rp23xx_wifi_scan(wifi_scan_result_t *results, int max_results)
 {
   (void)results;
   (void)max_results;
-  syslog(LOG_WARNING, "STUB: rp23xx_wifi_scan\n");
+  syslog(LOG_WARNING, "stub: rp23xx_wifi_scan\n");
   return 0;                     /* 0 networks found */
 }
 
@@ -58,7 +58,7 @@ int rp23xx_wifi_connect(const char *ssid, const char *passphrase)
 {
   (void)ssid;
   (void)passphrase;
-  syslog(LOG_WARNING, "STUB: rp23xx_wifi_connect\n");
+  syslog(LOG_WARNING, "stub: rp23xx_wifi_connect\n");
   return -ENOSYS;
 }
 
@@ -72,13 +72,20 @@ const char *rp23xx_wifi_ip(void)
   return "0.0.0.0";
 }
 
+int rp23xx_wifi_disconnect(void)
+{
+  syslog(LOG_WARNING, "stub: rp23xx_wifi_disconnect\n");
+  return -ENOSYS;
+}
+
 /* ======================================================================= */
 /*  SPI callback stubs                                                     */
-/*  CONFIG_SPI_CALLBACK is set but the board does not need SPI media-      */
-/*  change notification.  Provide empty implementations.                   */
+/*  These are now provided by the board library (rp23xx_sdcard.c).         */
+/*  Only provide weak fallbacks if the board library doesn't include them. */
 /* ======================================================================= */
 
 #ifdef CONFIG_SPI_CALLBACK
+__attribute__((weak))
 int rp23xx_spi0register(struct spi_dev_s *dev,
                         spi_mediachange_t callback, void *arg)
 {
@@ -86,6 +93,7 @@ int rp23xx_spi0register(struct spi_dev_s *dev,
   return -ENOSYS;
 }
 
+__attribute__((weak))
 int rp23xx_spi1register(struct spi_dev_s *dev,
                         spi_mediachange_t callback, void *arg)
 {

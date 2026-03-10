@@ -150,7 +150,7 @@ static void *audio_decode_thread(void *arg)
 {
   struct audio_service_s *svc = (struct audio_service_s *)arg;
 
-  syslog(LOG_INFO, "AUDIOSVC: Decode thread started\n");
+  syslog(LOG_INFO, "audiosvc: decode thread started\n");
 
   while (!svc->thread_exit)
     {
@@ -174,7 +174,7 @@ static void *audio_decode_thread(void *arg)
         {
           /* End of track — try next in playlist, or stop */
 
-          syslog(LOG_INFO, "AUDIOSVC: Track ended\n");
+          syslog(LOG_INFO, "audiosvc: track ended\n");
 
           pc_audio_next();
 
@@ -198,7 +198,7 @@ static void *audio_decode_thread(void *arg)
         }
     }
 
-  syslog(LOG_INFO, "AUDIOSVC: Decode thread exiting\n");
+  syslog(LOG_INFO, "audiosvc: decode thread exiting\n");
   return NULL;
 }
 
@@ -226,7 +226,7 @@ static int audio_service_init(void)
   int ret = rp23xx_audio_initialize();
   if (ret < 0)
     {
-      syslog(LOG_ERR, "AUDIOSVC: PWM init failed: %d\n", ret);
+      syslog(LOG_ERR, "audiosvc: PWM init failed: %d\n", ret);
       return ret;
     }
 
@@ -239,7 +239,7 @@ static int audio_service_init(void)
     AUDIO_DECODE_FRAMES * 2 * sizeof(int16_t));
   if (svc->decode_buf == NULL)
     {
-      syslog(LOG_ERR, "AUDIOSVC: Failed to alloc decode buffer\n");
+      syslog(LOG_ERR, "audiosvc: decode buffer allocation failed\n");
       return -ENOMEM;
     }
 
@@ -257,7 +257,7 @@ static int audio_service_init(void)
 
   svc->initialized = true;
 
-  syslog(LOG_INFO, "AUDIOSVC: Audio service initialized\n");
+  syslog(LOG_INFO, "audiosvc: audio service initialized\n");
   return 0;
 }
 
@@ -302,7 +302,7 @@ int pc_audio_play(const char *filepath)
   if (svc->decoder == NULL)
     {
       pthread_mutex_unlock(&svc->lock);
-      syslog(LOG_ERR, "AUDIOSVC: Cannot open: %s\n", filepath);
+      syslog(LOG_ERR, "audiosvc: cannot open: %s\n", filepath);
       return -ENOENT;
     }
 
@@ -314,7 +314,7 @@ int pc_audio_play(const char *filepath)
 
   pthread_mutex_unlock(&svc->lock);
 
-  syslog(LOG_INFO, "AUDIOSVC: Playing %s\n", svc->title);
+  syslog(LOG_INFO, "audiosvc: playing %s\n", svc->title);
   return 0;
 }
 
@@ -332,7 +332,7 @@ int pc_audio_pause(void)
     }
 
   svc->state = AUDIO_SVC_PAUSED;
-  syslog(LOG_INFO, "AUDIOSVC: Paused\n");
+  syslog(LOG_INFO, "audiosvc: paused\n");
   return 0;
 }
 
@@ -350,7 +350,7 @@ int pc_audio_resume(void)
     }
 
   svc->state = AUDIO_SVC_PLAYING;
-  syslog(LOG_INFO, "AUDIOSVC: Resumed\n");
+  syslog(LOG_INFO, "audiosvc: resumed\n");
   return 0;
 }
 
@@ -378,7 +378,7 @@ int pc_audio_stop(void)
 
   pthread_mutex_unlock(&svc->lock);
 
-  syslog(LOG_INFO, "AUDIOSVC: Stopped\n");
+  syslog(LOG_INFO, "audiosvc: stopped\n");
   return 0;
 }
 

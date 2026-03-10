@@ -127,7 +127,8 @@ int rp23xx_keyboard_initialize(void)
   int ret = rp23xx_sb_init();
   if (ret < 0)
     {
-      syslog(LOG_ERR, "KBD: South bridge init failed: %d\n", ret);
+      syslog(LOG_ERR, "input: south bridge not ready, "
+             "keyboard init failed: %d\n", ret);
       return ret;
     }
 
@@ -149,13 +150,20 @@ int rp23xx_keyboard_initialize(void)
 
   if (count > 0)
     {
-      syslog(LOG_DEBUG, "KBD: Drained %d stale keys from FIFO\n", count);
+      syslog(LOG_DEBUG, "input: drained %d stale keys from FIFO\n",
+             count);
     }
 
   dev->initialized = true;
 
-  syslog(LOG_INFO, "KBD: STM32 keyboard ready (caps=%d, num=%d)\n",
-         dev->capslock, dev->numlock);
+  syslog(LOG_INFO, "input: STM32 keyboard controller "
+         "(67-key matrix via I2C%d:0x%02X)\n",
+         BOARD_KBD_I2C_PORT, BOARD_KBD_I2C_ADDR);
+  syslog(LOG_INFO, "input: capslock=%s numlock=%s, "
+         "poll interval %d ms\n",
+         dev->capslock ? "on" : "off",
+         dev->numlock ? "on" : "off",
+         KBD_POLL_INTERVAL);
 
   return 0;
 }

@@ -32,6 +32,10 @@ void pc_config_defaults(pc_config_t *config)
   memset(config, 0, sizeof(*config));
 
   config->brightness       = 80;
+  config->statusbar_position = 0;  /* Top */
+  config->battery_style    = 0;          /* Icon + percent */
+  config->power_profile    = 0;          /* Standard */
+  config->backlight_timeout = 60;        /* 1 minute */
   config->volume           = 80;
   config->muted            = false;
   config->key_repeat_delay = 500 / 10;  /* stored as / 10 for uint8_t */
@@ -52,7 +56,7 @@ int pc_config_load(pc_config_t *config)
   FILE *f = fopen(CONFIG_PATH, "r");
   if (f == NULL)
     {
-      syslog(LOG_INFO, "CONFIG: No settings file, using defaults\n");
+      syslog(LOG_INFO, "config: No settings file, using defaults\n");
       return PC_ERR_NOENT;
     }
 
@@ -68,7 +72,7 @@ int pc_config_load(pc_config_t *config)
   cJSON *root = cJSON_Parse(buf);
   if (root == NULL)
     {
-      syslog(LOG_ERR, "CONFIG: JSON parse error\n");
+      syslog(LOG_ERR, "config: JSON parse error\n");
       return PC_ERR_INVAL;
     }
 
@@ -78,6 +82,18 @@ int pc_config_load(pc_config_t *config)
 
   item = cJSON_GetObjectItem(root, "brightness");
   if (cJSON_IsNumber(item)) config->brightness = item->valueint;
+
+  item = cJSON_GetObjectItem(root, "statusbar_position");
+  if (cJSON_IsNumber(item)) config->statusbar_position = item->valueint;
+
+  item = cJSON_GetObjectItem(root, "battery_style");
+  if (cJSON_IsNumber(item)) config->battery_style = item->valueint;
+
+  item = cJSON_GetObjectItem(root, "power_profile");
+  if (cJSON_IsNumber(item)) config->power_profile = item->valueint;
+
+  item = cJSON_GetObjectItem(root, "backlight_timeout");
+  if (cJSON_IsNumber(item)) config->backlight_timeout = item->valueint;
 
   item = cJSON_GetObjectItem(root, "volume");
   if (cJSON_IsNumber(item)) config->volume = item->valueint;
@@ -117,7 +133,7 @@ int pc_config_load(pc_config_t *config)
 
   cJSON_Delete(root);
 
-  syslog(LOG_INFO, "CONFIG: Loaded settings from %s\n", CONFIG_PATH);
+  syslog(LOG_INFO, "config: Loaded settings from %s\n", CONFIG_PATH);
 
   /* Copy to global */
 
@@ -136,6 +152,12 @@ int pc_config_save(const pc_config_t *config)
     }
 
   cJSON_AddNumberToObject(root, "brightness", config->brightness);
+  cJSON_AddNumberToObject(root, "statusbar_position",
+                          config->statusbar_position);
+  cJSON_AddNumberToObject(root, "battery_style", config->battery_style);
+  cJSON_AddNumberToObject(root, "power_profile", config->power_profile);
+  cJSON_AddNumberToObject(root, "backlight_timeout",
+                          config->backlight_timeout);
   cJSON_AddNumberToObject(root, "volume", config->volume);
   cJSON_AddBoolToObject(root, "muted", config->muted);
   cJSON_AddStringToObject(root, "wifi_ssid", config->wifi_ssid);
@@ -171,7 +193,7 @@ int pc_config_save(const pc_config_t *config)
 
   memcpy(&g_global_config, config, sizeof(pc_config_t));
 
-  syslog(LOG_INFO, "CONFIG: Saved settings to %s\n", CONFIG_PATH);
+  syslog(LOG_INFO, "config: Saved settings to %s\n", CONFIG_PATH);
   return PC_OK;
 }
 

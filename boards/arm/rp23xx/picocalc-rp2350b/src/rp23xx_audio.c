@@ -51,7 +51,7 @@
  */
 
 #define AUDIO_PWM_WRAP     (1 << BOARD_AUDIO_PWM_BITS)  /* 1024 */
-#define AUDIO_PWM_SLICE    5     /* GP26/GP27 → slice 5 */
+#define AUDIO_PWM_SLICE    4     /* GP26/GP27 → slice 5 */
 #define AUDIO_PWM_DIV_INT  3     /* Integer part of clock divider */
 #define AUDIO_PWM_DIV_FRAC 5     /* Fractional part (1/16ths) */
 #define AUDIO_RING_SAMPLES 8192  /* Ring buffer size (power of 2) */
@@ -170,25 +170,34 @@ int rp23xx_audio_initialize(void)
       return 0;
     }
 
+  syslog(LOG_INFO, "audio: initializing PWM audio on slice %d...\n",
+         AUDIO_PWM_SLICE);
+
   /* Step 1: Allocate ring buffer in SRAM (directly addressable for ISR) */
 
   dev->ring_buffer = (int16_t *)kmm_zalloc(
     AUDIO_RING_SAMPLES * sizeof(int16_t));
   if (dev->ring_buffer == NULL)
     {
-      syslog(LOG_ERR, "Audio: Failed to alloc ring buffer\n");
+      syslog(LOG_ERR, "audio: ring buffer allocation failed (%d bytes)\n",
+             (int)(AUDIO_RING_SAMPLES * sizeof(int16_t)));
       return -ENOMEM;
     }
 
   dev->ring_size = AUDIO_RING_SAMPLES;
+
+  syslog(LOG_DEBUG, "audio: ring buffer %d KB allocated\n",
+         (int)(AUDIO_RING_SAMPLES * sizeof(int16_t) / 1024));
 
   /* Step 2: Assign GP26/GP27 to PWM function (function 4 on RP2350).
    * Without this, the pins remain in default SIO mode and produce
    * no PWM output.
    */
 
-  rp23xx_gpio_set_function(BOARD_AUDIO_PIN_LEFT, 4);   /* PWM func */
-  rp23xx_gpio_set_function(BOARD_AUDIO_PIN_RIGHT, 4);  /* PWM func */
+  rp23xx_gpio_set_function(BOARD_AUDIO_PIN_LEFT,
+                           RP23XX_GPIO_FUNC_PWM);
+  rp23xx_gpio_set_function(BOARD_AUDIO_PIN_RIGHT,
+                           RP23XX_GPIO_FUNC_PWM);
 
   /* Step 3: Configure PWM slice 5 for audio output
    * GP26 → slice 5, channel A (left speaker)
@@ -224,24 +233,30 @@ int rp23xx_audio_initialize(void)
 
   putreg32(0, RP23XX_PWM_CTR(AUDIO_PWM_SLICE));
 
-  /* Step 4: Set up PWM wrap interrupt for sample-rate ISR.
+  syslog(LOG_DEBUG, "audio: PWM slice %d configured\n",
+         AUDIO_PWM_SLICE);
+
+  /* Step 4: Clear any pending PWM interrupt from prior boot/reset,
+   * then attach the wrap interrupt handler for sample-rate ISR.
    * All PWM slices share a single IRQ (RP23XX_PWM_IRQ_WRAP_0).
-   * The ISR clears the specific slice flag in PWM_INTR.
+   *
+   * We attach the handler but do NOT enable the interrupt or PWM yet.
+   * The ISR fires at 44.1 kHz — only activate when audio is playing
+   * to avoid wasting ~3% CPU on silence output.  The PWM channel and
+   * interrupt are enabled lazily in rp23xx_audio_write().
    */
+
+  /* Ensure no stale interrupt is pending from warm reset */
+
+  putreg32(1 << AUDIO_PWM_SLICE, RP23XX_PWM_INTR);
+  modreg32(0, 1 << AUDIO_PWM_SLICE, RP23XX_PWM_IRQ0_INTE);
 
   irq_attach(RP23XX_PWM_IRQ_WRAP_0,
              (xcpt_t)audio_pwm_isr, NULL);
 
-  /* Enable PWM wrap interrupt for our slice via IRQ0 */
-
-  modreg32(1 << AUDIO_PWM_SLICE, 1 << AUDIO_PWM_SLICE,
-           RP23XX_PWM_IRQ0_INTE);
-
-  up_enable_irq(RP23XX_PWM_IRQ_WRAP_0);
-
-  /* Step 5: Enable the PWM channel */
-
-  putreg32(RP23XX_PWM_CSR_EN, RP23XX_PWM_CSR(AUDIO_PWM_SLICE));
+  /* Do NOT enable the PWM interrupt or channel here.
+   * They will be enabled on first audio write (see rp23xx_audio_write).
+   */
 
   dev->volume = 80;       /* Default 80% */
   dev->playing = false;
@@ -249,9 +264,17 @@ int rp23xx_audio_initialize(void)
   dev->ring_tail = 0;
   dev->initialized = true;
 
-  syslog(LOG_INFO, "Audio: PWM pins GP%d/GP%d, %d-bit @ %d Hz\n",
+  syslog(LOG_INFO, "audio: ring buffer %d KB in SRAM "
+         "(%d samples)\n",
+         (int)(AUDIO_RING_SAMPLES * sizeof(int16_t) / 1024),
+         AUDIO_RING_SAMPLES);
+  syslog(LOG_INFO, "audio: PWM slice %d: GP%d(L) GP%d(R), "
+         "%d-bit @ %d Hz\n",
+         AUDIO_PWM_SLICE,
          BOARD_AUDIO_PIN_LEFT, BOARD_AUDIO_PIN_RIGHT,
          BOARD_AUDIO_PWM_BITS, BOARD_AUDIO_PWM_FREQ);
+  syslog(LOG_INFO, "audio: ISR attached (lazy-start, "
+         "idle until first write)\n");
 
   return 0;
 }
@@ -274,6 +297,23 @@ int rp23xx_audio_write(const int16_t *samples, size_t count)
   if (!dev->initialized || dev->ring_buffer == NULL)
     {
       return -ENODEV;
+    }
+
+  /* Lazy-start: enable PWM + ISR on first audio write */
+
+  if (!dev->playing)
+    {
+      dev->playing = true;
+
+      /* Enable PWM wrap interrupt for our slice */
+
+      modreg32(1 << AUDIO_PWM_SLICE, 1 << AUDIO_PWM_SLICE,
+               RP23XX_PWM_IRQ0_INTE);
+      up_enable_irq(RP23XX_PWM_IRQ_WRAP_0);
+
+      /* Enable the PWM channel */
+
+      putreg32(RP23XX_PWM_CSR_EN, RP23XX_PWM_CSR(AUDIO_PWM_SLICE));
     }
 
   size_t written = 0;

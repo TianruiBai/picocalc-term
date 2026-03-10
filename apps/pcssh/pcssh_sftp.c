@@ -12,7 +12,7 @@
 
 #ifdef CONFIG_CRYPTO_WOLFSSH
 #  include <wolfssh/ssh.h>
-#  include <wolfssh/wolfssh.h>
+#  include <wolfssh/settings.h>
 #  include <wolfssh/wolfsftp.h>
 #endif
 
@@ -47,40 +47,16 @@ int sftp_list_dir(void *session, const char *remote_path,
       return -1;
     }
 
-  WS_SFTPNAME *list = wolfSSH_SFTP_ReadDir(ssh, (char *)remote_path);
-  if (list == NULL)
-    {
-      syslog(LOG_ERR, "SFTP: ReadDir failed\n");
-      return -1;
-    }
+  /* TODO: wolfSSH SFTP API has changed in newer versions.
+   * wolfSSH_SFTP_ReadDir now requires (ssh, handle, handleSz).
+   * Need to open directory first with wolfSSH_SFTP_OpenDir,
+   * then read entries, then close. Stubbed for now.
+   */
 
-  int count = 0;
-  WS_SFTPNAME *cur = list;
-
-  while (cur != NULL && count < max_entries)
-    {
-      /* Skip . and .. */
-
-      if (strcmp(cur->fName, ".") != 0 && strcmp(cur->fName, "..") != 0)
-        {
-          strncpy(entries[count].name, cur->fName,
-                  sizeof(entries[count].name) - 1);
-          entries[count].name[sizeof(entries[count].name) - 1] = '\0';
-
-          entries[count].is_dir =
-            (cur->atrb.flags & WOLFSSH_FILEATRB_PERM) &&
-            (cur->atrb.per.filePerm & 0x4000);  /* S_IFDIR */
-
-          entries[count].size  = cur->atrb.sz[0];
-          entries[count].mtime = cur->atrb.mtime;
-          count++;
-        }
-
-      cur = cur->next;
-    }
-
-  wolfSSH_SFTPNAME_list_free(list);
-  return count;
+  syslog(LOG_WARNING, "SFTP: ReadDir not yet updated for wolfSSH API\n");
+  (void)entries;
+  (void)max_entries;
+  return -1;
 
 #else
   syslog(LOG_WARNING, "SFTP: wolfSSH not available\n");

@@ -29,6 +29,12 @@ typedef struct pc_config_s
 {
   /* Display */
   uint8_t  brightness;       /* 0-100 (backlight PWM duty) */
+  uint8_t  statusbar_position; /* 0=top, 1=bottom */
+
+  /* Power */
+  uint8_t  battery_style;    /* BAT_STYLE_* (0=icon, 1=icon-only, 2=text, 3=pct) */
+  uint8_t  power_profile;    /* 0=standard, 1=high-perf, 2=power-save */
+  uint16_t backlight_timeout; /* Seconds before backlight off (0=never) */
 
   /* Audio */
   uint8_t  volume;           /* 0-100 */

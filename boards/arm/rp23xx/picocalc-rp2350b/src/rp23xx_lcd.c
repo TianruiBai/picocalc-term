@@ -98,21 +98,28 @@ static void lcd_set_dc(bool data)
   rp23xx_gpio_put(BOARD_LCD_PIN_DC, data);
 }
 
+static void lcd_set_cs(bool selected)
+{
+  /* LCD CS is active-low */
+
+  rp23xx_gpio_put(BOARD_LCD_PIN_CS, !selected);
+}
+
 static void lcd_send_cmd(struct st7365p_dev_s *dev, uint8_t cmd)
 {
   lcd_set_dc(false);  /* Command mode */
-  SPI_SELECT(dev->spi, SPIDEV_DISPLAY(0), true);
+  lcd_set_cs(true);
   SPI_SEND(dev->spi, cmd);
-  SPI_SELECT(dev->spi, SPIDEV_DISPLAY(0), false);
+  lcd_set_cs(false);
 }
 
 static void lcd_send_data(struct st7365p_dev_s *dev,
                           const uint8_t *data, size_t len)
 {
   lcd_set_dc(true);   /* Data mode */
-  SPI_SELECT(dev->spi, SPIDEV_DISPLAY(0), true);
+  lcd_set_cs(true);
   SPI_SNDBLOCK(dev->spi, data, len);
-  SPI_SELECT(dev->spi, SPIDEV_DISPLAY(0), false);
+  lcd_set_cs(false);
 }
 
 static void lcd_send_cmd_data(struct st7365p_dev_s *dev,
@@ -297,10 +304,16 @@ static void lcd_init_sequence(struct st7365p_dev_s *dev)
     lcd_send_cmd_data(dev, ST7365P_MADCTL, p, 1);
   }
 
-  /* Turn on backlight via south bridge (will silently fail if
-   * south bridge is not yet initialized) */
+  /* Turn on backlight via south bridge */
 
-  rp23xx_sb_set_lcd_backlight(255);
+  {
+    int bl_ret = rp23xx_sb_set_lcd_backlight(255);
+    if (bl_ret < 0)
+      {
+        syslog(LOG_WARNING, "fb0: backlight set failed (%d) — "
+               "display may appear blank\n", bl_ret);
+      }
+  }
 }
 
 /****************************************************************************
@@ -348,7 +361,7 @@ static void lcd_flush(struct st7365p_dev_s *dev)
   lcd_send_cmd(dev, ST7365P_RAMWR);
 
   lcd_set_dc(true);
-  SPI_SELECT(dev->spi, SPIDEV_DISPLAY(0), true);
+  lcd_set_cs(true);
 
   for (y = 0; y < BOARD_LCD_HEIGHT; y += LCD_PARTIAL_LINES)
     {
@@ -371,7 +384,7 @@ static void lcd_flush(struct st7365p_dev_s *dev)
       SPI_SNDBLOCK(dev->spi, dev->partial_buf, pixels * 3);
     }
 
-  SPI_SELECT(dev->spi, SPIDEV_DISPLAY(0), false);
+  lcd_set_cs(false);
 }
 
 /****************************************************************************
@@ -420,7 +433,7 @@ static int lcd_updatearea(struct fb_vtable_s *vtable,
   lcd_send_cmd(dev, ST7365P_RAMWR);
 
   lcd_set_dc(true);
-  SPI_SELECT(dev->spi, SPIDEV_DISPLAY(0), true);
+  lcd_set_cs(true);
 
   for (uint16_t y = y0; y <= y1; y += LCD_PARTIAL_LINES)
     {
@@ -441,7 +454,7 @@ static int lcd_updatearea(struct fb_vtable_s *vtable,
       SPI_SNDBLOCK(dev->spi, dev->partial_buf, pixels * 3);
     }
 
-  SPI_SELECT(dev->spi, SPIDEV_DISPLAY(0), false);
+  lcd_set_cs(false);
   return 0;
 }
 #endif
@@ -474,7 +487,7 @@ int rp23xx_lcd_initialize(void)
   dev->spi = rp23xx_spibus_initialize(BOARD_LCD_SPI_PORT);
   if (dev->spi == NULL)
     {
-      syslog(LOG_ERR, "LCD: Failed to get SPI%d bus\n",
+      syslog(LOG_ERR, "fb0: failed to get SPI%d bus\n",
              BOARD_LCD_SPI_PORT);
       return -ENODEV;
     }
@@ -492,6 +505,12 @@ int rp23xx_lcd_initialize(void)
 
   rp23xx_gpio_init(BOARD_LCD_PIN_RST);
   rp23xx_gpio_setdir(BOARD_LCD_PIN_RST, true);
+
+  /* LCD CS as GPIO output, default deasserted */
+
+  rp23xx_gpio_init(BOARD_LCD_PIN_CS);
+  rp23xx_gpio_setdir(BOARD_LCD_PIN_CS, true);
+  lcd_set_cs(false);
 
   /* Note: LCD backlight is controlled by the STM32 south bridge
    * (register SB_REG_BKL, PA8 PWM). No direct GPIO control.
@@ -514,20 +533,22 @@ int rp23xx_lcd_initialize(void)
   dev->framebuffer = kmm_zalloc(LCD_FB_SIZE);
   if (dev->framebuffer == NULL)
     {
-      syslog(LOG_ERR, "LCD: Failed to allocate framebuffer (%d bytes)\n",
+      syslog(LOG_ERR, "fb0: framebuffer allocation failed (%d bytes)\n",
              LCD_FB_SIZE);
       return -ENOMEM;
     }
 
-  syslog(LOG_INFO, "LCD: Framebuffer allocated in SRAM (%d bytes)\n",
-         LCD_FB_SIZE);
+  syslog(LOG_INFO, "fb0: framebuffer %d KB allocated in SRAM "
+         "(%dx%d RGB565, stride %d)\n",
+         LCD_FB_SIZE / 1024,
+         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT, LCD_STRIDE);
 
   /* Allocate partial transfer buffer in SRAM (RGB666, 3 bytes/pixel) */
 
   dev->partial_buf = (uint8_t *)kmm_malloc(LCD_PARTIAL_SIZE);
   if (dev->partial_buf == NULL)
     {
-      syslog(LOG_ERR, "LCD: Failed to allocate partial buffer\n");
+      syslog(LOG_ERR, "fb0: partial transfer buffer allocation failed\n");
       return -ENOMEM;
     }
 
@@ -561,7 +582,7 @@ int rp23xx_lcd_initialize(void)
   ret = fb_register_device(0, 0, (struct fb_vtable_s *)dev);
   if (ret < 0)
     {
-      syslog(LOG_ERR, "LCD: Failed to register /dev/fb0: %d\n", ret);
+      syslog(LOG_ERR, "fb0: failed to register /dev/fb0: %d\n", ret);
       return ret;
     }
 
@@ -572,8 +593,14 @@ int rp23xx_lcd_initialize(void)
   memset(dev->framebuffer, 0, LCD_FB_SIZE);
   lcd_flush(dev);
 
-  syslog(LOG_INFO, "LCD: ST7365P %dx%d RGB565 ready\n",
-         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT);
+  syslog(LOG_INFO, "fb0: ST7365P %dx%d IPS LCD on SPI%d @ %d MHz\n",
+         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT,
+         BOARD_LCD_SPI_PORT, BOARD_LCD_SPI_FREQ / 1000000);
+  syslog(LOG_INFO, "fb0: RGB565 internal, RGB666 SPI wire format "
+         "(DC=GP%d RST=GP%d CS=GP%d)\n",
+         BOARD_LCD_PIN_DC, BOARD_LCD_PIN_RST, BOARD_LCD_PIN_CS);
+  syslog(LOG_INFO, "fb0: registered /dev/fb0 (%dx%d %dbpp)\n",
+         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT, BOARD_LCD_BPP);
 
   return 0;
 }

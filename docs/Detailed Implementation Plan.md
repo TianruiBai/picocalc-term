@@ -1492,3 +1492,121 @@ Terminal   Office     Audio/Video                      │
 | **Total** | **~6-7 months** | |
 
 This assumes a single developer working part-time. With focused full-time work, this could compress to 3-4 months.
+
+---
+
+## Implementation Updates — Session 3
+
+### Completed Features
+
+#### 1. Launcher App Entry Fix
+- **Problem**: LVGL v9 editing mode consumes `LV_KEY_ENTER` to toggle editing, never generating `LV_EVENT_CLICKED`
+- **Fix**: Added `LV_EVENT_READY` handler in [pcterm/src/launcher.c](../pcterm/src/launcher.c) that calls `launcher_queue_selected()` and re-enables editing mode
+- **Files**: `pcterm/src/launcher.c`
+
+#### 2. Status Bar Refinement
+- Rewrote to use LVGL flex row layout (`LV_FLEX_FLOW_ROW`, `SPACE_BETWEEN`) for auto-spacing — no more text overlap
+- Battery uses LVGL built-in `LV_SYMBOL_BATTERY_*` icons with 4 display styles: Icon+%, Icon Only, Text Bars, Percent Only
+- Compact `HH:MM` clock format
+- **Files**: `pcterm/src/statusbar.c`, `pcterm/include/pcterm/statusbar.h`
+
+#### 3. Battery & Power Settings Tab
+- New `settings_power.c` in Settings app with:
+  - Battery display style dropdown (4 options)
+  - Power profile dropdown (Standard 150MHz / High Performance 200MHz / Power Save 100MHz)
+  - Backlight timeout dropdown (Never / 30s / 1m / 2m / 5m / 10m)
+- Config persistence: `battery_style`, `power_profile`, `backlight_timeout` in `pc_config_t`
+- **Files**: `apps/settings/settings_power.c`, `apps/settings/settings_main.c`, `pcterm/include/pcterm/config.h`, `pcterm/src/config.c`
+
+#### 4. Core Frequency Profiles (RP2350 PLL Management)
+- New `rp23xx_clockmgr.c` with 3 clock profiles:
+  - Standard: 150 MHz (FBDIV=150, PD1=5, PD2=2)
+  - High Performance: 200 MHz (FBDIV=200, PD1=5, PD2=2)
+  - Power Save: 100 MHz (FBDIV=100, PD1=5, PD2=2)
+- Glitchless clock switching: switches CLK_SYS to XOSC before PLL reconfig, waits for lock, switches back
+- **Files**: `boards/arm/rp23xx/picocalc-rp2350b/src/rp23xx_clockmgr.c`, `boards/arm/rp23xx/picocalc-rp2350b/include/board.h`
+
+#### 5. Backlight Timeout & Sleep
+- New `rp23xx_sleep.c` with:
+  - Activity tracking via `CLOCK_MONOTONIC`
+  - Dimming at 75% of timeout, off at 100%
+  - Sleep mode: backlight off + power-save clock profile
+  - Wake on any key press
+- Input driver calls `rp23xx_backlight_activity()` on key events
+- Main loop calls `rp23xx_backlight_timer_tick()` every second
+- **Files**: `boards/arm/rp23xx/picocalc-rp2350b/src/rp23xx_sleep.c`, `pcterm/src/lv_port_indev.c`, `nuttx-apps/examples/pcterm/pcterm_main.c`
+
+#### 6. PSRAM Fixes
+- **Coalescing bug**: Old code zeroed sizes without removing dead blocks from array, causing phantom blocks and memory leaks. Fixed with proper multi-pass merge + array compaction using element shifting
+- **psram_available()**: Fixed to skip zero-size blocks
+- **PSRAM_MAX_BLOCKS**: Increased from 256 to 512 for more allocation headroom
+- **Files**: `boards/arm/rp23xx/picocalc-rp2350b/src/rp23xx_psram.c`
+
+#### 7. Keyboard F1-F12 Mapping
+- Added proper F-key code definitions: F1=0x81 through F10=0x90 (from STM32 south-bridge firmware)
+- Removed incorrect legacy compat codes (0x81-0x8A as arrow keys)
+- Defined custom LVGL key constants: `LV_KEY_F1` (0xF001) through `LV_KEY_F10` (0xF00A)
+- Created shared header `pcterm/include/pcterm/keys.h` with F-key codes and VT100 escape sequences
+- Added PGUP/PGDN mapping (0xD6/0xD7)
+- **Files**: `pcterm/src/lv_port_indev.c`, `pcterm/include/pcterm/keys.h`
+
+#### 8. NTP Command Fix + Time Command Enhancement
+- **NTP Makefile Fix**: Removed duplicate PROGNAME entries for `time` and `ntp` that were registered under both `CONFIG_SYSTEM_PCSSH` and their own configs. Each command now compiles independently.
+- **Time Command**: Full rewrite with Unix-like subcommands:
+  - `time` — Unix-style output: "Wed Jun 18 14:30:45 UTC 2025"
+  - `time -v` — Verbose with date, time, timezone, epoch, uptime
+  - `time set YYYY-MM-DD HH:MM:SS` — Set date/time
+  - `time epoch` — Print Unix epoch seconds
+  - `time uptime` — System uptime (days, hours, minutes)
+  - `time tz` / `time tz set <value>` — View/set timezone
+  - `time date` — Date only
+  - `time clock` — Time only
+  - `time iso` — ISO 8601 format
+- **Files**: `nuttx-apps/system/pcssh/pctime_main.c`, `nuttx-apps/system/pcssh/Makefile`
+
+#### 9. minipkg Package Manager
+- New CLI tool `minipkg` utilizing existing `pcpkg_*` infrastructure
+- Commands: `list`, `info <name>`, `install <file.pcpkg>`, `remove <name>`, `search <query>`, `update`, `upgrade <name>`, `scan`, `catalog`, `refresh`
+- Kconfig entry: `CONFIG_SYSTEM_PCMINIPKG` with configurable progname, priority, stack size
+- Short aliases: `ls`, `i`, `rm`, `s`
+- **Files**: `nuttx-apps/system/pcssh/pcminipkg_main.c`, `nuttx-apps/system/pcssh/Kconfig`, `nuttx-apps/system/pcssh/Makefile`
+
+#### 10. Wireless CLI Tools
+- **wifi command** (`pcwifi_main.c`): `status`, `scan`, `connect <ssid> [pass]`, `disconnect`, `ip`, `saved`, `autoconnect [on|off]`
+  - Signal strength bars display, auth type info, auto-saves credentials to config
+- **bt command** (`pcbt_main.c`): `status`, `on`, `off`, `scan`, `pair <addr>`, `unpair <addr>`, `devices`
+  - Uses weak-linked stubs — will function when CYW43 BT driver is implemented
+- Added `rp23xx_wifi_disconnect()` stub to `link_stubs.c`
+- Kconfig entries: `CONFIG_SYSTEM_PCWIFI`, `CONFIG_SYSTEM_PCBT`
+- **Files**: `nuttx-apps/system/pcssh/pcwifi_main.c`, `nuttx-apps/system/pcssh/pcbt_main.c`, `pcterm/src/link_stubs.c`
+
+#### 11. Movable Status Bar
+- Status bar position configurable: Top (default) or Bottom
+- `statusbar_set_position()` re-layouts bar and app area immediately with animation
+- Display settings tab now includes "Status Bar Position" dropdown
+- Config persistence: `statusbar_position` in `pc_config_t`
+- **Files**: `pcterm/include/pcterm/statusbar.h`, `pcterm/src/statusbar.c`, `pcterm/include/pcterm/config.h`, `pcterm/src/config.c`, `apps/settings/settings_display.c`, `nuttx-apps/examples/pcterm/pcterm_main.c`
+
+### New Files Created This Session
+| File | Purpose |
+|---|---|
+| `boards/.../src/rp23xx_clockmgr.c` | RP2350 PLL clock frequency management |
+| `boards/.../src/rp23xx_sleep.c` | Backlight timeout + sleep controller |
+| `apps/settings/settings_power.c` | Battery & Power settings UI tab |
+| `pcterm/include/pcterm/keys.h` | Shared F-key and VT100 escape definitions |
+| `nuttx-apps/system/pcssh/pcminipkg_main.c` | minipkg package manager CLI |
+| `nuttx-apps/system/pcssh/pcwifi_main.c` | Wi-Fi CLI command |
+| `nuttx-apps/system/pcssh/pcbt_main.c` | Bluetooth CLI command |
+
+### defconfig Changes
+```
+CONFIG_SYSTEM_PCMINIPKG=y
+CONFIG_SYSTEM_PCWIFI=y
+CONFIG_SYSTEM_PCBT=y
+```
+
+### Board Make.defs Changes
+```makefile
+CSRCS += rp23xx_clockmgr.c
+CSRCS += rp23xx_sleep.c
+```

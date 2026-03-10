@@ -1,18 +1,16 @@
 /****************************************************************************
  * boards/arm/rp23xx/picocalc-rp2350b/src/rp23xx_psram.c
  *
- * PIO-driven QSPI PSRAM driver for PicoCalc mainboard (8 MB).
+ * PIO-driven SPI PSRAM driver for PicoCalc mainboard (8 MB).
  *
  * Based on rp2040-psram by Ian Scott (MIT license).
  * Adapted for NuttX RTOS on RP2350B.
  *
  * The PSRAM chip (APS6404L / LY68L6400 / IPS6404 compatible) is accessed
- * via PIO-simulated QSPI (4-bit) for maximum throughput.  Initialization
- * uses bitbang SPI to send reset and Enter QPI commands, then all data
- * access uses a PIO QSPI program with 4 bidirectional data pins (SIO0-3).
+ * via PIO-simulated SPI with DMA for maximum throughput. The PIO program
+ * uses 2-bit sideset for CS (bit0) and SCK (bit1).
  *
- * The PIO program uses 2-bit sideset for CS (bit0) and SCK (bit1).
- * After initialization, a block allocator provides psram_malloc/free.
+ * After initialization, an 8 MB heap is created for PSRAM allocations.
  *
  ****************************************************************************/
 

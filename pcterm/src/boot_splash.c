@@ -131,7 +131,7 @@ void boot_splash_show(lv_obj_t *parent)
                              &lv_font_montserrat_12, 0);
   lv_obj_set_style_pad_top(g_lbl_status, 8, 0);
 
-  syslog(LOG_INFO, "SPLASH: Boot splash displayed\n");
+  syslog(LOG_INFO, "splash: Boot splash displayed\n");
 }
 
 /****************************************************************************
@@ -182,6 +182,6 @@ void boot_splash_hide(void)
       g_bar_progress = NULL;
       g_lbl_status   = NULL;
 
-      syslog(LOG_INFO, "SPLASH: Boot splash removed\n");
+      syslog(LOG_INFO, "splash: Boot splash removed\n");
     }
 }

@@ -75,6 +75,18 @@ const char *launcher_get_pending_launch(void);
  */
 void launcher_clear_pending_launch(void);
 
+/**
+ * Set launcher arrangement mode.
+ * 0 = built-in registration order (default)
+ * 1 = alphabetical by display name
+ */
+void launcher_set_arrange_mode(int mode);
+
+/**
+ * Restore launcher selection to an app by internal name.
+ */
+void launcher_set_selected_name(const char *name);
+
 #ifdef __cplusplus
 }
 #endif

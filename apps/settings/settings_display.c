@@ -1,7 +1,7 @@
 /****************************************************************************
  * apps/settings/settings_display.c
  *
- * Display settings tab: brightness, contrast, sleep timeout.
+ * Display settings tab: brightness, sleep timeout, status bar position.
  *
  ****************************************************************************/
 
@@ -10,6 +10,7 @@
 #include <syslog.h>
 #include <lvgl/lvgl.h>
 #include "pcterm/config.h"
+#include "pcterm/statusbar.h"
 
 extern void rp23xx_lcd_set_brightness(int pct);
 
@@ -33,6 +34,16 @@ static void sleep_cb(lv_event_t *e)
       pc_config_get()->sleep_timeout = sleep_values[sel];
       pc_config_save(pc_config_get());
     }
+}
+
+static void statusbar_pos_cb(lv_event_t *e)
+{
+  lv_obj_t *dd = lv_event_get_target_obj(e);
+  uint16_t sel = lv_dropdown_get_selected(dd);
+
+  pc_config_get()->statusbar_position = (uint8_t)sel;
+  statusbar_set_position((uint8_t)sel);
+  pc_config_save(pc_config_get());
 }
 
 void settings_display_create(lv_obj_t *parent)
@@ -62,6 +73,20 @@ void settings_display_create(lv_obj_t *parent)
   lv_obj_align(dd_sleep, LV_ALIGN_TOP_LEFT, 8, 104);
   lv_obj_set_width(dd_sleep, 150);
   lv_obj_add_event_cb(dd_sleep, sleep_cb, LV_EVENT_VALUE_CHANGED, NULL);
+
+  /* Status bar position dropdown */
+
+  lv_obj_t *lbl_sbpos = lv_label_create(parent);
+  lv_label_set_text(lbl_sbpos, "Status Bar Position");
+  lv_obj_align(lbl_sbpos, LV_ALIGN_TOP_LEFT, 8, 148);
+
+  lv_obj_t *dd_sbpos = lv_dropdown_create(parent);
+  lv_dropdown_set_options(dd_sbpos, "Top\nBottom");
+  lv_dropdown_set_selected(dd_sbpos, pc_config_get()->statusbar_position);
+  lv_obj_align(dd_sbpos, LV_ALIGN_TOP_LEFT, 8, 172);
+  lv_obj_set_width(dd_sbpos, 150);
+  lv_obj_add_event_cb(dd_sbpos, statusbar_pos_cb,
+                      LV_EVENT_VALUE_CHANGED, NULL);
 
   syslog(LOG_DEBUG, "SETTINGS: Display tab created\n");
 }

@@ -20,7 +20,7 @@
 
 #ifdef CONFIG_CRYPTO_WOLFSSH
 #include <wolfssh/ssh.h>
-#include <wolfssh/wolfssh.h>
+#include <wolfssh/settings.h>
 #endif
 
 #include "pcterm/app.h"

@@ -184,7 +184,7 @@ static void app_framework_refresh_thirdparty(void)
       g_thirdparty_count++;
     }
 
-  syslog(LOG_INFO, "APP: Cached %d third-party apps from registry\n",
+  syslog(LOG_INFO, "app: Cached %d third-party apps from registry\n",
          g_thirdparty_count);
 }
 
@@ -194,13 +194,13 @@ int app_framework_init(void)
 
   for (int i = 0; g_builtin_apps[i] != NULL; i++)
     {
-      syslog(LOG_INFO, "APP: Registered \"%s\" (%s)\n",
+      syslog(LOG_INFO, "app: Registered \"%s\" (%s)\n",
              g_builtin_apps[i]->info.display_name,
              g_builtin_apps[i]->info.name);
       count++;
     }
 
-  syslog(LOG_INFO, "APP: %d built-in apps registered\n", count);
+  syslog(LOG_INFO, "app: %d built-in apps registered\n", count);
 
   /* Cache installed third-party packages */
 
@@ -224,7 +224,7 @@ int app_framework_launch(const char *name)
 
   if (g_current_app != NULL)
     {
-      syslog(LOG_ERR, "APP: Cannot launch \"%s\" — \"%s\" is running\n",
+      syslog(LOG_ERR, "app: Cannot launch \"%s\" — \"%s\" is running\n",
              name, g_current_app->info.name);
       return PC_ERR_BUSY;
     }
@@ -246,12 +246,13 @@ int app_framework_launch(const char *name)
        * Third-party apps are loaded as ELF binaries by the package manager.
        */
 
-      syslog(LOG_INFO, "APP: \"%s\" not built-in, trying package loader\n",
+      syslog(LOG_INFO, "app: \"%s\" not built-in, trying package loader\n",
              name);
 
       /* Set up the screen container for the third-party app */
 
       launcher_hide();
+      launcher_set_selected_name(name);
 
       lv_obj_t *app_area = statusbar_get_app_area();
       g_app_screen = lv_obj_create(app_area);
@@ -285,7 +286,7 @@ int app_framework_launch(const char *name)
   size_t avail = pc_app_psram_available();
   if (avail < app->info.min_ram)
     {
-      syslog(LOG_ERR, "APP: Insufficient PSRAM for \"%s\" "
+      syslog(LOG_ERR, "app: Insufficient PSRAM for \"%s\" "
              "(need %lu, have %lu)\n",
              name, (unsigned long)app->info.min_ram,
              (unsigned long)avail);
@@ -295,6 +296,7 @@ int app_framework_launch(const char *name)
   /* Hide launcher (also removes it from the LVGL input group) */
 
   launcher_hide();
+  launcher_set_selected_name(name);
 
   /* Create app screen container */
 
@@ -335,7 +337,7 @@ int app_framework_launch(const char *name)
 
   g_current_app = app;
 
-  syslog(LOG_INFO, "APP: Launching \"%s\" v%s\n",
+  syslog(LOG_INFO, "app: Launching \"%s\" v%s\n",
          app->info.display_name, app->info.version);
 
   /* Check for saved state and restore if available */
@@ -344,7 +346,7 @@ int app_framework_launch(const char *name)
       app->restore != NULL &&
       pc_appstate_exists(app->info.name))
     {
-      syslog(LOG_INFO, "APP: Restoring saved state for \"%s\"\n",
+      syslog(LOG_INFO, "app: Restoring saved state for \"%s\"\n",
              app->info.name);
       pc_appstate_restore(app->info.name, app->restore);
     }
@@ -380,7 +382,7 @@ int app_framework_launch(const char *name)
 
       if (ret == 0)
         {
-          syslog(LOG_INFO, "APP: \"%s\" returned 0 — entering framework "
+          syslog(LOG_INFO, "app: \"%s\" returned 0 — entering framework "
                  "event loop (Fn+ESC to exit)\n", app->info.name);
 
           while (true)
@@ -390,7 +392,7 @@ int app_framework_launch(const char *name)
               if (lv_port_indev_exit_requested())
                 {
                   syslog(LOG_INFO,
-                         "APP: Fn+ESC exit from framework event loop\n");
+                         "app: Fn+ESC exit from framework event loop\n");
                   break;
                 }
 
@@ -402,7 +404,7 @@ int app_framework_launch(const char *name)
     {
       /* Returned via longjmp from pc_app_exit() or pc_app_yield() */
 
-      syslog(LOG_INFO, "APP: \"%s\" %s (code %d)\n",
+      syslog(LOG_INFO, "app: \"%s\" %s (code %d)\n",
              app->info.name,
              g_app_yielded ? "yielded" : "exited",
              g_app_exit_code);
@@ -410,7 +412,7 @@ int app_framework_launch(const char *name)
 
   /* App has returned — clean up */
 
-  syslog(LOG_INFO, "APP: \"%s\" finished with code %d\n",
+  syslog(LOG_INFO, "app: \"%s\" finished with code %d\n",
          app->info.name, g_app_exit_code);
 
   /* Remove all objects from the input group that the app may have added.
@@ -420,7 +422,15 @@ int app_framework_launch(const char *name)
   lv_group_t *cleanup_group = lv_group_get_default();
   if (cleanup_group != NULL)
     {
-      lv_group_remove_all_objs(cleanup_group);
+      if (g_app_root != NULL)
+        {
+          lv_group_remove_obj(g_app_root);
+        }
+
+      if (g_app_screen != NULL)
+        {
+          lv_group_remove_obj(g_app_screen);
+        }
     }
 
   /* Destroy app screen */
@@ -498,7 +508,7 @@ void pc_app_yield(void)
       (g_current_app->info.flags & PC_APP_FLAG_STATEFUL) &&
       g_current_app->save != NULL)
     {
-      syslog(LOG_INFO, "APP: Saving state for \"%s\"\n",
+      syslog(LOG_INFO, "app: Saving state for \"%s\"\n",
              g_current_app->info.name);
       pc_appstate_save(g_current_app->info.name, g_current_app->save);
     }

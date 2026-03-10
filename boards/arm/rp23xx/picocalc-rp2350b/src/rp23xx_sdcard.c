@@ -81,7 +81,7 @@ int rp23xx_sdcard_mount(void)
   ret = mount("/dev/mmcsd0", "/mnt/sd", "vfat", 0, NULL);
   if (ret < 0)
     {
-      syslog(LOG_ERR, "SD: Failed to mount /dev/mmcsd0 at /mnt/sd: %d\n",
+      syslog(LOG_ERR, "vfat: mount /dev/mmcsd0 on /mnt/sd failed: %d\n",
              ret);
 
       /* Try formatting as last resort? No — user data could be lost.
@@ -92,7 +92,7 @@ int rp23xx_sdcard_mount(void)
       return ret;
     }
 
-  syslog(LOG_INFO, "SD: Mounted FAT32 at /mnt/sd\n");
+  syslog(LOG_INFO, "vfat: /dev/mmcsd0 mounted at /mnt/sd (FAT32)\n");
 
   /* Verify expected directory structure exists */
 
@@ -114,7 +114,7 @@ int rp23xx_sdcard_mount(void)
         {
           /* Create missing directory */
           mkdir(required_dirs[i], 0755);
-          syslog(LOG_INFO, "SD: Created %s\n", required_dirs[i]);
+          syslog(LOG_INFO, "vfat: created %s\n", required_dirs[i]);
         }
     }
 

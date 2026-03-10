@@ -88,7 +88,7 @@ static int pcpkg_load_registry(void)
   f = fopen(PCPKG_REGISTRY_PATH, "r");
   if (f == NULL)
     {
-      syslog(LOG_WARNING, "PKG: No registry found, starting fresh\n");
+      syslog(LOG_WARNING, "pkg: No registry found, starting fresh\n");
       g_installed_count = 0;
       return 0;
     }
@@ -121,7 +121,7 @@ static int pcpkg_load_registry(void)
 
   if (root == NULL)
     {
-      syslog(LOG_ERR, "PKG: Invalid registry JSON\n");
+      syslog(LOG_ERR, "pkg: Invalid registry JSON\n");
       return -EINVAL;
     }
 
@@ -178,7 +178,7 @@ static int pcpkg_load_registry(void)
 
   cJSON_Delete(root);
 
-  syslog(LOG_INFO, "PKG: Loaded registry with %d packages\n",
+  syslog(LOG_INFO, "pkg: Loaded registry with %d packages\n",
          g_installed_count);
   return 0;
 }
@@ -233,7 +233,7 @@ static int pcpkg_save_registry(void)
   fclose(f);
   free(json_str);
 
-  syslog(LOG_INFO, "PKG: Registry saved (%d packages)\n",
+  syslog(LOG_INFO, "pkg: Registry saved (%d packages)\n",
          g_installed_count);
   return 0;
 }
@@ -343,7 +343,7 @@ int pcpkg_init(void)
   ret = pcpkg_load_registry();
   if (ret < 0)
     {
-      syslog(LOG_ERR, "PKG: Failed to load registry: %d\n", ret);
+      syslog(LOG_ERR, "pkg: Failed to load registry: %d\n", ret);
       return ret;
     }
 
@@ -374,7 +374,7 @@ int pcpkg_install(const char *pcpkg_path)
   fd = open(pcpkg_path, O_RDONLY);
   if (fd < 0)
     {
-      syslog(LOG_ERR, "PKG: Cannot open %s\n", pcpkg_path);
+      syslog(LOG_ERR, "pkg: Cannot open %s\n", pcpkg_path);
       return PC_ERR_NOENT;
     }
 
@@ -388,7 +388,7 @@ int pcpkg_install(const char *pcpkg_path)
 
   if (memcmp(header, PCPKG_MAGIC, 4) != 0)
     {
-      syslog(LOG_ERR, "PKG: Invalid magic in %s\n", pcpkg_path);
+      syslog(LOG_ERR, "pkg: Invalid magic in %s\n", pcpkg_path);
       close(fd);
       return PC_ERR_GENERIC;
     }
@@ -401,7 +401,7 @@ int pcpkg_install(const char *pcpkg_path)
 
   if (file_count == 0 || file_count > 128)
     {
-      syslog(LOG_ERR, "PKG: Invalid file count %lu\n",
+      syslog(LOG_ERR, "pkg: Invalid file count %lu\n",
              (unsigned long)file_count);
       close(fd);
       return PC_ERR_GENERIC;
@@ -470,7 +470,7 @@ int pcpkg_install(const char *pcpkg_path)
 
           if (mroot == NULL)
             {
-              syslog(LOG_ERR, "PKG: Invalid manifest.json\n");
+              syslog(LOG_ERR, "pkg: Invalid manifest.json\n");
               free(entries);
               close(fd);
               return PC_ERR_GENERIC;
@@ -520,7 +520,7 @@ int pcpkg_install(const char *pcpkg_path)
 
   if (!manifest_found || manifest.name[0] == '\0')
     {
-      syslog(LOG_ERR, "PKG: Package has no valid manifest\n");
+      syslog(LOG_ERR, "pkg: Package has no valid manifest\n");
       free(entries);
       close(fd);
       return PC_ERR_GENERIC;
@@ -532,7 +532,7 @@ int pcpkg_install(const char *pcpkg_path)
     {
       if (strcmp(g_installed[i].name, manifest.name) == 0)
         {
-          syslog(LOG_INFO, "PKG: Upgrading \"%s\"\n", manifest.name);
+          syslog(LOG_INFO, "pkg: Upgrading \"%s\"\n", manifest.name);
           pcpkg_uninstall(manifest.name);
           break;
         }
@@ -577,7 +577,7 @@ int pcpkg_install(const char *pcpkg_path)
       int out_fd = open(filepath, O_WRONLY | O_CREAT | O_TRUNC, 0644);
       if (out_fd < 0)
         {
-          syslog(LOG_ERR, "PKG: Cannot create %s\n", filepath);
+          syslog(LOG_ERR, "pkg: Cannot create %s\n", filepath);
           continue;
         }
 
@@ -597,7 +597,7 @@ int pcpkg_install(const char *pcpkg_path)
       close(out_fd);
       total_size += entries[i].size;
 
-      syslog(LOG_DEBUG, "PKG: Extracted %s (%lu bytes)\n",
+      syslog(LOG_DEBUG, "pkg: Extracted %s (%lu bytes)\n",
              entries[i].name, (unsigned long)entries[i].size);
     }
 
@@ -620,7 +620,7 @@ int pcpkg_install(const char *pcpkg_path)
 
   pcpkg_save_registry();
 
-  syslog(LOG_INFO, "PKG: Installed \"%s\" v%s (%lu bytes)\n",
+  syslog(LOG_INFO, "pkg: Installed \"%s\" v%s (%lu bytes)\n",
          manifest.name, manifest.version, (unsigned long)total_size);
 
   return PC_OK;
@@ -649,7 +649,7 @@ int pcpkg_uninstall(const char *name)
 
   if (idx < 0)
     {
-      syslog(LOG_ERR, "PKG: \"%s\" is not installed\n", name);
+      syslog(LOG_ERR, "pkg: \"%s\" is not installed\n", name);
       return PC_ERR_NOENT;
     }
 
@@ -668,7 +668,7 @@ int pcpkg_uninstall(const char *name)
   g_installed_count--;
   pcpkg_save_registry();
 
-  syslog(LOG_INFO, "PKG: Uninstalled \"%s\"\n", name);
+  syslog(LOG_INFO, "pkg: Uninstalled \"%s\"\n", name);
   return PC_OK;
 }
 
@@ -848,11 +848,11 @@ int pcpkg_launch(const char *name)
   struct stat st;
   if (stat(elf_path, &st) != 0)
     {
-      syslog(LOG_ERR, "PKG: Missing app.elf for \"%s\"\n", name);
+      syslog(LOG_ERR, "pkg: Missing app.elf for \"%s\"\n", name);
       return PC_ERR_NOENT;
     }
 
-  syslog(LOG_INFO, "PKG: Loading ELF \"%s\" (%lu bytes)\n",
+  syslog(LOG_INFO, "pkg: Loading ELF \"%s\" (%lu bytes)\n",
          elf_path, (unsigned long)st.st_size);
 
 #ifdef CONFIG_ELF
@@ -874,20 +874,20 @@ int pcpkg_launch(const char *name)
     ret = load_module(&bin, elf_path, NULL, 0);
     if (ret < 0)
       {
-        syslog(LOG_ERR, "PKG: load_module failed: %d\n", ret);
+        syslog(LOG_ERR, "pkg: load_module failed: %d\n", ret);
         return PC_ERR_GENERIC;
       }
 
     ret = exec_module(&bin, elf_path, NULL, NULL, NULL, NULL, false);
 
-    syslog(LOG_INFO, "PKG: ELF \"%s\" exited with code %d\n",
+    syslog(LOG_INFO, "pkg: ELF \"%s\" exited with code %d\n",
            name, ret);
 
     unload_module(&bin);
     return (ret >= 0) ? PC_OK : PC_ERR_GENERIC;
   }
 #else
-  syslog(LOG_WARNING, "PKG: ELF loader not enabled (CONFIG_ELF=n)\n");
+  syslog(LOG_WARNING, "pkg: ELF loader not enabled (CONFIG_ELF=n)\n");
   return PC_ERR_GENERIC;
 #endif
 }
@@ -932,14 +932,14 @@ int pcpkg_fetch_catalog(const char *repo_url, pcpkg_catalog_t *catalog)
 
   strncpy(catalog->repo_url, url, PCPKG_URL_MAX - 1);
 
-  syslog(LOG_INFO, "PKG: Fetching catalog from %s\n", url);
+  syslog(LOG_INFO, "pkg: Fetching catalog from %s\n", url);
 
   memset(&resp, 0, sizeof(resp));
   ret = http_get(url, &resp);
 
   if (ret < 0 || resp.status_code != 200 || resp.body == NULL)
     {
-      syslog(LOG_ERR, "PKG: Catalog fetch failed (ret=%d, status=%d)\n",
+      syslog(LOG_ERR, "pkg: Catalog fetch failed (ret=%d, status=%d)\n",
              ret, resp.status_code);
       http_response_free(&resp);
 
@@ -953,7 +953,7 @@ int pcpkg_fetch_catalog(const char *repo_url, pcpkg_catalog_t *catalog)
   cJSON *root = cJSON_Parse(resp.body);
   if (root == NULL)
     {
-      syslog(LOG_ERR, "PKG: Invalid catalog JSON\n");
+      syslog(LOG_ERR, "pkg: Invalid catalog JSON\n");
       http_response_free(&resp);
       return PC_ERR_GENERIC;
     }
@@ -1026,7 +1026,7 @@ int pcpkg_fetch_catalog(const char *repo_url, pcpkg_catalog_t *catalog)
 
   cJSON_Delete(root);
 
-  syslog(LOG_INFO, "PKG: Catalog loaded with %d apps\n", catalog->count);
+  syslog(LOG_INFO, "pkg: Catalog loaded with %d apps\n", catalog->count);
   return PC_OK;
 }
 
@@ -1052,7 +1052,7 @@ int pcpkg_load_cached_catalog(pcpkg_catalog_t *catalog)
   f = fopen(PCPKG_CATALOG_PATH, "r");
   if (f == NULL)
     {
-      syslog(LOG_WARNING, "PKG: No cached catalog found\n");
+      syslog(LOG_WARNING, "pkg: No cached catalog found\n");
       return PC_ERR_NOENT;
     }
 
@@ -1134,7 +1134,7 @@ int pcpkg_load_cached_catalog(pcpkg_catalog_t *catalog)
 
   cJSON_Delete(root);
 
-  syslog(LOG_INFO, "PKG: Loaded cached catalog (%d apps)\n",
+  syslog(LOG_INFO, "pkg: Loaded cached catalog (%d apps)\n",
          catalog->count);
   return PC_OK;
 }
@@ -1158,7 +1158,7 @@ int pcpkg_download_and_install(const char *url, const char *name)
       return PC_ERR_INVAL;
     }
 
-  syslog(LOG_INFO, "PKG: Downloading \"%s\" from %s\n", name, url);
+  syslog(LOG_INFO, "pkg: Downloading \"%s\" from %s\n", name, url);
 
   /* Ensure staging directory exists */
 
@@ -1171,7 +1171,7 @@ int pcpkg_download_and_install(const char *url, const char *name)
 
   if (ret < 0 || resp.status_code != 200 || resp.body == NULL)
     {
-      syslog(LOG_ERR, "PKG: Download failed for \"%s\" (ret=%d)\n",
+      syslog(LOG_ERR, "pkg: Download failed for \"%s\" (ret=%d)\n",
              name, ret);
       http_response_free(&resp);
       return PC_ERR_NET;
@@ -1181,7 +1181,7 @@ int pcpkg_download_and_install(const char *url, const char *name)
 
   if (resp.body_len < PCPKG_HEADER_SIZE)
     {
-      syslog(LOG_ERR, "PKG: Downloaded file too small (%lu bytes)\n",
+      syslog(LOG_ERR, "pkg: Downloaded file too small (%lu bytes)\n",
              (unsigned long)resp.body_len);
       http_response_free(&resp);
       return PC_ERR_GENERIC;
@@ -1191,7 +1191,7 @@ int pcpkg_download_and_install(const char *url, const char *name)
 
   if (memcmp(resp.body, PCPKG_MAGIC, 4) != 0)
     {
-      syslog(LOG_ERR, "PKG: Downloaded file has invalid magic\n");
+      syslog(LOG_ERR, "pkg: Downloaded file has invalid magic\n");
       http_response_free(&resp);
       return PC_ERR_GENERIC;
     }
@@ -1205,7 +1205,7 @@ int pcpkg_download_and_install(const char *url, const char *name)
   int fd = open(staging_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (fd < 0)
     {
-      syslog(LOG_ERR, "PKG: Cannot create staging file %s\n", staging_path);
+      syslog(LOG_ERR, "pkg: Cannot create staging file %s\n", staging_path);
       http_response_free(&resp);
       return PC_ERR_IO;
     }
@@ -1216,12 +1216,12 @@ int pcpkg_download_and_install(const char *url, const char *name)
 
   if (written != (ssize_t)resp.body_len)
     {
-      syslog(LOG_ERR, "PKG: Staging write failed\n");
+      syslog(LOG_ERR, "pkg: Staging write failed\n");
       unlink(staging_path);
       return PC_ERR_IO;
     }
 
-  syslog(LOG_INFO, "PKG: Downloaded %lu bytes to staging\n",
+  syslog(LOG_INFO, "pkg: Downloaded %lu bytes to staging\n",
          (unsigned long)written);
 
   /* Install from staging file */
@@ -1234,11 +1234,11 @@ int pcpkg_download_and_install(const char *url, const char *name)
 
   if (ret == PC_OK)
     {
-      syslog(LOG_INFO, "PKG: \"%s\" downloaded and installed OK\n", name);
+      syslog(LOG_INFO, "pkg: \"%s\" downloaded and installed OK\n", name);
     }
   else
     {
-      syslog(LOG_ERR, "PKG: Install of \"%s\" failed: %d\n", name, ret);
+      syslog(LOG_ERR, "pkg: Install of \"%s\" failed: %d\n", name, ret);
     }
 
   return ret;
@@ -1265,7 +1265,7 @@ int pcpkg_scan_and_install_sd(void)
   dir = opendir(PCPKG_APPS_DIR);
   if (dir == NULL)
     {
-      syslog(LOG_ERR, "PKG: Cannot open %s\n", PCPKG_APPS_DIR);
+      syslog(LOG_ERR, "pkg: Cannot open %s\n", PCPKG_APPS_DIR);
       return PC_ERR_IO;
     }
 
@@ -1287,7 +1287,7 @@ int pcpkg_scan_and_install_sd(void)
       char path[256];
       snprintf(path, sizeof(path), "%s/%s", PCPKG_APPS_DIR, ent->d_name);
 
-      syslog(LOG_INFO, "PKG: Found sideloaded package: %s\n", ent->d_name);
+      syslog(LOG_INFO, "pkg: Found sideloaded package: %s\n", ent->d_name);
 
       int ret = pcpkg_install(path);
       if (ret == PC_OK)
@@ -1301,14 +1301,14 @@ int pcpkg_scan_and_install_sd(void)
         }
       else
         {
-          syslog(LOG_ERR, "PKG: Failed to install %s: %d\n",
+          syslog(LOG_ERR, "pkg: Failed to install %s: %d\n",
                  ent->d_name, ret);
         }
     }
 
   closedir(dir);
 
-  syslog(LOG_INFO, "PKG: SD scan complete, installed %d packages\n",
+  syslog(LOG_INFO, "pkg: SD scan complete, installed %d packages\n",
          installed);
   return installed;
 }

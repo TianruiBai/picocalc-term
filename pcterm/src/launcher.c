@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdlib.h>
 #include <syslog.h>
 
 #include <lvgl/lvgl.h>
@@ -45,6 +46,8 @@ static int             g_selected   = 0;         /* Currently highlighted */
 static bool            g_visible    = true;
 static char            g_pending_launch[64];       /* Deferred app launch */
 static bool            g_has_pending = false;
+static int             g_arrange_mode = 0;         /* 0=builtin, 1=alpha */
+static char            g_selected_name[64];        /* Persist selection */
 
 /* Default icon symbols (LVGL built-in) for built-in apps */
 
@@ -65,6 +68,18 @@ static const char *g_builtin_icons[] =
 
 static void launcher_update_selection(int old_sel, int new_sel);
 
+typedef struct launcher_appref_s
+{
+  const pc_app_info_t *info;
+} launcher_appref_t;
+
+static int launcher_appref_cmp(const void *a, const void *b)
+{
+  const launcher_appref_t *aa = (const launcher_appref_t *)a;
+  const launcher_appref_t *bb = (const launcher_appref_t *)b;
+  return strcmp(aa->info->display_name, bb->info->display_name);
+}
+
 /****************************************************************************
  * Name: launcher_queue_selected
  *
@@ -78,10 +93,13 @@ static void launcher_queue_selected(void)
   if (g_selected >= 0 && g_selected < g_item_count)
     {
       const char *name = g_items[g_selected].name;
-      syslog(LOG_INFO, "LAUNCHER: User selected \"%s\"\n", name);
+      syslog(LOG_INFO, "launcher: User selected \"%s\"\n", name);
       strncpy(g_pending_launch, name, sizeof(g_pending_launch) - 1);
       g_pending_launch[sizeof(g_pending_launch) - 1] = '\0';
       g_has_pending = true;
+
+      strncpy(g_selected_name, name, sizeof(g_selected_name) - 1);
+      g_selected_name[sizeof(g_selected_name) - 1] = '\0';
     }
 }
 
@@ -242,6 +260,21 @@ static void launcher_key_event_cb(lv_event_t *e)
       /* Some keypad paths convert Enter to click events */
       launcher_queue_selected();
     }
+  else if (code == LV_EVENT_READY)
+    {
+      /* LVGL v9: LV_KEY_ENTER in editing mode exits editing and fires
+       * LV_EVENT_READY instead of CLICKED.  Treat this as app launch
+       * and immediately re-enable editing so arrow keys keep working.
+       */
+
+      launcher_queue_selected();
+
+      lv_group_t *group = lv_group_get_default();
+      if (group != NULL)
+        {
+          lv_group_set_editing(group, true);
+        }
+    }
 }
 
 /****************************************************************************
@@ -269,37 +302,12 @@ int launcher_init(lv_obj_t *parent)
   lv_obj_set_style_pad_all(g_launcher_cont, 0, 0);
   lv_obj_set_style_radius(g_launcher_cont, 0, 0);
 
-  /* Query all apps from the framework */
+  launcher_refresh();
 
-  int total = pc_app_get_count();
-  g_item_count = 0;
-
-  for (int i = 0; i < total && g_item_count < 48; i++)
+  if (g_item_count == 0)
     {
-      const pc_app_info_t *info = pc_app_get_info(i);
-      if (info == NULL)
-        {
-          continue;
-        }
-
-      /* Select icon: use built-in symbol if available */
-
-      const char *icon_sym = LV_SYMBOL_FILE;  /* Default */
-      if (i < (int)(sizeof(g_builtin_icons) / sizeof(g_builtin_icons[0])))
-        {
-          icon_sym = g_builtin_icons[i];
-        }
-
-      launcher_create_item(g_launcher_cont, g_item_count,
-                           info->name, info->display_name, icon_sym);
-      g_item_count++;
-    }
-
-  /* Focus the first item */
-
-  if (g_item_count > 0)
-    {
-      launcher_update_selection(-1, 0);
+      syslog(LOG_INFO, "launcher: Grid created with 0 apps\n");
+      return 0;
     }
 
   /* Register with the default LVGL input group so keyboard events
@@ -326,9 +334,11 @@ int launcher_init(lv_obj_t *parent)
                       LV_EVENT_CLICKED, NULL);
   lv_obj_add_event_cb(g_launcher_cont, launcher_key_event_cb,
                       LV_EVENT_SHORT_CLICKED, NULL);
+  lv_obj_add_event_cb(g_launcher_cont, launcher_key_event_cb,
+                      LV_EVENT_READY, NULL);
 
   g_visible = true;
-  syslog(LOG_INFO, "LAUNCHER: Grid created with %d apps\n", g_item_count);
+  syslog(LOG_INFO, "launcher: Grid created with %d apps\n", g_item_count);
 
   return 0;
 }
@@ -357,14 +367,28 @@ void launcher_refresh(void)
   /* Rebuild */
 
   int total = pc_app_get_count();
+  launcher_appref_t refs[48];
+  int ref_count = 0;
 
-  for (int i = 0; i < total && g_item_count < 48; i++)
+  for (int i = 0; i < total && ref_count < 48; i++)
     {
       const pc_app_info_t *info = pc_app_get_info(i);
       if (info == NULL)
         {
           continue;
         }
+
+      refs[ref_count++].info = info;
+    }
+
+  if (g_arrange_mode == 1 && ref_count > 1)
+    {
+      qsort(refs, ref_count, sizeof(refs[0]), launcher_appref_cmp);
+    }
+
+  for (int i = 0; i < ref_count && g_item_count < 48; i++)
+    {
+      const pc_app_info_t *info = refs[i].info;
 
       const char *icon_sym = LV_SYMBOL_FILE;
       if (i < (int)(sizeof(g_builtin_icons) / sizeof(g_builtin_icons[0])))
@@ -379,10 +403,24 @@ void launcher_refresh(void)
 
   if (g_item_count > 0)
     {
-      launcher_update_selection(-1, 0);
+      int sel = 0;
+
+      if (g_selected_name[0] != '\0')
+        {
+          for (int i = 0; i < g_item_count; i++)
+            {
+              if (strcmp(g_items[i].name, g_selected_name) == 0)
+                {
+                  sel = i;
+                  break;
+                }
+            }
+        }
+
+      launcher_update_selection(-1, sel);
     }
 
-  syslog(LOG_INFO, "LAUNCHER: Refreshed with %d apps\n", g_item_count);
+  syslog(LOG_INFO, "launcher: Refreshed with %d apps\n", g_item_count);
 }
 
 /****************************************************************************
@@ -516,4 +554,29 @@ void launcher_clear_pending_launch(void)
 {
   g_has_pending = false;
   g_pending_launch[0] = '\0';
+}
+
+void launcher_set_arrange_mode(int mode)
+{
+  if (mode != 0 && mode != 1)
+    {
+      return;
+    }
+
+  if (g_arrange_mode != mode)
+    {
+      g_arrange_mode = mode;
+      launcher_refresh();
+    }
+}
+
+void launcher_set_selected_name(const char *name)
+{
+  if (name == NULL || name[0] == '\0')
+    {
+      return;
+    }
+
+  strncpy(g_selected_name, name, sizeof(g_selected_name) - 1);
+  g_selected_name[sizeof(g_selected_name) - 1] = '\0';
 }

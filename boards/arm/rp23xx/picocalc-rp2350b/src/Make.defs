@@ -37,6 +37,10 @@ ifeq ($(CONFIG_PICOCALC_AUDIO_PWM),y)
   CSRCS += rp23xx_audio.c
 endif
 
+# Power management: clock profiles and backlight/sleep
+CSRCS += rp23xx_clockmgr.c
+CSRCS += rp23xx_sleep.c
+
 ifeq ($(CONFIG_PICOCALC_PIO_SDIO),y)
   CSRCS += rp23xx_pio_sdio.c
 endif

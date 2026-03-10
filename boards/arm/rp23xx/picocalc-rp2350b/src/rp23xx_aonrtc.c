@@ -8,6 +8,7 @@
 #include <nuttx/config.h>
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <errno.h>
 #include <time.h>
 
@@ -20,6 +21,9 @@
   (RP23XX_POWMAN_BASE + 0x70)
 #define RP23XX_POWMAN_READ_TIME_LOWER \
   (RP23XX_POWMAN_BASE + 0x74)
+
+static int64_t g_wall_offset_ns;
+static bool    g_wall_offset_valid;
 
 /****************************************************************************
  * Public Functions
@@ -59,5 +63,64 @@ int rp23xx_aon_timer_gettime(struct timespec *ts)
 
   ts->tv_sec  = (time_t)(ticks_us / 1000000ULL);
   ts->tv_nsec = (long)((ticks_us % 1000000ULL) * 1000ULL);
+  return 0;
+}
+
+int rp23xx_aon_walltime_gettime(struct timespec *ts)
+{
+  struct timespec raw;
+  int64_t raw_ns;
+  int64_t wall_ns;
+
+  if (ts == NULL)
+    {
+      return -EINVAL;
+    }
+
+  if (rp23xx_aon_timer_gettime(&raw) < 0)
+    {
+      return -EIO;
+    }
+
+  raw_ns = (int64_t)raw.tv_sec * 1000000000LL + raw.tv_nsec;
+
+  if (!g_wall_offset_valid)
+    {
+      *ts = raw;
+      return 0;
+    }
+
+  wall_ns = raw_ns + g_wall_offset_ns;
+  if (wall_ns < 0)
+    {
+      wall_ns = 0;
+    }
+
+  ts->tv_sec = (time_t)(wall_ns / 1000000000LL);
+  ts->tv_nsec = (long)(wall_ns % 1000000000LL);
+  return 0;
+}
+
+int rp23xx_aon_walltime_settime(const struct timespec *ts)
+{
+  struct timespec raw;
+  int64_t raw_ns;
+  int64_t set_ns;
+
+  if (ts == NULL)
+    {
+      return -EINVAL;
+    }
+
+  if (rp23xx_aon_timer_gettime(&raw) < 0)
+    {
+      return -EIO;
+    }
+
+  raw_ns = (int64_t)raw.tv_sec * 1000000000LL + raw.tv_nsec;
+  set_ns = (int64_t)ts->tv_sec * 1000000000LL + ts->tv_nsec;
+
+  g_wall_offset_ns = set_ns - raw_ns;
+  g_wall_offset_valid = true;
   return 0;
 }

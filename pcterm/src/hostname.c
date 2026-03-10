@@ -86,7 +86,7 @@ int hostname_init(void)
           else
             {
               syslog(LOG_WARNING,
-                     "HOSTNAME: Invalid hostname in %s, using default\n",
+                     "hostname: Invalid hostname in %s, using default\n",
                      HOSTNAME_PATH);
             }
         }
@@ -95,7 +95,7 @@ int hostname_init(void)
     }
   else
     {
-      syslog(LOG_INFO, "HOSTNAME: No %s, using default \"%s\"\n",
+      syslog(LOG_INFO, "hostname: No %s, using default \"%s\"\n",
              HOSTNAME_PATH, HOSTNAME_DEFAULT);
 
       /* Create the file with default */
@@ -143,7 +143,7 @@ int hostname_set(const char *name)
       fclose(f);
     }
 
-  syslog(LOG_INFO, "HOSTNAME: Set to \"%s\"\n", g_hostname);
+  syslog(LOG_INFO, "hostname: Set to \"%s\"\n", g_hostname);
 
   return 0;
 }

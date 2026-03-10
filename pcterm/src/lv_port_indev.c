@@ -19,6 +19,8 @@
 
 #include <lvgl/lvgl.h>
 
+#include <arch/board/board.h>
+
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
@@ -40,6 +42,39 @@
 #define KBD_KEY_TAB         0x09
 #define KBD_KEY_ENTER       0x0A
 #define KBD_KEY_BACKSPACE   0x08
+
+/* Function key codes from STM32 south-bridge keyboard firmware.
+ * Physical keyboard has F1-F5 keys; Shift+F1-F5 produce F6-F10.
+ * F11/F12 do not exist on this hardware.
+ */
+
+#define KBD_KEY_F1          0x81
+#define KBD_KEY_F2          0x82
+#define KBD_KEY_F3          0x83
+#define KBD_KEY_F4          0x84
+#define KBD_KEY_F5          0x85
+#define KBD_KEY_F6          0x86
+#define KBD_KEY_F7          0x87
+#define KBD_KEY_F8          0x88
+#define KBD_KEY_F9          0x89
+#define KBD_KEY_F10         0x90
+
+/* Custom LVGL key codes for function keys (0xF001+).
+ * LVGL has no built-in F-key constants, so we define custom
+ * codes in a range that doesn't collide with ASCII or LV_KEY_*.
+ * Apps can listen for these via LV_EVENT_KEY.
+ */
+
+#define LV_KEY_F1           0xF001
+#define LV_KEY_F2           0xF002
+#define LV_KEY_F3           0xF003
+#define LV_KEY_F4           0xF004
+#define LV_KEY_F5           0xF005
+#define LV_KEY_F6           0xF006
+#define LV_KEY_F7           0xF007
+#define LV_KEY_F8           0xF008
+#define LV_KEY_F9           0xF009
+#define LV_KEY_F10          0xF00A
 
 /****************************************************************************
  * External References
@@ -73,7 +108,7 @@ static uint32_t map_key_to_lvgl(uint8_t key)
 {
   switch (key)
     {
-      /* Current official firmware codes */
+      /* Navigation keys — official firmware codes */
 
       case KBD_KEY_UP:        return LV_KEY_UP;
       case KBD_KEY_DOWN:      return LV_KEY_DOWN;
@@ -87,19 +122,24 @@ static uint32_t map_key_to_lvgl(uint8_t key)
       case KBD_KEY_END:       return LV_KEY_END;
       case KBD_KEY_INSERT:    return LV_KEY_HOME;
       case KBD_KEY_TAB:       return LV_KEY_NEXT;
+      case KBD_KEY_PGUP:      return LV_KEY_PREV;
+      case KBD_KEY_PGDN:      return LV_KEY_NEXT;
 
-      /* Compatibility with older keycode assumptions */
+      /* Function keys F1-F10 from STM32 firmware */
 
-      case 0x81: return LV_KEY_UP;
-      case 0x82: return LV_KEY_DOWN;
-      case 0x83: return LV_KEY_LEFT;
-      case 0x84: return LV_KEY_RIGHT;
-      case 0x85: return LV_KEY_HOME;
-      case 0x86: return LV_KEY_END;
-      case 0x87: return LV_KEY_PREV;
-      case 0x88: return LV_KEY_NEXT;
-      case 0x89: return LV_KEY_HOME;
-      case 0x8A: return LV_KEY_DEL;
+      case KBD_KEY_F1:        return LV_KEY_F1;
+      case KBD_KEY_F2:        return LV_KEY_F2;
+      case KBD_KEY_F3:        return LV_KEY_F3;
+      case KBD_KEY_F4:        return LV_KEY_F4;
+      case KBD_KEY_F5:        return LV_KEY_F5;
+      case KBD_KEY_F6:        return LV_KEY_F6;
+      case KBD_KEY_F7:        return LV_KEY_F7;
+      case KBD_KEY_F8:        return LV_KEY_F8;
+      case KBD_KEY_F9:        return LV_KEY_F9;
+      case KBD_KEY_F10:       return LV_KEY_F10;
+
+      /* Alternate Enter/Esc codes */
+
       case 0x1B: return LV_KEY_ESC;
       case 0x0D: return LV_KEY_ENTER;
 
@@ -171,6 +211,10 @@ static void keypad_read_cb(lv_indev_t *indev, lv_indev_data_t *data)
   data->key   = lv_key;
   last_key    = lv_key;
   pending_release = true;
+
+  /* Signal user activity to reset backlight timeout */
+
+  rp23xx_backlight_activity();
 }
 
 /****************************************************************************
@@ -201,7 +245,7 @@ void lv_port_indev_init(void)
   lv_group_set_wrap(g_default_group, true);
   lv_indev_set_group(g_indev_keypad, g_default_group);
 
-  syslog(LOG_INFO, "INDEV: LVGL keypad input registered\n");
+  syslog(LOG_INFO, "indev: LVGL keypad input registered\n");
 }
 
 /****************************************************************************

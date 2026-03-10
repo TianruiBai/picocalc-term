@@ -114,7 +114,7 @@ int pc_appstate_save(const char *app_name,
 
   if (buf == NULL)
     {
-      syslog(LOG_ERR, "APPSTATE: Cannot allocate save buffer\n");
+      syslog(LOG_ERR, "appstate: Cannot allocate save buffer\n");
       return PC_ERR_NOMEM;
     }
 
@@ -127,7 +127,7 @@ int pc_appstate_save(const char *app_name,
       return ret;
     }
 
-  syslog(LOG_INFO, "APPSTATE: Saved %zu bytes for \"%s\"\n",
+  syslog(LOG_INFO, "appstate: Saved %zu bytes for \"%s\"\n",
          len, app_name);
 
   /* Store in PSRAM cache */
@@ -163,11 +163,11 @@ int pc_appstate_save(const char *app_name,
     {
       fwrite(entry->data, 1, entry->size, f);
       fclose(f);
-      syslog(LOG_INFO, "APPSTATE: Written to %s\n", path);
+      syslog(LOG_INFO, "appstate: Written to %s\n", path);
     }
   else
     {
-      syslog(LOG_WARNING, "APPSTATE: Could not write %s (SD error)\n",
+      syslog(LOG_WARNING, "appstate: Could not write %s (SD error)\n",
              path);
     }
 
@@ -182,7 +182,7 @@ int pc_appstate_restore(const char *app_name,
   struct state_cache_entry *entry = cache_find(app_name);
   if (entry != NULL && entry->data != NULL)
     {
-      syslog(LOG_INFO, "APPSTATE: Restoring from PSRAM cache (%zu bytes)\n",
+      syslog(LOG_INFO, "appstate: Restoring from PSRAM cache (%zu bytes)\n",
              entry->size);
       return restore_fn(entry->data, entry->size);
     }
@@ -220,7 +220,7 @@ int pc_appstate_restore(const char *app_name,
   fread(buf, 1, len, f);
   fclose(f);
 
-  syslog(LOG_INFO, "APPSTATE: Restoring from SD (%zu bytes)\n", len);
+  syslog(LOG_INFO, "appstate: Restoring from SD (%zu bytes)\n", len);
 
   /* Cache it for next time */
 
@@ -252,7 +252,7 @@ void pc_appstate_discard(const char *app_name)
   sd_path(app_name, path, sizeof(path));
   unlink(path);
 
-  syslog(LOG_INFO, "APPSTATE: Discarded state for \"%s\"\n", app_name);
+  syslog(LOG_INFO, "appstate: Discarded state for \"%s\"\n", app_name);
 }
 
 bool pc_appstate_exists(const char *app_name)

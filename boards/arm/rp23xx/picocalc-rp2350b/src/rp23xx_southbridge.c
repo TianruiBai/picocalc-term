@@ -43,6 +43,9 @@
 
 #define SB_I2C_RETRIES       3       /* Retry count for I2C errors */
 #define SB_I2C_TIMEOUT_MS    50      /* I2C timeout per transfer */
+#define SB_I2C_READ_DELAY_MS 16      /* South-bridge needs delay before read */
+#define SB_INIT_RETRY_COUNT  20      /* Probe retries during early boot */
+#define SB_INIT_RETRY_MS     20      /* Delay between probe attempts */
 
 /****************************************************************************
  * Private Types
@@ -80,28 +83,41 @@ static struct sb_dev_s g_sbdev;
 static int sb_i2c_read(struct sb_dev_s *dev, uint8_t reg,
                        uint8_t *buf, size_t len)
 {
-  struct i2c_msg_s msgs[2];
+  struct i2c_msg_s msg;
   int ret;
-
-  /* Message 1: Write register address */
-
-  msgs[0].frequency = BOARD_SB_I2C_FREQ;
-  msgs[0].addr      = BOARD_SB_I2C_ADDR;
-  msgs[0].flags     = 0;             /* Write */
-  msgs[0].buffer    = &reg;
-  msgs[0].length    = 1;
-
-  /* Message 2: Read response */
-
-  msgs[1].frequency = BOARD_SB_I2C_FREQ;
-  msgs[1].addr      = BOARD_SB_I2C_ADDR;
-  msgs[1].flags     = I2C_M_READ;
-  msgs[1].buffer    = buf;
-  msgs[1].length    = len;
 
   for (int retry = 0; retry < SB_I2C_RETRIES; retry++)
     {
-      ret = I2C_TRANSFER(dev->i2c, msgs, 2);
+      /* Phase 1: write register index */
+
+      msg.frequency = BOARD_SB_I2C_FREQ;
+      msg.addr      = BOARD_SB_I2C_ADDR;
+      msg.flags     = 0;
+      msg.buffer    = &reg;
+      msg.length    = 1;
+
+      ret = I2C_TRANSFER(dev->i2c, &msg, 1);
+      if (ret < 0)
+        {
+          up_udelay(500);
+          continue;
+        }
+
+      /* The STM32 south-bridge firmware expects a short delay between
+       * register write and data read (official PicoCalc reference does this).
+       */
+
+      up_mdelay(SB_I2C_READ_DELAY_MS);
+
+      /* Phase 2: read response bytes */
+
+      msg.frequency = BOARD_SB_I2C_FREQ;
+      msg.addr      = BOARD_SB_I2C_ADDR;
+      msg.flags     = I2C_M_READ;
+      msg.buffer    = buf;
+      msg.length    = len;
+
+      ret = I2C_TRANSFER(dev->i2c, &msg, 1);
       if (ret >= 0)
         {
           return 0;
@@ -109,10 +125,11 @@ static int sb_i2c_read(struct sb_dev_s *dev, uint8_t reg,
 
       /* Short delay before retry */
 
-      up_udelay(100);
+      up_udelay(500);
     }
 
-  syslog(LOG_ERR, "SB: I2C read reg 0x%02X failed: %d\n", reg, ret);
+  syslog(LOG_ERR, "southbridge: I2C read reg 0x%02X failed: %d\n",
+         reg, ret);
   return ret;
 }
 
@@ -151,7 +168,7 @@ static int sb_i2c_write(struct sb_dev_s *dev, uint8_t reg, uint8_t value)
       up_udelay(100);
     }
 
-  syslog(LOG_ERR, "SB: I2C write reg 0x%02X=0x%02X failed: %d\n",
+  syslog(LOG_ERR, "southbridge: I2C write reg 0x%02X=0x%02X failed: %d\n",
          reg, value, ret);
   return ret;
 }
@@ -186,29 +203,49 @@ int rp23xx_sb_init(void)
   dev->i2c = rp23xx_i2cbus_initialize(BOARD_SB_I2C_PORT);
   if (dev->i2c == NULL)
     {
-      syslog(LOG_ERR, "SB: Failed to get I2C%d bus\n", BOARD_SB_I2C_PORT);
+      syslog(LOG_ERR, "southbridge: failed to get I2C%d bus\n",
+             BOARD_SB_I2C_PORT);
       return -ENODEV;
     }
 
   /* Read BIOS version to verify the south bridge is present */
 
   uint8_t verbuf[2];
-  ret = sb_i2c_read(dev, SB_REG_VER, verbuf, 2);
+  ret = -ENODEV;
+  for (int retry = 0; retry < SB_INIT_RETRY_COUNT; retry++)
+    {
+      ret = sb_i2c_read(dev, SB_REG_VER, verbuf, 2);
+      if (ret >= 0)
+        {
+          break;
+        }
+
+      up_mdelay(SB_INIT_RETRY_MS);
+    }
+
   if (ret < 0)
     {
-      syslog(LOG_ERR, "SB: South bridge not responding on I2C%d:0x%02X\n",
+      syslog(LOG_ERR, "southbridge: STM32 not responding on "
+             "I2C%d:0x%02X\n",
              BOARD_SB_I2C_PORT, BOARD_SB_I2C_ADDR);
       return ret;
     }
 
   dev->bios_ver = verbuf[1];
-  syslog(LOG_INFO, "SB: STM32 south bridge BIOS v0x%02X detected\n",
+  syslog(LOG_INFO, "southbridge: STM32F103R8T6 detected, "
+         "BIOS v0x%02X\n",
          dev->bios_ver);
 
   if (dev->bios_ver < SB_BIOS_VERSION)
     {
-      syslog(LOG_WARNING, "SB: BIOS version 0x%02X is older than "
-             "expected 0x%02X\n", dev->bios_ver, SB_BIOS_VERSION);
+      syslog(LOG_WARNING, "southbridge: BIOS v0x%02X is older than "
+             "expected v0x%02X\n", dev->bios_ver, SB_BIOS_VERSION);
+      if (dev->bios_ver == 0x00)
+        {
+          syslog(LOG_ERR, "southbridge: BIOS v0x00 — STM32 firmware "
+                 "may be missing or corrupt; backlight/keyboard may "
+                 "not work\n");
+        }
     }
 
   /* Enable keyboard interrupt reporting */
@@ -219,7 +256,8 @@ int rp23xx_sb_init(void)
                      SB_CFG_REPORT_MODS);
   if (ret < 0)
     {
-      syslog(LOG_WARNING, "SB: Failed to set config: %d\n", ret);
+      syslog(LOG_WARNING, "southbridge: config register write failed: %d\n",
+             ret);
     }
 
   /* Set LCD backlight to maximum initially */
@@ -234,8 +272,12 @@ int rp23xx_sb_init(void)
 
   dev->initialized = true;
 
-  syslog(LOG_INFO, "SB: South bridge initialized (I2C%d:0x%02X)\n",
-         BOARD_SB_I2C_PORT, BOARD_SB_I2C_ADDR);
+  syslog(LOG_INFO, "southbridge: key interrupt enabled, "
+         "LCD backlight 100%%, keyboard backlight off\n");
+  syslog(LOG_INFO, "southbridge: STM32F103R8T6 ready at "
+         "I2C%d:0x%02X (%d kHz)\n",
+         BOARD_SB_I2C_PORT, BOARD_SB_I2C_ADDR,
+         BOARD_SB_I2C_FREQ / 1000);
 
   return 0;
 }
@@ -457,7 +499,7 @@ int rp23xx_sb_power_off(uint8_t delay_secs)
       return -ENODEV;
     }
 
-  syslog(LOG_NOTICE, "SB: Power off requested (delay=%d sec)\n",
+  syslog(LOG_NOTICE, "southbridge: power off requested (delay=%d sec)\n",
          delay_secs);
 
   /* No lock needed — this is a one-way operation */

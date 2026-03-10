@@ -69,7 +69,7 @@ static int boot_mount_sd(void)
   if (ret < 0)
     {
       syslog(LOG_WARNING,
-             "BOOT: SD card not available — running in limited mode\n");
+             "boot: SD card not available — running in limited mode\n");
     }
 
   return ret;
@@ -133,7 +133,10 @@ static int boot_init_lvgl(void)
 
   lv_port_indev_init();
 
-  syslog(LOG_INFO, "BOOT: LVGL initialized (display + keyboard)\n");
+  syslog(LOG_INFO, "boot: LVGL v%d.%d.%d initialized "
+         "(display %dx%d + keyboard input)\n",
+         LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR, LVGL_VERSION_PATCH,
+         BOARD_LCD_WIDTH, BOARD_LCD_HEIGHT);
   return 0;
 }
 
@@ -191,41 +194,39 @@ int pcterm_main(int argc, char *argv[])
   int ret;
 
   printf("\n");
-  printf("╔══════════════════════════════════╗\n");
-  printf("║     PicoCalc-Term  v0.1.0       ║\n");
-  printf("║     NuttX / LVGL / RP2350B      ║\n");
-  printf("╚══════════════════════════════════╝\n");
+  printf("  PicoCalc-Term  v0.1.0\n");
+  printf("  NuttX / LVGL / RP2350B\n");
   printf("\n");
 
   /* --- Step 1: Mount SD card --- */
 
-  syslog(LOG_INFO, "BOOT: Step 1 — Mount SD card\n");
+  syslog(LOG_INFO, "boot: mount /dev/mmcsd0 -> /mnt/sd\n");
   boot_mount_sd();
 
   /* --- Step 2: Load hostname --- */
 
-  syslog(LOG_INFO, "BOOT: Step 2 — Load hostname\n");
+  syslog(LOG_INFO, "boot: loading hostname\n");
   hostname_init();
-  syslog(LOG_INFO, "BOOT: Hostname = \"%s\"\n", hostname_get());
+  syslog(LOG_INFO, "boot: hostname \"%s\"\n", hostname_get());
 
   /* --- Step 3: Load settings --- */
 
-  syslog(LOG_INFO, "BOOT: Step 3 — Load settings\n");
+  syslog(LOG_INFO, "boot: loading settings\n");
   ret = pc_config_load(&g_config);
   if (ret < 0)
     {
-      syslog(LOG_WARNING, "BOOT: Using default settings\n");
+      syslog(LOG_WARNING, "boot: using default settings\n");
       pc_config_defaults(&g_config);
     }
 
   /* --- Step 4: Initialize LVGL --- */
 
-  syslog(LOG_INFO, "BOOT: Step 4 — Initialize LVGL\n");
+  syslog(LOG_INFO, "boot: initializing LVGL display subsystem\n");
   boot_init_lvgl();
 
   /* --- Step 5: Create status bar --- */
 
-  syslog(LOG_INFO, "BOOT: Step 5 — Create status bar\n");
+  syslog(LOG_INFO, "boot: creating status bar\n");
   lv_obj_t *screen = lv_scr_act();
   statusbar_init(screen);
 
@@ -235,21 +236,21 @@ int pcterm_main(int argc, char *argv[])
 
   /* --- Step 6: Initialize app framework --- */
 
-  syslog(LOG_INFO, "BOOT: Step 6 — Initialize app framework\n");
+  syslog(LOG_INFO, "boot: initializing app framework\n");
   app_framework_init();
 
   /* --- Step 7: Initialize package manager --- */
 
-  syslog(LOG_INFO, "BOOT: Step 7 — Initialize package manager\n");
+  syslog(LOG_INFO, "boot: scanning /mnt/sd/apps for packages\n");
   pcpkg_init();
 
   /* --- Step 8: Launch home screen --- */
 
-  syslog(LOG_INFO, "BOOT: Step 8 — Launch launcher\n");
+  syslog(LOG_INFO, "boot: launching home screen\n");
   lv_obj_t *app_area = statusbar_get_app_area();
   launcher_init(app_area);
 
-  syslog(LOG_INFO, "BOOT: PicoCalc-Term ready!\n");
+  syslog(LOG_INFO, "boot: PicoCalc-Term ready!\n");
 
   /* --- Step 9: Main event loop --- */
 
